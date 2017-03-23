@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Exclude specific shared preferences that contain GCM registration Id -->
+    <exclude domain="sharedpref" path="activity_main.xml"/>
+    <exclude domain="sharedpref" path="detailed_page.xml"/>
+    <exclude domain="sharedpref" path="recycleview_item.xml"/>
+
+</full-backup-content>

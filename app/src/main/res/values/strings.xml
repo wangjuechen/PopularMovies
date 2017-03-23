@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Pop Movies</string>
+    <string name="sort_by_popular">by most popular</string>
+    <string name="sort_by_rate">by top rated</string>
+    <string name="discription">This is a thumbnail of movie</string>
+    <string name="voteAverage">%1$s /10</string>
+</resources>

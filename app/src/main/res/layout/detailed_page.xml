@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_title_child_activity"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="@color/colorTeal"
+            android:fontFamily="monospace"
+            android:gravity="center_vertical"
+            android:paddingLeft="25dp"
+            android:paddingRight="100dp"
+            android:paddingStart="25dp"
+            android:textSize="@dimen/title_text_size"
+            tools:text="Titanic"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_poster_child_astivity"
+                android:layout_width="100dp"
+                android:layout_height="150dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@string/discription"
+                />
+
+            <TextView
+                android:id="@+id/tv_releaseDate_child_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_toEndOf="@id/iv_poster_child_astivity"
+                android:layout_toRightOf="@+id/iv_poster_child_astivity"
+                android:textSize="@dimen/releasedate_text_size" />
+
+            <TextView
+                android:id="@+id/tv_voteReverage_child_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/tv_releaseDate_child_activity"
+                android:layout_below="@+id/tv_releaseDate_child_activity"
+                android:layout_marginTop="15dp"
+                android:textSize="@dimen/vote_text_size"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="12dp"
+            android:textSize="@dimen/overview_text_size" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

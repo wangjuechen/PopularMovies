@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
     private  String MOVIE_RATE_URL =
             "http://api.themoviedb.org/3/movie/top_rated?api_key=d8a3dca970a92dfe743a515a7802a807";
+
 
 
     @Override
@@ -178,6 +180,13 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
                 return true;
             }
+
+            if(id == R.id.action_favorate){
+
+                //TODO Going to use ContentProvider to call database related to favorite movies
+
+
+            }
         } catch (Exception e) {
             mToast = Toast.makeText(this, "This is no Internet", Toast.LENGTH_LONG);
             mToast.show();
@@ -276,4 +285,6 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
         startActivity(startChildActivityIntent);
     }
+
+
 }

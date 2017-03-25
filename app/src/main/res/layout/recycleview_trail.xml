@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="90dp"
+        android:background="@android:color/darker_gray" />
+
+    <ImageButton
+        android:id="@+id/trailer_play_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="22dp"
+        android:adjustViewBounds="true"
+        android:background="@android:color/white"
+        android:scaleType="centerCrop"
+        android:src="@drawable/play_button" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/trailer_play_button"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="50dp"
+        android:layout_toRightOf="@id/trailer_play_button"
+        android:id="@+id/tv_number_trailers"
+        android:text="@string/trailer_number"
+        android:textSize="@dimen/subtitle_triler_text_size" />
+
+
+</RelativeLayout>

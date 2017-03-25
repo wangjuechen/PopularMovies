@@ -8,5 +8,5 @@
     <dimen name="title_trailers_text_size">25sp</dimen>
     <dimen name="subtitle_triler_text_size">18sp</dimen>
     <dimen name="userReviewTitle_text_size">25sp</dimen>
-    <dimen name="userReview_text_size">18sp</dimen>
+    <dimen name="userReview_text_size">15sp</dimen>
 </resources>

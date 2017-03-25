@@ -4,4 +4,10 @@
     <string name="sort_by_rate">by top rated</string>
     <string name="discription">This is a thumbnail of movie</string>
     <string name="voteAverage">%1$s /10</string>
+    <string name="toolstext_title">Titanic</string>
+    <string name="sort_by_favorite">Favorite</string>
+    <string name="title_trailers">Trailers:</string>
+    <string name="trailer1_title">Trailer  1</string>
+    <string name="trailer2_title">Trailer  2</string>
+    <string name="userReview_title">User Reviews:</string>
 </resources>

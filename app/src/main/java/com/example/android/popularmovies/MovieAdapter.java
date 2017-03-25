@@ -57,7 +57,8 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
         int imageWidth = 550;
 
         if (!TextUtils.isEmpty(feedItem.getThumbnail())) {
-            Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + feedItem.getThumbnail()).placeholder(R.drawable.placeholder).error(R.drawable.error).
+            Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" +
+                    feedItem.getThumbnail()).placeholder(R.drawable.placeholder).error(R.drawable.error).
                     into(movieAdapterViewHolder.mImageView);
 
         }

@@ -7,7 +7,8 @@
     <string name="toolstext_title">Titanic</string>
     <string name="sort_by_favorite">Favorite</string>
     <string name="title_trailers">Trailers:</string>
-    <string name="trailer1_title">Trailer  1</string>
-    <string name="trailer2_title">Trailer  2</string>
+    <string name="trailer_number">Trailer</string>
     <string name="userReview_title">User Reviews:</string>
+    <string name="Author">Author: </string>
+    <string name="title_Childacvitivy">MovieDetial</string>
 </resources>

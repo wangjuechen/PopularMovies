@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
         protected void onPostExecute(String movieResponse) {
 
             mLoadingIndicator.setVisibility(View.INVISIBLE);
+
             parseResult(movieResponse);
 
             mMovieAdapter.setWeatherData(feedsList);
@@ -186,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
                 //TODO Going to use ContentProvider to call database related to favorite movies
 
 
+                return true;
             }
         } catch (Exception e) {
             mToast = Toast.makeText(this, "This is no Internet", Toast.LENGTH_LONG);
@@ -221,6 +223,8 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
             final String OWM_POPULARITY = "popularity";
 
+            final String OWM_MovieIDINTMDB = "id";
+
             JSONObject response = new JSONObject(movieJsonStr);
 
             JSONArray posts = response.optJSONArray(OWM_LIST);
@@ -244,6 +248,8 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
                 item.setVoteAverage(post.optString(OWM_VOTEAVERAGE));
 
                 item.setPopularity(post.optString(OWM_POPULARITY));
+
+                item.setMovieIDInTMDB(post.optInt(OWM_MovieIDINTMDB));
 
                 feedsList.add(item);
 
@@ -273,6 +279,8 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
         String urlThumbnail = feedsList.get(clickedItemIndex).getThumbnail();
 
+        int numberMovieIDInTMDB = feedsList.get(clickedItemIndex).getMovieIDInTMDB();
+
         Bundle extras = new Bundle();
 
         extras.putString("title", textTitle);
@@ -280,6 +288,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
         extras.putString("overview", textOverview);
         extras.putString("voteAverage", textVoteAverage);
         extras.putString("Thumbnail", urlThumbnail);
+        extras.putInt("id",numberMovieIDInTMDB);
 
         startChildActivityIntent.putExtras(extras);
 

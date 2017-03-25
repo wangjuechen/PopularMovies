@@ -2,9 +2,11 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.android.popularmovies.ChildActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -34,8 +36,8 @@
 
                 <ImageView
                     android:id="@+id/iv_poster_child_astivity"
-                    android:layout_width="100dp"
-                    android:layout_height="150dp"
+                    android:layout_width="140dp"
+                    android:layout_height="200dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="10dp"
@@ -53,44 +55,47 @@
                     android:textSize="@dimen/releasedate_text_size" />
 
                 <TextView
-                    android:id="@+id/tv_length_child_activity"
+                    android:id="@+id/tv_runtime_child_activity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/tv_releaseDate_child_activity"
                     android:layout_below="@+id/tv_releaseDate_child_activity"
                     android:layout_marginTop="15dp"
                     android:textSize="@dimen/length_text_size"
-                    android:textStyle="italic"/>
+                    android:textStyle="italic" />
 
                 <TextView
                     android:id="@+id/tv_voteReverage_child_activity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/tv_length_child_activity"
-                    android:layout_below="@+id/tv_length_child_activity"
+                    android:layout_alignLeft="@id/tv_runtime_child_activity"
+                    android:layout_below="@+id/tv_runtime_child_activity"
                     android:layout_marginTop="15dp"
                     android:textSize="@dimen/vote_text_size" />
 
                 <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/favorite_border"
-                    android:layout_alignLeft="@id/tv_voteReverage_child_activity"
-                    android:layout_below="@+id/tv_voteReverage_child_activity"
-                    android:layout_marginTop="15dp"
-                    android:visibility="visible"
                     android:id="@+id/favorate_Button_pressed"
-                    />
-                <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/favorite_black_"
                     android:layout_alignLeft="@id/tv_voteReverage_child_activity"
                     android:layout_below="@+id/tv_voteReverage_child_activity"
                     android:layout_marginTop="15dp"
-                    android:visibility="invisible"
-                    android:id="@+id/favorate_Button_notPressed"
+                    android:background="@android:color/white"
+                    android:src="@drawable/ic_favorite_border"
+                    android:visibility="visible"
                     />
+
+                <ImageButton
+                    android:id="@+id/favorate_Button_notPressed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/tv_voteReverage_child_activity"
+                    android:layout_below="@+id/tv_voteReverage_child_activity"
+                    android:layout_marginTop="15dp"
+                    android:background="@android:color/white"
+                    android:src="@drawable/favorite_black_"
+                    android:visibility="invisible" />
+
             </RelativeLayout>
 
             <LinearLayout
@@ -129,97 +134,27 @@
                     android:layout_marginTop="15dp"
                     android:text="@string/title_trailers"
                     android:textSize="@dimen/title_trailers_text_size" />
-
-                <ImageButton
-                    android:id="@+id/trailer1_play_button"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_below="@id/title_trailers"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="22dp"
-                    android:adjustViewBounds="true"
-                    android:background="@android:color/white"
-                    android:onClick="ChildActivity.onClick"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/play_button" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/trailer1_play_button"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="50dp"
-                    android:layout_toRightOf="@id/trailer1_play_button"
-                    android:text="@string/trailer1_title"
-                    android:textSize="@dimen/subtitle_triler_text_size" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="140dp"
-                    android:background="@android:color/darker_gray" />
             </RelativeLayout>
 
-            <RelativeLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_trailsForYoutube"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/review_text_view"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
+                android:layout_marginTop="15dp"
+                android:text="@string/userReview_title"
+                android:textSize="@dimen/userReviewTitle_text_size"
+                tools:text="User reviews:" />
 
-                <ImageButton
-                    android:id="@+id/trailer2_play_button"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="22dp"
-                    android:adjustViewBounds="true"
-                    android:background="@android:color/white"
-                    android:onClick="ChildActivity.onClick"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/play_button" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/trailer2_play_button"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="50dp"
-                    android:layout_toRightOf="@id/trailer2_play_button"
-                    android:text="@string/trailer2_title"
-                    android:textSize="@dimen/subtitle_triler_text_size" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="90dp"
-                    android:background="@android:color/darker_gray" />
-            </RelativeLayout>
-
-            <LinearLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_userReviews"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
-                <TextView
-                    android:id="@+id/review_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/userReview_title"
-                    tools:text="User reviews:"
-                    android:layout_marginTop="15dp"
-                    android:textSize="@dimen/userReviewTitle_text_size"/>
-                <TextView
-                    android:id="@+id/tv_userReviews"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:textSize="@dimen/userReview_text_size" />
-                <!--TODO I made two LinearLayout for trailers, but its quite possible to use recycleView to display trailers, -->
-                <!--because some movies have more than one trailer-->
-            </LinearLayout>
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

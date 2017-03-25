@@ -10,4 +10,9 @@
         android:id="@+id/action_sortByRated"
         android:title="@string/sort_by_rate"
         />
+    <item
+        android:id="@+id/action_favorate"
+        android:title="@string/sort_by_favorite"
+        />
+
 </menu>

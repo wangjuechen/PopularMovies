@@ -11,4 +11,8 @@
     <string name="userReview_title">User Reviews:</string>
     <string name="Author">Author: </string>
     <string name="title_Childacvitivy">MovieDetial</string>
+    <string name="favorite_tip">Marked as Favorite</string>
+    <string name="topRated_movie_title">Top Rated Movies</string>
+    <string name="favorite_movie_title">Favorite Movies</string>
+    <string name="runtime_text">mins</string>
 </resources>

@@ -11,7 +11,7 @@
         android:title="@string/sort_by_rate"
         />
     <item
-        android:id="@+id/action_favorate"
+        android:id="@+id/action_favorite"
         android:title="@string/sort_by_favorite"
         />
 

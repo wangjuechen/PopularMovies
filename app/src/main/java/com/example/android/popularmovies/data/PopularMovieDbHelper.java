@@ -10,7 +10,7 @@ import com.example.android.popularmovies.data.PopularMovieContract.*;
 
 public class PopularMovieDbHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "favorate.db";
+    public static final String DATABASE_NAME = "favorite.db";
 
     public static final int DATABASE_VERSION = 1;
 
@@ -23,8 +23,8 @@ public class PopularMovieDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE " + PopularMovieEntry.TABLE_NAME
-                + " (" + PopularMovieEntry._ID + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                PopularMovieEntry.COLUMN_MovieID + "INTEGER NOT NULL, " + " );";
+                + "(" + PopularMovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                PopularMovieEntry.COLUMN_MovieID + " INTEGER NOT NULL" + ");";
 
         db.execSQL(SQL_CREATE_WEATHER_TABLE);
 

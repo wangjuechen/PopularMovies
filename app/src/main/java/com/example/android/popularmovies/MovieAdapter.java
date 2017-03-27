@@ -53,8 +53,6 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
     public void onBindViewHolder(MovieAdapterViewHolder movieAdapterViewHolder, final int position) {
 
         FeedItem feedItem = feedItemList.get(position);
-        int imageHeight = 800;
-        int imageWidth = 550;
 
         if (!TextUtils.isEmpty(feedItem.getThumbnail())) {
             Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" +

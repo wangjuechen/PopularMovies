@@ -20,7 +20,7 @@
             <TextView
                 android:id="@+id/tv_title_child_activity"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="wrap_content"
                 android:background="@color/colorTeal"
                 android:fontFamily="monospace"
                 android:gravity="center_vertical"
@@ -28,7 +28,9 @@
                 android:paddingRight="100dp"
                 android:paddingStart="25dp"
                 android:textSize="@dimen/title_text_size"
-                tools:text="@string/toolstext_title" />
+                tools:text="@string/toolstext_title"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -73,28 +75,27 @@
                     android:layout_marginTop="15dp"
                     android:textSize="@dimen/vote_text_size" />
 
-                <ImageButton
-                    android:id="@+id/favorate_Button_pressed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <CheckBox
+                    android:id="@+id/favorite_checkBox"
                     android:layout_alignLeft="@id/tv_voteReverage_child_activity"
                     android:layout_below="@+id/tv_voteReverage_child_activity"
                     android:layout_marginTop="15dp"
-                    android:background="@android:color/white"
-                    android:src="@drawable/ic_favorite_border"
-                    android:visibility="visible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/favorite"
+                    android:onClick="favoriteClick"
                     />
 
-                <ImageButton
-                    android:id="@+id/favorate_Button_notPressed"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/tv_voteReverage_child_activity"
+                    android:layout_toRightOf="@+id/favorite_checkBox"
                     android:layout_below="@+id/tv_voteReverage_child_activity"
-                    android:layout_marginTop="15dp"
-                    android:background="@android:color/white"
-                    android:src="@drawable/favorite_black_"
-                    android:visibility="invisible" />
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="30dp"
+                    android:textSize="@dimen/favoriteTip_text_size"
+                    android:text="@string/favorite_tip"
+                    />
 
             </RelativeLayout>
 
@@ -139,7 +140,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_trailsForYoutube"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent" />
 
             <TextView
                 android:id="@+id/review_text_view"
@@ -155,6 +156,7 @@
                 android:id="@+id/rv_userReviews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

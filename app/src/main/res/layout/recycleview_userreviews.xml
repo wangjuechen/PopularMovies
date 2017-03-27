@@ -18,5 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:textSize="@dimen/userReview_text_size" />
+    <!--TODO here need to add function to read summary instead of all contents-->
 
 </LinearLayout>

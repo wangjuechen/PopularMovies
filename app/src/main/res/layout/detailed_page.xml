@@ -24,13 +24,14 @@
                 android:background="@color/colorTeal"
                 android:fontFamily="monospace"
                 android:gravity="center_vertical"
-                android:paddingLeft="25dp"
-                android:paddingRight="100dp"
-                android:paddingStart="25dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:paddingStart="24dp"
                 android:textSize="@dimen/title_text_size"
                 tools:text="@string/toolstext_title"
                 android:paddingTop="20dp"
-                android:paddingBottom="20dp"/>
+                android:paddingBottom="20dp"
+                android:textColor="@android:color/white"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -40,8 +41,8 @@
                     android:id="@+id/iv_poster_child_astivity"
                     android:layout_width="140dp"
                     android:layout_height="200dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginStart="24dp"
                     android:layout_marginTop="10dp"
                     android:contentDescription="@string/discription" />
 
@@ -49,12 +50,13 @@
                     android:id="@+id/tv_releaseDate_child_activity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginStart="40dp"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginStart="28dp"
                     android:layout_marginTop="20dp"
                     android:layout_toEndOf="@id/iv_poster_child_astivity"
                     android:layout_toRightOf="@+id/iv_poster_child_astivity"
-                    android:textSize="@dimen/releasedate_text_size" />
+                    android:textSize="@dimen/releasedate_text_size"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/tv_runtime_child_activity"
@@ -62,9 +64,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/tv_releaseDate_child_activity"
                     android:layout_below="@+id/tv_releaseDate_child_activity"
-                    android:layout_marginTop="15dp"
-                    android:textSize="@dimen/length_text_size"
-                    android:textStyle="italic" />
+                    android:layout_marginTop="12dp"
+                    android:textSize="@dimen/length_text_size" />
 
                 <TextView
                     android:id="@+id/tv_voteReverage_child_activity"
@@ -72,30 +73,20 @@
                     android:layout_height="wrap_content"
                     android:layout_alignLeft="@id/tv_runtime_child_activity"
                     android:layout_below="@+id/tv_runtime_child_activity"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="12dp"
                     android:textSize="@dimen/vote_text_size" />
 
                 <CheckBox
                     android:id="@+id/favorite_checkBox"
                     android:layout_alignLeft="@id/tv_voteReverage_child_activity"
                     android:layout_below="@+id/tv_voteReverage_child_activity"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:button="@drawable/favorite"
                     android:onClick="favoriteClick"
                     />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/favorite_checkBox"
-                    android:layout_below="@+id/tv_voteReverage_child_activity"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="30dp"
-                    android:textSize="@dimen/favoriteTip_text_size"
-                    android:text="@string/favorite_tip"
-                    />
 
             </RelativeLayout>
 
@@ -140,7 +131,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_trailsForYoutube"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/review_text_view"

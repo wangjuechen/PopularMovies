@@ -259,13 +259,13 @@ public class ChildActivity extends AppCompatActivity {
 
                 parseResultForRuntime(movieResponse);
 
-                mRuntimeText.setText(mMovieRuntime + R.string.runtime_text);
+                mRuntimeText.setText(mMovieRuntime + " " + getString(R.string.runtime_text));
             } else if (movieResponse.contains("author")) {
 
                 parseUserReviews(movieResponse);
 
                 mReviewsAdapter.setWeatherData(feedUserReviewses);
-            } else {
+            } else if(movieResponse.contains("site")){
 
                 parseResultForYoutube(movieResponse);
 
@@ -278,6 +278,13 @@ public class ChildActivity extends AppCompatActivity {
         final String OWM_LIST = "results";
 
         final String OWM_KEY = "key";
+
+        final String OWM_NAME = "name";
+
+        final String OWM_SIZE = "size";
+
+        final String OWM_TYPE = "type";
+
         try {
             JSONObject response = new JSONObject(Url);
 
@@ -291,6 +298,12 @@ public class ChildActivity extends AppCompatActivity {
                 FeedMovieVideo feedlist = new FeedMovieVideo();
 
                 feedlist.setmKeyForTrailerOnYoutube(post.optString(OWM_KEY));
+
+                feedlist.setmTrailerName(post.optString(OWM_NAME));
+
+                feedlist.setmTrailerSize(post.optString(OWM_SIZE));
+
+                feedlist.setmTrailerType(post.optString(OWM_TYPE));
 
                 feedMovieVideoList.add(feedlist);
 

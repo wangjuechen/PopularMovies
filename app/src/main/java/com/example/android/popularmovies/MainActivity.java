@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
     private static final String SEARCH_TOPRATED_URL_EXTRA = "topRated";
 
     private static final String SEARCH_FAVORITE_URL_EXTRA = "favorite";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,28 +100,26 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
         mRecycleView.setAdapter(mMovieAdapter);
 
     }
+
     @Override
     public Loader<String> onCreateLoader(int id, final Bundle args) {
         return new AsyncTaskLoader<String>(this) {
 
 
+            @Override
+            protected void onStartLoading() {}
 
 
             @Override
-            protected void onStartLoading(
-
-            ){}
-
-
-            @Override
-            public String loadInBackground(){return null;}
+            public String loadInBackground() {
+                return null;
+            }
 
 
             @Override
-            public void deliverResult(String githubJson){}
-
+            public void deliverResult(String githubJson) {
+            }
         };
-
     }
 
     @Override
@@ -134,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
     }
 
     private int numberOfColumns() {
+
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
         int nColumns = width / widthDivider;
         if (nColumns < 2) return 2;
         return nColumns;
+
     }
 
     private void makeMovieSearchQuery(String Url) {
@@ -166,21 +167,17 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
         protected String doInBackground(URL... params) {
             URL searchUrl = params[0];
 
-
             try {
 
                 String jsonMovieResponse = NetworkUtils
                         .getResponseFromHttpUrl(searchUrl);
 
-
                 return jsonMovieResponse;
-
 
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
             }
-
         }
 
         @Override
@@ -195,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
                 mMovieAdapter.setWeatherData(feedsList);
             }
 
-            if (feedsFavoriteList.size() !=0 ) {
+            if (feedsFavoriteList.size() != 0) {
 
                 mMovieAdapter.setWeatherData(feedsFavoriteList);
             }
@@ -222,6 +219,8 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
             if (id == R.id.action_sortByPopular) {
 
+                mainActivity.setTitle(getString(R.string.popular_movie_title));
+
                 makeMovieSearchQuery(MOVIE_POPULAR_URL);
 
                 mMovieAdapter = new MovieAdapter(MainActivity.this, feedsList, this);
@@ -233,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
             if (id == R.id.action_sortByRated) {
 
-                mainActivity.setTitle(R.string.topRated_movie_title);
+                mainActivity.setTitle(getString(R.string.topRated_movie_title));
 
                 makeMovieSearchQuery(MOVIE_RATE_URL);
 
@@ -246,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
             if (id == R.id.action_favorite) {
 
-                mainActivity.setTitle(R.string.favorite_movie_title);
+                mainActivity.setTitle(getString(R.string.favorite_movie_title));
 
                 List<String> FavoriteList = getAllFavoriteMovieID();
                 List<String> FavoriteURLList = new ArrayList<>();
@@ -264,6 +263,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
             }
         } catch (Exception e) {
             mToast = Toast.makeText(this, "This is errors in menuSelected", Toast.LENGTH_LONG);
+            Log.v("Error is : ", e.getMessage());
             mToast.show();
         }
         return super.onOptionsItemSelected(item);
@@ -295,7 +295,6 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
         return yourStringValues;
     }
 
-
     private void parseResult(String movieJsonStr) {
         try {
             final String OWM_LIST = "results";
@@ -320,7 +319,6 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
             posts = response.optJSONArray(OWM_LIST);
 
-
             if (posts != null) {
 
                 feedsList = new ArrayList<>();
@@ -339,7 +337,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
                     item.setOverview(post.optString(OWM_OVERVIEW));
 
-                    item.setReleaseDate(post.optString(OWM_RELEASEDATE));
+                    item.setReleaseDate(post.optString(OWM_RELEASEDATE).substring(0,4));
 
                     item.setVoteAverage(post.optString(OWM_VOTEAVERAGE));
 
@@ -352,7 +350,6 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
             } else {
 
-
                 FeedItem item = new FeedItem();
 
                 item.setTitle(response.optString(OWM_TITLE));
@@ -361,7 +358,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
                 item.setOverview(response.optString(OWM_OVERVIEW));
 
-                item.setReleaseDate(response.optString(OWM_RELEASEDATE));
+                item.setReleaseDate(response.optString(OWM_RELEASEDATE).substring(0,4));
 
                 item.setVoteAverage(response.optString(OWM_VOTEAVERAGE));
 
@@ -413,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
             startChildActivityIntent.putExtras(extras);
 
             startActivity(startChildActivityIntent);
-        }else {
+        } else {
 
             Context context = MainActivity.this;
 
@@ -445,7 +442,6 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
             startChildActivityIntent.putExtras(extras);
 
             startActivity(startChildActivityIntent);
-
 
         }
     }

@@ -2,13 +2,18 @@ package com.example.android.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -16,11 +21,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.android.popularmovies.MovieAdapter.ListItemClickListener;
+import com.example.android.popularmovies.data.PopularMovieContract;
 import com.example.android.popularmovies.utilities.NetworkUtils;
 
 import org.json.JSONArray;
@@ -28,11 +33,10 @@ import org.json.JSONObject;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ListItemClickListener {
+public class MainActivity extends AppCompatActivity implements ListItemClickListener, LoaderManager.LoaderCallbacks<String> {
+    private MainActivity mainActivity;
 
     private ProgressBar mLoadingIndicator;
 
@@ -42,16 +46,23 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
     private List<FeedItem> feedsList;
 
+    private List<FeedItem> feedsFavoriteList;
+
     private Toast mToast;
 
-    private  String MOVIE_POPULAR_URL =
+    private String MOVIE_POPULAR_URL =
             "http://api.themoviedb.org/3/movie/popular?api_key=d8a3dca970a92dfe743a515a7802a807";
 
-    private  String MOVIE_RATE_URL =
+    private String MOVIE_RATE_URL =
             "http://api.themoviedb.org/3/movie/top_rated?api_key=d8a3dca970a92dfe743a515a7802a807";
 
+    private static final int GITHUB_SEARCH_LOADER = 22;
 
+    private static final String SEARCH_POPULAR_URL_EXTRA = "popular";
 
+    private static final String SEARCH_TOPRATED_URL_EXTRA = "topRated";
+
+    private static final String SEARCH_FAVORITE_URL_EXTRA = "favorite";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,8 +82,12 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
         mRecycleView.setHasFixedSize(true);
 
+        mainActivity = this;
+
+        getSupportLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, this);
+
         if (internet_connection()) {
-           makeMovieSearchQuery(MOVIE_POPULAR_URL);
+            makeMovieSearchQuery(MOVIE_POPULAR_URL);
 
         } else {
             mToast = Toast.makeText(this, "This is no Internet", Toast.LENGTH_LONG);
@@ -83,6 +98,39 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
         mRecycleView.setAdapter(mMovieAdapter);
 
+    }
+    @Override
+    public Loader<String> onCreateLoader(int id, final Bundle args) {
+        return new AsyncTaskLoader<String>(this) {
+
+
+
+
+            @Override
+            protected void onStartLoading(
+
+            ){}
+
+
+            @Override
+            public String loadInBackground(){return null;}
+
+
+            @Override
+            public void deliverResult(String githubJson){}
+
+        };
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String> loader, String data) {
+        //do not need to anything
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String> loader) {
+        //do not need to anything
     }
 
     private int numberOfColumns() {
@@ -101,7 +149,11 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
         URL MovieSearchUrl = NetworkUtils.buildUrl(Url);
 
         new FetchMovieTask().execute(MovieSearchUrl);
+
+        Bundle queryBundle = new Bundle();
+        queryBundle.putString(SEARCH_POPULAR_URL_EXTRA, MovieSearchUrl.toString());
     }
+
     private class FetchMovieTask extends AsyncTask<URL, Void, String> {
 
         @Override
@@ -138,7 +190,15 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
             parseResult(movieResponse);
 
-            mMovieAdapter.setWeatherData(feedsList);
+            if (feedsFavoriteList.size() == 0) {
+
+                mMovieAdapter.setWeatherData(feedsList);
+            }
+
+            if (feedsFavoriteList.size() !=0 ) {
+
+                mMovieAdapter.setWeatherData(feedsFavoriteList);
+            }
 
         }
     }
@@ -153,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -167,11 +228,12 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
                 mRecycleView.setAdapter(mMovieAdapter);
 
-
                 return true;
             }
 
             if (id == R.id.action_sortByRated) {
+
+                mainActivity.setTitle(R.string.topRated_movie_title);
 
                 makeMovieSearchQuery(MOVIE_RATE_URL);
 
@@ -182,15 +244,26 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
                 return true;
             }
 
-            if(id == R.id.action_favorate){
+            if (id == R.id.action_favorite) {
+
+                mainActivity.setTitle(R.string.favorite_movie_title);
+
+                List<String> FavoriteList = getAllFavoriteMovieID();
+                List<String> FavoriteURLList = new ArrayList<>();
+
+                for (int i = 0; i < FavoriteList.size(); i++) {
+                    FavoriteURLList.add(" https://api.themoviedb.org/3/movie/" + FavoriteList.get(i) + "?api_key=d8a3dca970a92dfe743a515a7802a807");
+                    makeMovieSearchQuery(FavoriteURLList.get(i));
+                }
+                mMovieAdapter = new MovieAdapter(MainActivity.this, feedsFavoriteList, this);
+
+                mRecycleView.setAdapter(mMovieAdapter);
 
                 //TODO Going to use ContentProvider to call database related to favorite movies
-
-
                 return true;
             }
         } catch (Exception e) {
-            mToast = Toast.makeText(this, "This is no Internet", Toast.LENGTH_LONG);
+            mToast = Toast.makeText(this, "This is errors in menuSelected", Toast.LENGTH_LONG);
             mToast.show();
         }
         return super.onOptionsItemSelected(item);
@@ -206,6 +279,22 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
                 activeNetwork.isConnectedOrConnecting();
         return isConnected;
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private ArrayList<String> getAllFavoriteMovieID() {
+        ArrayList<String> yourStringValues = new ArrayList<>();
+        Cursor cursor = getContentResolver().query(PopularMovieContract.PopularMovieEntry.CONTENT_URI, new String[]{PopularMovieContract.PopularMovieEntry.COLUMN_MovieID}, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            do {
+                yourStringValues.add(cursor.getString(cursor
+                        .getColumnIndex(PopularMovieContract.PopularMovieEntry.COLUMN_MovieID)));
+            } while (cursor.moveToNext());
+        } else {
+            return null;
+        }
+        return yourStringValues;
+    }
+
 
     private void parseResult(String movieJsonStr) {
         try {
@@ -227,73 +316,145 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
             JSONObject response = new JSONObject(movieJsonStr);
 
-            JSONArray posts = response.optJSONArray(OWM_LIST);
+            JSONArray posts = null;
 
-            feedsList = new ArrayList<>();
+            posts = response.optJSONArray(OWM_LIST);
 
-            for (int i = 0; i < posts.length(); i++) {
 
-                JSONObject post = posts.optJSONObject(i);
+            if (posts != null) {
+
+                feedsList = new ArrayList<>();
+
+                feedsFavoriteList = new ArrayList<>();
+
+                for (int i = 0; i < posts.length(); i++) {
+
+                    JSONObject post = posts.optJSONObject(i);
+
+                    FeedItem item = new FeedItem();
+
+                    item.setTitle(post.optString(OWM_TITLE));
+
+                    item.setThumbnail(post.optString(OWM_POSTERADRESS));
+
+                    item.setOverview(post.optString(OWM_OVERVIEW));
+
+                    item.setReleaseDate(post.optString(OWM_RELEASEDATE));
+
+                    item.setVoteAverage(post.optString(OWM_VOTEAVERAGE));
+
+                    item.setPopularity(post.optString(OWM_POPULARITY));
+
+                    item.setMovieIDInTMDB(post.optInt(OWM_MovieIDINTMDB));
+
+                    feedsList.add(item);
+                }
+
+            } else {
+
 
                 FeedItem item = new FeedItem();
 
-                item.setTitle(post.optString(OWM_TITLE));
+                item.setTitle(response.optString(OWM_TITLE));
 
-                item.setThumbnail(post.optString(OWM_POSTERADRESS));
+                item.setThumbnail(response.optString(OWM_POSTERADRESS));
 
-                item.setOverview(post.optString(OWM_OVERVIEW));
+                item.setOverview(response.optString(OWM_OVERVIEW));
 
-                item.setReleaseDate(post.optString(OWM_RELEASEDATE));
+                item.setReleaseDate(response.optString(OWM_RELEASEDATE));
 
-                item.setVoteAverage(post.optString(OWM_VOTEAVERAGE));
+                item.setVoteAverage(response.optString(OWM_VOTEAVERAGE));
 
-                item.setPopularity(post.optString(OWM_POPULARITY));
+                item.setPopularity(response.optString(OWM_POPULARITY));
 
-                item.setMovieIDInTMDB(post.optInt(OWM_MovieIDINTMDB));
+                item.setMovieIDInTMDB(response.optInt(OWM_MovieIDINTMDB));
 
-                feedsList.add(item);
+                feedsFavoriteList.add(item);
 
             }
         } catch (Exception e) {
-            mToast = Toast.makeText(this, "This is no Internet", Toast.LENGTH_LONG);
+            mToast = Toast.makeText(this, "This is error in parseJson", Toast.LENGTH_LONG);
+            Log.v("Error:", e.getMessage());
             mToast.show();
         }
     }
 
     @Override
     public void onClick(int clickedItemIndex) {
+        if (mainActivity.getTitle() != getString(R.string.favorite_movie_title)) {
 
-        Context context = MainActivity.this;
+            Context context = MainActivity.this;
 
-        Class destinationActivity = ChildActivity.class;
+            Class destinationActivity = ChildActivity.class;
 
-        Intent startChildActivityIntent = new Intent(context, destinationActivity);
+            Intent startChildActivityIntent = new Intent(context, destinationActivity);
 
-        String textTitle = feedsList.get(clickedItemIndex).getTitle();
+            String textTitle = feedsList.get(clickedItemIndex).getTitle();
 
-        String textReleaseDate = feedsList.get(clickedItemIndex).getReleaseDate();
+            String textReleaseDate = feedsList.get(clickedItemIndex).getReleaseDate();
 
-        String textOverview = feedsList.get(clickedItemIndex).getOverview();
+            String textOverview = feedsList.get(clickedItemIndex).getOverview();
 
-        String textVoteAverage = feedsList.get(clickedItemIndex).getVoteAverage();
+            String textVoteAverage = feedsList.get(clickedItemIndex).getVoteAverage();
 
-        String urlThumbnail = feedsList.get(clickedItemIndex).getThumbnail();
+            String urlThumbnail = feedsList.get(clickedItemIndex).getThumbnail();
 
-        int numberMovieIDInTMDB = feedsList.get(clickedItemIndex).getMovieIDInTMDB();
+            int numberMovieIDInTMDB = feedsList.get(clickedItemIndex).getMovieIDInTMDB();
 
-        Bundle extras = new Bundle();
+            Bundle extras = new Bundle();
 
-        extras.putString("title", textTitle);
-        extras.putString("releaseDate", textReleaseDate);
-        extras.putString("overview", textOverview);
-        extras.putString("voteAverage", textVoteAverage);
-        extras.putString("Thumbnail", urlThumbnail);
-        extras.putInt("id",numberMovieIDInTMDB);
+            extras.putString("title", textTitle);
+            extras.putString("releaseDate", textReleaseDate);
+            extras.putString("overview", textOverview);
+            extras.putString("voteAverage", textVoteAverage);
+            extras.putString("Thumbnail", urlThumbnail);
+            extras.putInt("id", numberMovieIDInTMDB);
 
-        startChildActivityIntent.putExtras(extras);
+            startChildActivityIntent.putExtras(extras);
 
-        startActivity(startChildActivityIntent);
+            startActivity(startChildActivityIntent);
+        }else {
+
+            Context context = MainActivity.this;
+
+            Class destinationActivity = ChildActivity.class;
+
+            Intent startChildActivityIntent = new Intent(context, destinationActivity);
+
+            String textTitle = feedsFavoriteList.get(clickedItemIndex).getTitle();
+
+            String textReleaseDate = feedsFavoriteList.get(clickedItemIndex).getReleaseDate();
+
+            String textOverview = feedsFavoriteList.get(clickedItemIndex).getOverview();
+
+            String textVoteAverage = feedsFavoriteList.get(clickedItemIndex).getVoteAverage();
+
+            String urlThumbnail = feedsFavoriteList.get(clickedItemIndex).getThumbnail();
+
+            int numberMovieIDInTMDB = feedsFavoriteList.get(clickedItemIndex).getMovieIDInTMDB();
+
+            Bundle extras = new Bundle();
+
+            extras.putString("title", textTitle);
+            extras.putString("releaseDate", textReleaseDate);
+            extras.putString("overview", textOverview);
+            extras.putString("voteAverage", textVoteAverage);
+            extras.putString("Thumbnail", urlThumbnail);
+            extras.putInt("id", numberMovieIDInTMDB);
+
+            startChildActivityIntent.putExtras(extras);
+
+            startActivity(startChildActivityIntent);
+
+
+        }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+
+    }
 
 }

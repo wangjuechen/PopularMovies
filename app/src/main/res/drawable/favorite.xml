@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_checked="true" android:drawable="@drawable/favorite_black_" />
-    <item android:state_checked="false" android:drawable="@drawable/favorite_border" />
+    <item android:state_checked="true" android:drawable="@drawable/ic_favorite_black_24dp2" />
+    <item android:state_checked="false" android:drawable="@drawable/ic_favorite_border_black_24dp2" />
+    <!-- TODO here need to add two different images for checked_pressed and unchecked_pressed -->
 </selector>

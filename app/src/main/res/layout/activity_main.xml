@@ -11,7 +11,8 @@
         android:layout_height="42dp"
         android:layout_gravity="center"
         android:visibility="invisible"
-        android:id="@+id/pb_loading_indicator"/>
+        android:id="@+id/pb_loading_indicator"
+        android:layout_centerInParent="true"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_recycleview_PosterImage"

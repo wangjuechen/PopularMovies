@@ -7,8 +7,8 @@ package com.example.android.popularmovies;
 public class FeedUserReviews {
 
     String mUserNames;
-    String mReviewsContent;
 
+    String mReviewsContent;
 
     public String getmUserNames() {
         return mUserNames;
@@ -18,8 +18,6 @@ public class FeedUserReviews {
         this.mUserNames = mUserNames;
     }
 
-
-
     public String getmReviewsContent() {
         return mReviewsContent;
     }
@@ -27,7 +25,4 @@ public class FeedUserReviews {
     public void setmReviewsContent(String mReviewsContent) {
         this.mReviewsContent = mReviewsContent;
     }
-
-
-
 }

@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -35,6 +36,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.R.id.list;
+
 public class MainActivity extends AppCompatActivity implements ListItemClickListener, LoaderManager.LoaderCallbacks<String> {
     private MainActivity mainActivity;
 
@@ -44,9 +47,9 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
     private MovieAdapter mMovieAdapter;
 
-    private List<FeedItem> feedsList;
+    private ArrayList<FeedItem> feedsList;
 
-    private List<FeedItem> feedsFavoriteList;
+    private ArrayList<FeedItem> feedsFavoriteList;
 
     private Toast mToast;
 
@@ -67,6 +70,23 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(savedInstanceState == null || !savedInstanceState.containsKey("normalMovieList"))
+        {
+
+            if (internet_connection()) {
+
+                makeMovieSearchQuery(MOVIE_POPULAR_URL);
+            }
+            else {
+                mToast = Toast.makeText(this, "This is no Internet", Toast.LENGTH_LONG);
+                mToast.show();
+            }
+        }
+        else {
+            feedsList = savedInstanceState.getParcelableArrayList("key");
+        }
+
         setContentView(R.layout.activity_main);
 
         SetMarginOfGridlayout setMarginOfGridlayout = new SetMarginOfGridlayout(0);
@@ -86,14 +106,6 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
         mainActivity = this;
 
         getSupportLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, this);
-
-        if (internet_connection()) {
-            makeMovieSearchQuery(MOVIE_POPULAR_URL);
-
-        } else {
-            mToast = Toast.makeText(this, "This is no Internet", Toast.LENGTH_LONG);
-            mToast.show();
-        }
 
         mMovieAdapter = new MovieAdapter(MainActivity.this, feedsList, this);
 
@@ -196,7 +208,6 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
                 mMovieAdapter.setWeatherData(feedsFavoriteList);
             }
-
         }
     }
 
@@ -248,6 +259,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
                 mainActivity.setTitle(getString(R.string.favorite_movie_title));
 
                 List<String> FavoriteList = getAllFavoriteMovieID();
+
                 List<String> FavoriteURLList = new ArrayList<>();
 
                 for (int i = 0; i < FavoriteList.size(); i++) {
@@ -258,12 +270,13 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
                 mRecycleView.setAdapter(mMovieAdapter);
 
-                //TODO Going to use ContentProvider to call database related to favorite movies
                 return true;
             }
         } catch (Exception e) {
             mToast = Toast.makeText(this, "This is errors in menuSelected", Toast.LENGTH_LONG);
+
             Log.v("Error is : ", e.getMessage());
+
             mToast.show();
         }
         return super.onOptionsItemSelected(item);
@@ -329,7 +342,9 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
                     JSONObject post = posts.optJSONObject(i);
 
-                    FeedItem item = new FeedItem();
+                    FeedItem item = new FeedItem(post.optString(OWM_TITLE),post.optString(OWM_POSTERADRESS),post.optString(OWM_OVERVIEW)
+                    ,post.optString(OWM_RELEASEDATE).substring(0,4),post.optString(OWM_VOTEAVERAGE),
+                            post.optString(OWM_POPULARITY),post.optInt(OWM_MovieIDINTMDB));
 
                     item.setTitle(post.optString(OWM_TITLE));
 
@@ -350,7 +365,9 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
             } else {
 
-                FeedItem item = new FeedItem();
+                FeedItem item = new FeedItem(response.optString(OWM_TITLE),response.optString(OWM_POSTERADRESS),
+                        response.optString(OWM_OVERVIEW),response.optString(OWM_RELEASEDATE).substring(0,4)
+                        ,response.optString(OWM_VOTEAVERAGE),response.optString(OWM_POPULARITY),response.optInt(OWM_MovieIDINTMDB));
 
                 item.setTitle(response.optString(OWM_TITLE));
 
@@ -449,6 +466,15 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        if (mainActivity.getTitle() != getString(R.string.favorite_movie_title)) {
+
+            outState.putParcelableArrayList("normalMovieList", feedsList);
+
+        }else{
+
+
+        }
+
 
 
     }

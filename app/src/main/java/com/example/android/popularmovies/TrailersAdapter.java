@@ -2,14 +2,20 @@ package com.example.android.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,22 +68,28 @@ class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.TrailersAdapt
     @Override
     public void onBindViewHolder(final TrailersAdapterViewHolder holder, int position) {
 
+        String trailerthumnail = "http://img.youtube.com/vi/" + feedMovieVideoList.get(position).getmKeyForTrailerOnYoutube() + "/0.jpg";
 
-        String numberOfTrailer = Integer.toString(position + 1);
-
-        String Trailer = mContext.getResources().getString(R.string.trailer_number);
-
-        holder.mTextView.setText(Trailer + "   " + numberOfTrailer);
-
-        holder.mTextView.setText(mTrailersName.get(holder.getAdapterPosition()) +
-        "\n" + mTrailerSize.get(holder.getAdapterPosition()) + mContext.getString(R.string.movie_size));
+        Picasso.with(mContext)
+                .load(trailerthumnail)
+                .placeholder(R.drawable.placeholder)
+                .into(holder.mtrailerThumnail);
 
 
-        holder.mImageButton.setOnClickListener(new View.OnClickListener() {
+        holder.mPlayButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(mTrailersYoutubeUrl.get(holder.getAdapterPosition()))));
+                Uri uri = Uri.parse(mTrailersYoutubeUrl.get(holder.getAdapterPosition()));
 
+                Intent trailersIntent = new Intent(Intent.ACTION_VIEW, uri);
+
+                PackageManager packageManager = mContext.getPackageManager();
+                List<ResolveInfo> activities = packageManager.queryIntentActivities(trailersIntent, 0);
+                boolean isIntentSafe = activities.size() > 0;
+
+                if (isIntentSafe) {
+                    mContext.startActivity(trailersIntent);}
             }
         });
     }
@@ -89,19 +101,20 @@ class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.TrailersAdapt
 
     public class TrailersAdapterViewHolder extends RecyclerView.ViewHolder {
 
-        final TextView mTextView;
-        final ImageButton mImageButton;
+
+        final ImageView mtrailerThumnail;
+        final ImageView mPlayButton;
 
         public TrailersAdapterViewHolder(View view) {
             super(view);
 
-            this.mTextView = (TextView) view.findViewById(R.id.tv_number_trailers);
-            this.mImageButton = (ImageButton) view.findViewById(R.id.trailer_play_button);
+            this.mtrailerThumnail = (ImageView) view.findViewById(R.id.trailer_thumnail);
+            this.mPlayButton = (ImageView) view.findViewById(R.id.play_button);
         }
 
     }
 
-    public void setWeatherData(List<FeedMovieVideo> feedItems) {
+    public void setMovieData(List<FeedMovieVideo> feedItems) {
         this.feedMovieVideoList = feedItems;
         notifyDataSetChanged();
     }

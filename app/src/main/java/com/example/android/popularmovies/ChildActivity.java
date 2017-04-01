@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.android.popularmovies.data.PopularMovieContract;
 import com.example.android.popularmovies.data.PopularMovieDbHelper;
+import com.example.android.popularmovies.databinding.DetailedPageBinding;
 import com.example.android.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
@@ -45,7 +47,7 @@ public class ChildActivity extends AppCompatActivity {
 
     private static final String mURLDomain = "https://api.themoviedb.org/3/movie/";
 
-    private static final String mKeyOfTMDB = "d8a3dca970a92dfe743a515a7802a807";
+    private static final String mkey = BuildConfig.API_KEY;
 
     private List<FeedMovieVideo> feedMovieVideoList = new ArrayList<>();
 
@@ -55,7 +57,7 @@ public class ChildActivity extends AppCompatActivity {
 
     private ReviewsAdapter mReviewsAdapter;
 
-    private TextView mTitleText, mReleaseDateText, mOverviewText, mVoteAverageText, mRuntimeText;
+    private TextView mRuntimeText;
 
     private ImageView mThumbnailImage;
 
@@ -63,7 +65,7 @@ public class ChildActivity extends AppCompatActivity {
 
     private RecyclerView mTrailerRecycleView, mReviewsRecycleView;
 
-    private String mMovieRuntime, mMovieTiele;
+    private String mMovieRuntime, mMovieTitle;
 
     private int mMoiveIdInTMBD;
 
@@ -80,10 +82,8 @@ public class ChildActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detailed_page);
 
-        mTitleText = (TextView) findViewById(R.id.tv_title_child_activity);
-        mReleaseDateText = (TextView) findViewById(R.id.tv_releaseDate_child_activity);
-        mOverviewText = (TextView) findViewById(R.id.tv_overview);
-        mVoteAverageText = (TextView) findViewById(R.id.tv_voteReverage_child_activity);
+        DetailedPageBinding binding = DataBindingUtil.setContentView(this, R.layout.detailed_page);
+
         mThumbnailImage = (ImageView) findViewById(R.id.iv_poster_child_astivity);
         mRuntimeText = (TextView) findViewById(R.id.tv_runtime_child_activity);
         mFavoriteCheck = (CheckBox) findViewById(R.id.favorite_checkBox);
@@ -92,17 +92,17 @@ public class ChildActivity extends AppCompatActivity {
 
         mReviewsRecycleView = (RecyclerView) findViewById(R.id.rv_userReviews);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManagerForTrailer = new LinearLayoutManager(this);
 
-        LinearLayoutManager linearLayoutManagerTwo = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManagerForReview = new LinearLayoutManager(this);
 
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManagerForTrailer.setOrientation(LinearLayoutManager.HORIZONTAL);
 
-        linearLayoutManagerTwo.setOrientation(LinearLayoutManager.VERTICAL);
+        linearLayoutManagerForReview.setOrientation(LinearLayoutManager.VERTICAL);
 
-        mTrailerRecycleView.setLayoutManager(linearLayoutManager);
+        mTrailerRecycleView.setLayoutManager(linearLayoutManagerForTrailer);
 
-        mReviewsRecycleView.setLayoutManager(linearLayoutManagerTwo);
+        mReviewsRecycleView.setLayoutManager(linearLayoutManagerForReview);
 
         mContext = ChildActivity.this;
 
@@ -110,31 +110,33 @@ public class ChildActivity extends AppCompatActivity {
 
         mMoiveIdInTMBD = intentThatStartedThisActivity.getIntExtra("id", 0);
 
-        if(hasObject(String.valueOf(mMoiveIdInTMBD))){mFavoriteCheck.setChecked(true);}
+        if (hasObject(String.valueOf(mMoiveIdInTMBD))) {
+            mFavoriteCheck.setChecked(true);
+        }
 
-        mMovieTiele = intentThatStartedThisActivity.getStringExtra("title");
-        mTitleText.setText(mMovieTiele);
+        mMovieTitle = intentThatStartedThisActivity.getStringExtra("title");
+        binding.tvTitleChildActivity.setText(mMovieTitle);
 
-        mReleaseDateText.setText(intentThatStartedThisActivity.getStringExtra("releaseDate"));
+        binding.tvReleaseDateChildActivity.setText(intentThatStartedThisActivity.getStringExtra("releaseDate"));
 
-        mOverviewText.setText(intentThatStartedThisActivity.getStringExtra("overview"));
+        binding.tvOverview.setText(intentThatStartedThisActivity.getStringExtra("overview"));
 
-        mVoteAverageText.setText(getString(R.string.voteAverage, intentThatStartedThisActivity.getStringExtra("voteAverage")));
+        binding.tvVoteReverageChildActivity.setText(getString(R.string.voteAverage, intentThatStartedThisActivity.getStringExtra("voteAverage")));
 
         Picasso.with(mContext).
                 load("http://image.tmdb.org/t/p/w185/" + intentThatStartedThisActivity.getStringExtra("Thumbnail"))
                 .into(mThumbnailImage);
 
         String mMovieVedioURL = mURLDomain + String.valueOf(mMoiveIdInTMBD) +
-                "/videos?api_key=" + mKeyOfTMDB + "&language=en-US";
+                "/videos?api_key=" + mkey + "&language=en-US";
         //From movieId, got the movieVedioUrl
 
         String mMovieRuntimeURL = mURLDomain + String.valueOf(mMoiveIdInTMBD) +
-                "?api_key=" + mKeyOfTMDB;
+                "?api_key=" + mkey;
         //From movieId, got the movieRuntimeUrl
 
         String mUserReviewsURL = mURLDomain + String.valueOf(mMoiveIdInTMBD) +
-                "/reviews?api_key=" + mKeyOfTMDB + "&language=en-US";
+                "/reviews?api_key=" + mkey + "&language=en-US";
         //From movieId, got the movieReviewUrl
 
         mGetRuntime(mMovieRuntimeURL);
@@ -157,14 +159,15 @@ public class ChildActivity extends AppCompatActivity {
 
 
     }
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public boolean hasObject(String searchItem) {
 
         String[] columns = {PopularMovieContract.PopularMovieEntry.COLUMN_MovieID};
         String selection = PopularMovieContract.PopularMovieEntry.COLUMN_MovieID + " =?";
-        String[] selectionArgs = { searchItem };
+        String[] selectionArgs = {searchItem};
 
-        Cursor cursor = getContentResolver().query(PopularMovieContract.PopularMovieEntry.CONTENT_URI,columns,selection,selectionArgs,null,null);
+        Cursor cursor = getContentResolver().query(PopularMovieContract.PopularMovieEntry.CONTENT_URI, columns, selection, selectionArgs, null, null);
         boolean exists = (cursor.getCount() > 0);
         cursor.close();
         return exists;
@@ -195,14 +198,16 @@ public class ChildActivity extends AppCompatActivity {
 
         FavoriteMovie.put(PopularMovieContract.PopularMovieEntry.COLUMN_MovieID, String.valueOf(mMoiveIdInTMBD));
 
-        getContentResolver().insert(PopularMovieContract.PopularMovieEntry.CONTENT_URI, FavoriteMovie);
+        FavoriteMovie.put(PopularMovieContract.PopularMovieEntry.COLUMN_MovieURL, mURLDomain + String.valueOf(mMoiveIdInTMBD)
+                + "?api_key=" + mkey + "&language=en-US");
 
+        getContentResolver().insert(PopularMovieContract.PopularMovieEntry.CONTENT_URI, FavoriteMovie);
 
     }
 
     private void deleteFaroviteFromSQLite() {
         String selection = PopularMovieContract.PopularMovieEntry.COLUMN_MovieID + " =?";
-        String[] selectionArgs = { String.valueOf(mMoiveIdInTMBD)};
+        String[] selectionArgs = {String.valueOf(mMoiveIdInTMBD)};
         getContentResolver().delete(PopularMovieContract.PopularMovieEntry.CONTENT_URI, selection, selectionArgs);
 
     }
@@ -264,12 +269,12 @@ public class ChildActivity extends AppCompatActivity {
 
                 parseUserReviews(movieResponse);
 
-                mReviewsAdapter.setWeatherData(feedUserReviewses);
-            } else if(movieResponse.contains("site")){
+                mReviewsAdapter.setMovieData(feedUserReviewses);
+            } else if (movieResponse.contains("site")) {
 
                 parseResultForYoutube(movieResponse);
 
-                mTrailersAdapter.setWeatherData(feedMovieVideoList);
+                mTrailersAdapter.setMovieData(feedMovieVideoList);
             }
         }
     }

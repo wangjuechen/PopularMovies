@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -21,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -36,14 +36,18 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.id.list;
-
 public class MainActivity extends AppCompatActivity implements ListItemClickListener, LoaderManager.LoaderCallbacks<String> {
+    private String key = BuildConfig.API_KEY;
+
     private MainActivity mainActivity;
+
+    private GridLayoutManager mlayoutManager;
 
     private ProgressBar mLoadingIndicator;
 
     private RecyclerView mRecycleView;
+
+    private final String KEY_INSTANCE_STATE_RV_POSITION = "recycleViewKey";
 
     private MovieAdapter mMovieAdapter;
 
@@ -54,10 +58,11 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
     private Toast mToast;
 
     private String MOVIE_POPULAR_URL =
-            "http://api.themoviedb.org/3/movie/popular?api_key=d8a3dca970a92dfe743a515a7802a807";
+            "http://api.themoviedb.org/3/movie/popular?api_key=" + key;
+
 
     private String MOVIE_RATE_URL =
-            "http://api.themoviedb.org/3/movie/top_rated?api_key=d8a3dca970a92dfe743a515a7802a807";
+            "http://api.themoviedb.org/3/movie/top_rated?api_key=" + key;
 
     private static final int GITHUB_SEARCH_LOADER = 22;
 
@@ -67,27 +72,15 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
     private static final String SEARCH_FAVORITE_URL_EXTRA = "favorite";
 
+    private static int feedListFlag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState == null || !savedInstanceState.containsKey("normalMovieList"))
-        {
-
-            if (internet_connection()) {
-
-                makeMovieSearchQuery(MOVIE_POPULAR_URL);
-            }
-            else {
-                mToast = Toast.makeText(this, "This is no Internet", Toast.LENGTH_LONG);
-                mToast.show();
-            }
-        }
-        else {
-            feedsList = savedInstanceState.getParcelableArrayList("key");
-        }
-
         setContentView(R.layout.activity_main);
+
+        mainActivity = this;
 
         SetMarginOfGridlayout setMarginOfGridlayout = new SetMarginOfGridlayout(0);
 
@@ -95,19 +88,62 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
         mRecycleView = (RecyclerView) findViewById(R.id.rv_recycleview_PosterImage);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this, numberOfColumns());
+        mlayoutManager = new GridLayoutManager(this, numberOfColumns());
 
-        mRecycleView.setLayoutManager(layoutManager);
+        mRecycleView.setLayoutManager(mlayoutManager);
 
         mRecycleView.addItemDecoration(setMarginOfGridlayout);
 
         mRecycleView.setHasFixedSize(true);
 
-        mainActivity = this;
+
+        if (savedInstanceState == null || (!savedInstanceState.containsKey("normalMovieList")
+                && !savedInstanceState.containsKey("topRatedMovieList")
+                && !savedInstanceState.containsKey("favoriteMovieList"))) {
+
+            if (internet_connection()) {
+
+                makeMovieSearchQuery(MOVIE_POPULAR_URL);
+
+                mainActivity.setTitle(getString(R.string.popular_movie_title));
+            } else {
+                mToast = Toast.makeText(this, "This is no Internet", Toast.LENGTH_LONG);
+                mToast.show();
+            }
+            mMovieAdapter = new MovieAdapter(MainActivity.this, feedsList, this);
+
+            feedListFlag = 1;
+
+        } else {
+            Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(KEY_INSTANCE_STATE_RV_POSITION);
+
+            mRecycleView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+
+            if (feedListFlag == 1) {
+
+                feedsList = savedInstanceState.getParcelableArrayList("normalMovieList");
+
+                mMovieAdapter = new MovieAdapter(MainActivity.this, feedsList, this);
+
+
+            } else if (feedListFlag == 2) {
+
+                mainActivity.setTitle(getString(R.string.topRated_movie_title));
+
+                feedsList = savedInstanceState.getParcelableArrayList("topRatedMovieList");
+
+                mMovieAdapter = new MovieAdapter(MainActivity.this, feedsList, this);
+
+            } else {
+                mainActivity.setTitle(getString(R.string.favorite_movie_title));
+
+                feedsFavoriteList = savedInstanceState.getParcelableArrayList("favoriteMovieList");
+
+                mMovieAdapter = new MovieAdapter(MainActivity.this, feedsFavoriteList, this);
+            }
+        }
 
         getSupportLoaderManager().initLoader(GITHUB_SEARCH_LOADER, null, this);
-
-        mMovieAdapter = new MovieAdapter(MainActivity.this, feedsList, this);
 
         mRecycleView.setAdapter(mMovieAdapter);
 
@@ -117,10 +153,9 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
     public Loader<String> onCreateLoader(int id, final Bundle args) {
         return new AsyncTaskLoader<String>(this) {
 
-
             @Override
-            protected void onStartLoading() {}
-
+            protected void onStartLoading() {
+            }
 
             @Override
             public String loadInBackground() {
@@ -163,9 +198,10 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
         new FetchMovieTask().execute(MovieSearchUrl);
 
-        Bundle queryBundle = new Bundle();
-        queryBundle.putString(SEARCH_POPULAR_URL_EXTRA, MovieSearchUrl.toString());
+        //Bundle queryBundle = new Bundle();
+        //queryBundle.putString(SEARCH_POPULAR_URL_EXTRA, MovieSearchUrl.toString());
     }
+
 
     private class FetchMovieTask extends AsyncTask<URL, Void, String> {
 
@@ -199,14 +235,14 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
             parseResult(movieResponse);
 
-            if (feedsFavoriteList.size() == 0) {
+            if (feedsFavoriteList == null || feedsFavoriteList.size() == 0) {
 
-                mMovieAdapter.setWeatherData(feedsList);
+                mMovieAdapter.setMovieData(feedsList);
             }
 
             if (feedsFavoriteList.size() != 0) {
 
-                mMovieAdapter.setWeatherData(feedsFavoriteList);
+                mMovieAdapter.setMovieData(feedsFavoriteList);
             }
         }
     }
@@ -256,15 +292,15 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
             if (id == R.id.action_favorite) {
 
+                feedsFavoriteList = new ArrayList<>();
+
                 mainActivity.setTitle(getString(R.string.favorite_movie_title));
 
-                List<String> FavoriteList = getAllFavoriteMovieID();
+                List<String> FavoriteUrlList = getAllFavoriteMovieURL();
 
-                List<String> FavoriteURLList = new ArrayList<>();
+                for (int i = 0; i < FavoriteUrlList.size(); i++) {
 
-                for (int i = 0; i < FavoriteList.size(); i++) {
-                    FavoriteURLList.add(" https://api.themoviedb.org/3/movie/" + FavoriteList.get(i) + "?api_key=d8a3dca970a92dfe743a515a7802a807");
-                    makeMovieSearchQuery(FavoriteURLList.get(i));
+                    makeMovieSearchQuery(FavoriteUrlList.get(i));
                 }
                 mMovieAdapter = new MovieAdapter(MainActivity.this, feedsFavoriteList, this);
 
@@ -275,12 +311,45 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
         } catch (Exception e) {
             mToast = Toast.makeText(this, "This is errors in menuSelected", Toast.LENGTH_LONG);
 
-            Log.v("Error is : ", e.getMessage());
+            Log.v("Error is : ", "" + e.getMessage());
 
             mToast.show();
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+
+        if (feedListFlag == 1) {
+
+            feedsList = savedInstanceState.getParcelableArrayList("normalMovieList");
+
+            mMovieAdapter = new MovieAdapter(MainActivity.this, feedsList, this);
+
+
+        } else if (feedListFlag == 2) {
+
+            mainActivity.setTitle(getString(R.string.topRated_movie_title));
+
+            feedsList = savedInstanceState.getParcelableArrayList("topRatedMovieList");
+
+            mMovieAdapter = new MovieAdapter(MainActivity.this, feedsList, this);
+
+        } else {
+            mainActivity.setTitle(getString(R.string.favorite_movie_title));
+
+            feedsFavoriteList = savedInstanceState.getParcelableArrayList("favoriteMovieList");
+
+            mMovieAdapter = new MovieAdapter(MainActivity.this, feedsFavoriteList, this);
+        }
+
+        Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(KEY_INSTANCE_STATE_RV_POSITION);
+
+        mRecycleView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+    }
+
 
     private boolean internet_connection() {
 
@@ -294,18 +363,18 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    private ArrayList<String> getAllFavoriteMovieID() {
-        ArrayList<String> yourStringValues = new ArrayList<>();
-        Cursor cursor = getContentResolver().query(PopularMovieContract.PopularMovieEntry.CONTENT_URI, new String[]{PopularMovieContract.PopularMovieEntry.COLUMN_MovieID}, null, null, null, null);
+    private ArrayList<String> getAllFavoriteMovieURL() {
+        ArrayList<String> movieUrlList = new ArrayList<>();
+        Cursor cursor = getContentResolver().query(PopularMovieContract.PopularMovieEntry.CONTENT_URI, new String[]{PopularMovieContract.PopularMovieEntry.COLUMN_MovieURL}, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
-                yourStringValues.add(cursor.getString(cursor
-                        .getColumnIndex(PopularMovieContract.PopularMovieEntry.COLUMN_MovieID)));
+                movieUrlList.add(cursor.getString(cursor
+                        .getColumnIndex(PopularMovieContract.PopularMovieEntry.COLUMN_MovieURL)));
             } while (cursor.moveToNext());
         } else {
             return null;
         }
-        return yourStringValues;
+        return movieUrlList;
     }
 
     private void parseResult(String movieJsonStr) {
@@ -342,9 +411,9 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
                     JSONObject post = posts.optJSONObject(i);
 
-                    FeedItem item = new FeedItem(post.optString(OWM_TITLE),post.optString(OWM_POSTERADRESS),post.optString(OWM_OVERVIEW)
-                    ,post.optString(OWM_RELEASEDATE).substring(0,4),post.optString(OWM_VOTEAVERAGE),
-                            post.optString(OWM_POPULARITY),post.optInt(OWM_MovieIDINTMDB));
+                    FeedItem item = new FeedItem(post.optString(OWM_TITLE), post.optString(OWM_POSTERADRESS), post.optString(OWM_OVERVIEW)
+                            , post.optString(OWM_RELEASEDATE).substring(0, 4), post.optString(OWM_VOTEAVERAGE),
+                            post.optString(OWM_POPULARITY), post.optInt(OWM_MovieIDINTMDB));
 
                     item.setTitle(post.optString(OWM_TITLE));
 
@@ -352,7 +421,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
                     item.setOverview(post.optString(OWM_OVERVIEW));
 
-                    item.setReleaseDate(post.optString(OWM_RELEASEDATE).substring(0,4));
+                    item.setReleaseDate(post.optString(OWM_RELEASEDATE).substring(0, 4));
 
                     item.setVoteAverage(post.optString(OWM_VOTEAVERAGE));
 
@@ -365,9 +434,9 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
             } else {
 
-                FeedItem item = new FeedItem(response.optString(OWM_TITLE),response.optString(OWM_POSTERADRESS),
-                        response.optString(OWM_OVERVIEW),response.optString(OWM_RELEASEDATE).substring(0,4)
-                        ,response.optString(OWM_VOTEAVERAGE),response.optString(OWM_POPULARITY),response.optInt(OWM_MovieIDINTMDB));
+                FeedItem item = new FeedItem(response.optString(OWM_TITLE), response.optString(OWM_POSTERADRESS),
+                        response.optString(OWM_OVERVIEW), response.optString(OWM_RELEASEDATE).substring(0, 4)
+                        , response.optString(OWM_VOTEAVERAGE), response.optString(OWM_POPULARITY), response.optInt(OWM_MovieIDINTMDB));
 
                 item.setTitle(response.optString(OWM_TITLE));
 
@@ -375,7 +444,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
                 item.setOverview(response.optString(OWM_OVERVIEW));
 
-                item.setReleaseDate(response.optString(OWM_RELEASEDATE).substring(0,4));
+                item.setReleaseDate(response.optString(OWM_RELEASEDATE).substring(0, 4));
 
                 item.setVoteAverage(response.optString(OWM_VOTEAVERAGE));
 
@@ -388,7 +457,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
             }
         } catch (Exception e) {
             mToast = Toast.makeText(this, "This is error in parseJson", Toast.LENGTH_LONG);
-            Log.v("Error:", e.getMessage());
+            Log.v("Error:", "" + e.getMessage());
             mToast.show();
         }
     }
@@ -465,18 +534,30 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (mainActivity.getTitle() != getString(R.string.favorite_movie_title)) {
+
+
+        if (mainActivity.getTitle() == getString(R.string.popular_movie_title)) {
 
             outState.putParcelableArrayList("normalMovieList", feedsList);
 
-        }else{
+            feedListFlag = 1;
 
+        } else if (mainActivity.getTitle() == getString(R.string.topRated_movie_title)) {
+
+            outState.putParcelableArrayList("topRatedMovieList", feedsList);
+
+            feedListFlag = 2;
+
+        } else {
+            outState.putParcelableArrayList("favoriteMovieList", feedsFavoriteList);
+
+            feedListFlag = 3;
 
         }
 
+        outState.putParcelable(KEY_INSTANCE_STATE_RV_POSITION, mlayoutManager.onSaveInstanceState());
 
-
+        super.onSaveInstanceState(outState);
     }
 
 }

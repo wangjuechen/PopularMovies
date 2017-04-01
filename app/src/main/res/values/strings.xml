@@ -6,9 +6,8 @@
     <string name="voteAverage">%1$s /10</string>
     <string name="toolstext_title">Titanic</string>
     <string name="sort_by_favorite">Favorite</string>
-    <string name="title_trailers">Trailers</string>
-    <string name="trailer_number">Trailer</string>
-    <string name="userReview_title">User Reviews</string>
+    <string name="title_trailers">TRAILERS</string>
+    <string name="userReview_title">USER REVIEWS</string>
     <string name="Author">Author: </string>
     <string name="title_Childacvitivy">MovieDetial</string>
     <string name="favorite_tip">Marked as Favorite</string>
@@ -16,5 +15,4 @@
     <string name="favorite_movie_title">Favorite Movies</string>
     <string name="runtime_text">mins</string>
     <string name="popular_movie_title">Pop Movies</string>
-    <string name="movie_size">P</string>
 </resources>

@@ -23,6 +23,8 @@ public class PopularMovieContract  {
 
         public static final String COLUMN_MovieID = "MovieId";
 
+        public static final String COLUMN_MovieURL = "MovieUrl";
+
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
                 .appendPath(TABLE_NAME).build();
 

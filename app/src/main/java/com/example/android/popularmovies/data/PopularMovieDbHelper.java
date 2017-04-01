@@ -24,7 +24,8 @@ public class PopularMovieDbHelper extends SQLiteOpenHelper {
 
         final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE " + PopularMovieEntry.TABLE_NAME
                 + "(" + PopularMovieEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                PopularMovieEntry.COLUMN_MovieID + " INTEGER NOT NULL" + ");";
+                PopularMovieEntry.COLUMN_MovieID + " INTEGER NOT NULL," +
+                PopularMovieEntry.COLUMN_MovieURL + " TEXT"+ ") ";
 
         db.execSQL(SQL_CREATE_WEATHER_TABLE);
 
@@ -32,7 +33,7 @@ public class PopularMovieDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + PopularMovieEntry.TABLE_NAME);
+        db.execSQL("ALTER TABLE IF EXISTS " + PopularMovieEntry.TABLE_NAME);
         onCreate(db);
     }
 }

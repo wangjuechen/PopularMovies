@@ -65,7 +65,7 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsA
 
     }
 
-    public void setWeatherData(List<FeedUserReviews> feedItems) {
+    public void setMovieData(List<FeedUserReviews> feedItems) {
         this.feedUserReviewsesList = feedItems;
         notifyDataSetChanged();
     }

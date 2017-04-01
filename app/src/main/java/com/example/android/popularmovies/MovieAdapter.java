@@ -5,28 +5,33 @@ package com.example.android.popularmovies;
  * This is the adapter for RecyclerView
  */
 
-import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import java.util.ArrayList;
 
 
 class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
-    private List<FeedItem> feedItemList;
+    private ArrayList<FeedItem> feedItemList;
     private final Context mContext;
     private final ListItemClickListener mOnClickListener;
+    private Cursor mCursor;
 
 
-    MovieAdapter(Context context, List<FeedItem> feedItemList, ListItemClickListener listener) {
+    MovieAdapter(Context context, ArrayList<FeedItem> feedItemList, ListItemClickListener listener) {
         this.mContext = context;
         this.feedItemList = feedItemList;
         mOnClickListener = listener;
@@ -50,18 +55,49 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
 
 
     @Override
-    public void onBindViewHolder(MovieAdapterViewHolder movieAdapterViewHolder, final int position) {
+    public void onBindViewHolder(final MovieAdapterViewHolder movieAdapterViewHolder, final int position) {
 
-        FeedItem feedItem = feedItemList.get(position);
+
+        final FeedItem feedItem = feedItemList.get(position);
+
+        final String imageUrl = "http://image.tmdb.org/t/p/w185/" +
+                feedItem.getThumbnail();
 
         if (!TextUtils.isEmpty(feedItem.getThumbnail())) {
-            Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" +
-                    feedItem.getThumbnail()).placeholder(R.drawable.placeholder).error(R.drawable.error).
-                    into(movieAdapterViewHolder.mImageView);
+
+            Picasso.with(mContext)
+                    .load(imageUrl)
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .into(movieAdapterViewHolder.mImageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            Log.v("Picasso", "fetch image success in first time.");
+                        }
+
+                        @Override
+                        public void onError() {
+                            //Try again online if cache failed
+                            Log.v("Picasso", "Could not fetch image in first time...");
+                            Picasso.with(mContext).load(imageUrl).networkPolicy(NetworkPolicy.NO_CACHE)
+                                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).error(R.drawable.error)
+                                    .into(movieAdapterViewHolder.mImageView, new Callback() {
+
+                                        @Override
+                                        public void onSuccess() {
+                                            Log.v("Picasso", "fetch image success in try again.");
+                                        }
+
+                                        @Override
+                                        public void onError() {
+                                            Log.v("Picasso", "Could not fetch image again...");
+                                        }
+
+                                    });
+                        }
+                    });
 
         }
     }
-
 
     @Override
     public int getItemCount() {
@@ -92,7 +128,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
         void onClick(int clickedItemIndex);
     }
 
-    public void setWeatherData(List<FeedItem> feedItems) {
+    public void setMovieData(ArrayList<FeedItem> feedItems) {
         this.feedItemList = feedItems;
         notifyDataSetChanged();
     }

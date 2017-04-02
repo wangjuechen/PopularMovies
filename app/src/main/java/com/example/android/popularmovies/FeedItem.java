@@ -10,21 +10,21 @@ import android.os.Parcelable;
 
 public class FeedItem implements Parcelable {
     private String title;
-    private String thumbnail;
+    private String poster_path;
     private String overview;
-    private String releaseDate;
-    private String voteAverage;
+    private String release_date;
+    private String vote_count;
     private String popularity;
-    private int MovieIDInTMDB;
+    private int id;
 
-    public FeedItem(String title, String thumbnail, String overview, String releaseDate, String voteAverage, String popularity, int MovieIDInTMDB) {
+    public FeedItem(String title, String poster_path, String overview, String release_date, String vote_count, String popularity, int id) {
         this.title = title;
-        this.thumbnail = thumbnail;
+        this.poster_path = poster_path;
         this.overview = overview;
-        this.releaseDate = releaseDate;
-        this.voteAverage = voteAverage;
+        this.release_date = release_date;
+        this.vote_count = vote_count;
         this.popularity = popularity;
-        this.MovieIDInTMDB = MovieIDInTMDB;
+        this.id = id;
 
     }
 
@@ -36,20 +36,20 @@ public class FeedItem implements Parcelable {
         this.popularity = popularity;
     }
 
-    String getVoteAverage() {
-        return voteAverage;
+    String getVote_count() {
+        return vote_count;
     }
 
-    void setVoteAverage(String voteAverage) {
-        this.voteAverage = voteAverage;
+    void setVote_count(String vote_count) {
+        this.vote_count = vote_count;
     }
 
-    String getReleaseDate() {
-        return releaseDate;
+    String getRelease_date() {
+        return release_date;
     }
 
-    void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
+    void setRelease_date(String release_date) {
+        this.release_date = release_date;
     }
 
 
@@ -61,12 +61,12 @@ public class FeedItem implements Parcelable {
         this.overview = overview;
     }
 
-    int getMovieIDInTMDB() {
-        return MovieIDInTMDB;
+    int getId() {
+        return id;
     }
 
-    void setMovieIDInTMDB(int movieIDInTMDB) {
-        MovieIDInTMDB = movieIDInTMDB;
+    void setId(int id) {
+        this.id = id;
     }
 
     String getTitle() {
@@ -77,23 +77,23 @@ public class FeedItem implements Parcelable {
         this.title = title;
     }
 
-    String getThumbnail() {
-        return thumbnail;
+    String getPoster_path() {
+        return poster_path;
     }
 
-    void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    void setPoster_path(String poster_path) {
+        this.poster_path = poster_path;
     }
 
 
     private FeedItem(Parcel in) {
         title = in.readString();
-        thumbnail = in.readString();
+        poster_path = in.readString();
         overview = in.readString();
-        releaseDate = in.readString();
-        voteAverage = in.readString();
+        release_date = in.readString();
+        vote_count = in.readString();
         popularity = in.readString();
-        MovieIDInTMDB = in.readInt();
+        id = in.readInt();
     }
 
     @Override
@@ -104,12 +104,12 @@ public class FeedItem implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
-        dest.writeString(thumbnail);
+        dest.writeString(poster_path);
         dest.writeString(overview);
-        dest.writeString(releaseDate);
-        dest.writeString(voteAverage);
+        dest.writeString(release_date);
+        dest.writeString(vote_count);
         dest.writeString(popularity);
-        dest.writeInt(MovieIDInTMDB);
+        dest.writeInt(id);
     }
 
     public static final Parcelable.Creator<FeedItem> CREATOR = new Parcelable.Creator<FeedItem>() {

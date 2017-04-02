@@ -2,8 +2,8 @@
     <string name="app_name">Pop Movies</string>
     <string name="sort_by_popular">by most popular</string>
     <string name="sort_by_rate">by top rated</string>
-    <string name="discription">This is a thumbnail of movie</string>
-    <string name="voteAverage">%1$s /10</string>
+    <string name="discription">This is a poster_path of movie</string>
+    <string name="vote_count">%1$s /10</string>
     <string name="toolstext_title">Titanic</string>
     <string name="sort_by_favorite">Favorite</string>
     <string name="title_trailers">TRAILERS</string>

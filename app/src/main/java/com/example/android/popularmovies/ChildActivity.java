@@ -47,7 +47,7 @@ public class ChildActivity extends AppCompatActivity {
 
     private static final String mURLDomain = "https://api.themoviedb.org/3/movie/";
 
-    private static final String mkey = BuildConfig.API_KEY;
+    private static final String mkey = BuildConfig.THE_MOVIE_DB_API_TOKEN;
 
     private List<FeedMovieVideo> feedMovieVideoList = new ArrayList<>();
 
@@ -108,24 +108,29 @@ public class ChildActivity extends AppCompatActivity {
 
         Intent intentThatStartedThisActivity = getIntent();
 
-        mMoiveIdInTMBD = intentThatStartedThisActivity.getIntExtra("id", 0);
+        Bundle extrasForDetails = intentThatStartedThisActivity.getExtras();
 
-        if (hasObject(String.valueOf(mMoiveIdInTMBD))) {
-            mFavoriteCheck.setChecked(true);
+        if (extrasForDetails != null) {
+
+            mMoiveIdInTMBD = extrasForDetails.getInt("id", 0);
+
+            if (hasObject(String.valueOf(mMoiveIdInTMBD))) {
+                mFavoriteCheck.setChecked(true);
+            }
+
+            mMovieTitle = extrasForDetails.getString("title");
+            binding.tvTitleChildActivity.setText(mMovieTitle);
+
+            binding.tvReleaseDateChildActivity.setText(extrasForDetails.getString("releaseDate"));
+
+            binding.tvOverview.setText(extrasForDetails.getString("overview"));
+
+            binding.tvVoteReverageChildActivity.setText(getString(R.string.vote_count, extrasForDetails.getString("voteAverage")));
+
+            Picasso.with(mContext).
+                    load("http://image.tmdb.org/t/p/w185/" + extrasForDetails.getString("Thumbnail"))
+                    .into(mThumbnailImage);
         }
-
-        mMovieTitle = intentThatStartedThisActivity.getStringExtra("title");
-        binding.tvTitleChildActivity.setText(mMovieTitle);
-
-        binding.tvReleaseDateChildActivity.setText(intentThatStartedThisActivity.getStringExtra("releaseDate"));
-
-        binding.tvOverview.setText(intentThatStartedThisActivity.getStringExtra("overview"));
-
-        binding.tvVoteReverageChildActivity.setText(getString(R.string.voteAverage, intentThatStartedThisActivity.getStringExtra("voteAverage")));
-
-        Picasso.with(mContext).
-                load("http://image.tmdb.org/t/p/w185/" + intentThatStartedThisActivity.getStringExtra("Thumbnail"))
-                .into(mThumbnailImage);
 
         String mMovieVedioURL = mURLDomain + String.valueOf(mMoiveIdInTMBD) +
                 "/videos?api_key=" + mkey + "&language=en-US";

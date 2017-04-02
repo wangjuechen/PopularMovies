@@ -37,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ListItemClickListener, LoaderManager.LoaderCallbacks<String> {
-    private String key = BuildConfig.API_KEY;
+    private String key = BuildConfig.THE_MOVIE_DB_API_TOKEN;
 
     private MainActivity mainActivity;
 
@@ -415,20 +415,6 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
                             , post.optString(OWM_RELEASEDATE).substring(0, 4), post.optString(OWM_VOTEAVERAGE),
                             post.optString(OWM_POPULARITY), post.optInt(OWM_MovieIDINTMDB));
 
-                    item.setTitle(post.optString(OWM_TITLE));
-
-                    item.setThumbnail(post.optString(OWM_POSTERADRESS));
-
-                    item.setOverview(post.optString(OWM_OVERVIEW));
-
-                    item.setReleaseDate(post.optString(OWM_RELEASEDATE).substring(0, 4));
-
-                    item.setVoteAverage(post.optString(OWM_VOTEAVERAGE));
-
-                    item.setPopularity(post.optString(OWM_POPULARITY));
-
-                    item.setMovieIDInTMDB(post.optInt(OWM_MovieIDINTMDB));
-
                     feedsList.add(item);
                 }
 
@@ -437,20 +423,6 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
                 FeedItem item = new FeedItem(response.optString(OWM_TITLE), response.optString(OWM_POSTERADRESS),
                         response.optString(OWM_OVERVIEW), response.optString(OWM_RELEASEDATE).substring(0, 4)
                         , response.optString(OWM_VOTEAVERAGE), response.optString(OWM_POPULARITY), response.optInt(OWM_MovieIDINTMDB));
-
-                item.setTitle(response.optString(OWM_TITLE));
-
-                item.setThumbnail(response.optString(OWM_POSTERADRESS));
-
-                item.setOverview(response.optString(OWM_OVERVIEW));
-
-                item.setReleaseDate(response.optString(OWM_RELEASEDATE).substring(0, 4));
-
-                item.setVoteAverage(response.optString(OWM_VOTEAVERAGE));
-
-                item.setPopularity(response.optString(OWM_POPULARITY));
-
-                item.setMovieIDInTMDB(response.optInt(OWM_MovieIDINTMDB));
 
                 feedsFavoriteList.add(item);
 
@@ -474,15 +446,15 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
             String textTitle = feedsList.get(clickedItemIndex).getTitle();
 
-            String textReleaseDate = feedsList.get(clickedItemIndex).getReleaseDate();
+            String textReleaseDate = feedsList.get(clickedItemIndex).getRelease_date();
 
             String textOverview = feedsList.get(clickedItemIndex).getOverview();
 
-            String textVoteAverage = feedsList.get(clickedItemIndex).getVoteAverage();
+            String textVoteAverage = feedsList.get(clickedItemIndex).getVote_count();
 
-            String urlThumbnail = feedsList.get(clickedItemIndex).getThumbnail();
+            String urlThumbnail = feedsList.get(clickedItemIndex).getPoster_path();
 
-            int numberMovieIDInTMDB = feedsList.get(clickedItemIndex).getMovieIDInTMDB();
+            int numberMovieIDInTMDB = feedsList.get(clickedItemIndex).getId();
 
             Bundle extras = new Bundle();
 
@@ -506,15 +478,15 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
             String textTitle = feedsFavoriteList.get(clickedItemIndex).getTitle();
 
-            String textReleaseDate = feedsFavoriteList.get(clickedItemIndex).getReleaseDate();
+            String textReleaseDate = feedsFavoriteList.get(clickedItemIndex).getRelease_date();
 
             String textOverview = feedsFavoriteList.get(clickedItemIndex).getOverview();
 
-            String textVoteAverage = feedsFavoriteList.get(clickedItemIndex).getVoteAverage();
+            String textVoteAverage = feedsFavoriteList.get(clickedItemIndex).getVote_count();
 
-            String urlThumbnail = feedsFavoriteList.get(clickedItemIndex).getThumbnail();
+            String urlThumbnail = feedsFavoriteList.get(clickedItemIndex).getPoster_path();
 
-            int numberMovieIDInTMDB = feedsFavoriteList.get(clickedItemIndex).getMovieIDInTMDB();
+            int numberMovieIDInTMDB = feedsFavoriteList.get(clickedItemIndex).getId();
 
             Bundle extras = new Bundle();
 

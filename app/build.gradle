@@ -13,14 +13,15 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        buildConfigField 'String', 'API_KEY', '"d8a3dca970a92dfe743a515a7802a807"'
     }
     buildTypes {
         release {
-            buildConfigField 'String', 'API_KEY', '"d8a3dca970a92dfe743a515a7802a807"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    buildTypes.each {
+        it.buildConfigField 'String', 'THE_MOVIE_DB_API_TOKEN', MyApiKey
     }
 
     dataBinding.enabled = true

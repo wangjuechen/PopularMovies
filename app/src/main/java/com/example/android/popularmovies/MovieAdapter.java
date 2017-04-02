@@ -61,9 +61,9 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
         final FeedItem feedItem = feedItemList.get(position);
 
         final String imageUrl = "http://image.tmdb.org/t/p/w185/" +
-                feedItem.getThumbnail();
+                feedItem.getPoster_path();
 
-        if (!TextUtils.isEmpty(feedItem.getThumbnail())) {
+        if (!TextUtils.isEmpty(feedItem.getPoster_path())) {
 
             Picasso.with(mContext)
                     .load(imageUrl)

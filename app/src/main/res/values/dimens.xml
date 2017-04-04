@@ -10,4 +10,5 @@
     <dimen name="userReviewTitle_text_size">24sp</dimen>
     <dimen name="userReview_text_size">16sp</dimen>
     <dimen name="favoriteTip_text_size">12sp</dimen>
+    <dimen name="progressBar_Size">42dp</dimen>
 </resources>

@@ -28,37 +28,16 @@ public class FeedItem implements Parcelable {
 
     }
 
-    String getPopularity() {
-        return popularity;
-    }
-
-    void setPopularity(String popularity) {
-        this.popularity = popularity;
-    }
-
     String getVote_count() {
         return vote_count;
-    }
-
-    void setVote_count(String vote_count) {
-        this.vote_count = vote_count;
     }
 
     String getRelease_date() {
         return release_date;
     }
 
-    void setRelease_date(String release_date) {
-        this.release_date = release_date;
-    }
-
-
     String getOverview() {
         return overview;
-    }
-
-    void setOverview(String overview) {
-        this.overview = overview;
     }
 
     int getId() {
@@ -73,18 +52,9 @@ public class FeedItem implements Parcelable {
         return title;
     }
 
-    void setTitle(String title) {
-        this.title = title;
-    }
-
     String getPoster_path() {
         return poster_path;
     }
-
-    void setPoster_path(String poster_path) {
-        this.poster_path = poster_path;
-    }
-
 
     private FeedItem(Parcel in) {
         title = in.readString();

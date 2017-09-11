@@ -6,7 +6,6 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         >
 
         <LinearLayout
@@ -82,7 +81,6 @@
                     android:layout_marginTop="12dp"
                     android:button="@drawable/favorite"
                     android:onClick="favoriteClick" />
-
 
             </RelativeLayout>
 

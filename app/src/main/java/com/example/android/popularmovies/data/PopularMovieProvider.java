@@ -36,10 +36,8 @@ public class PopularMovieProvider extends ContentProvider {
             db = null;
             return false;
         }
-
         return true;
     }
-
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
@@ -103,6 +101,7 @@ public class PopularMovieProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case MOVIE: {
                 long _id = db.insert(PopularMovieContract.PopularMovieEntry.TABLE_NAME, null, values);
+
                 // insert unless it is already contained in the database
                 if (_id > 0) {
                     returnUri = PopularMovieContract.PopularMovieEntry.buildPopularMovieUri(_id);

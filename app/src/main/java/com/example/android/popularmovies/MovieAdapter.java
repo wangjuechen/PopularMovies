@@ -57,7 +57,6 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
     @Override
     public void onBindViewHolder(final MovieAdapterViewHolder movieAdapterViewHolder, final int position) {
 
-
         final FeedItem feedItem = feedItemList.get(position);
 
         final String imageUrl = "http://image.tmdb.org/t/p/w185/" +
@@ -104,7 +103,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
         return (null != feedItemList ? feedItemList.size() : 0);
     }
 
-    public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements OnClickListener {
+    public class MovieAdapterViewHolder extends RecyclerView.ViewHolder {
 
         final ImageView mImageView;
 
@@ -112,16 +111,14 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
             super(view);
 
             this.mImageView = (ImageView) view.findViewById(R.id.iv_Poster);
-            view.setOnClickListener(this);
-
+            view.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int clickedPosition = getAdapterPosition();
+                    mOnClickListener.onClick(clickedPosition);
+                }
+            });
         }
-
-        @Override
-        public void onClick(View v) {
-            int clickedPosition = getAdapterPosition();
-            mOnClickListener.onClick(clickedPosition);
-        }
-
     }
 
     public interface ListItemClickListener {

@@ -6,23 +6,23 @@ package com.example.android.popularmovies;
 
 public class FeedUserReviews {
 
-    String mUserNames;
+    String UserNames;
 
-    String mReviewsContent;
+    String ReviewsContent;
 
-    public String getmUserNames() {
-        return mUserNames;
+    public String getUserNames() {
+        return UserNames;
     }
 
-    public void setmUserNames(String mUserNames) {
-        this.mUserNames = mUserNames;
+    public void setUserNames(String userNames) {
+        this.UserNames = userNames;
     }
 
-    public String getmReviewsContent() {
-        return mReviewsContent;
+    public String getReviewsContent() {
+        return ReviewsContent;
     }
 
-    public void setmReviewsContent(String mReviewsContent) {
-        this.mReviewsContent = mReviewsContent;
+    public void setReviewsContent(String reviewsContent) {
+        this.ReviewsContent = reviewsContent;
     }
 }

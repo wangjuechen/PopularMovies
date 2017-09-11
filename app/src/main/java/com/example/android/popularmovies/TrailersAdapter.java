@@ -9,13 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,13 +51,13 @@ class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.TrailersAdapt
         for (int i = 0; i < feedMovieVideoList.size(); i++) {
 
             mTrailersYoutubeUrl.add("https://www.youtube.com/watch?v="
-                    + feedMovieVideoList.get(i).getmKeyForTrailerOnYoutube());
+                    + feedMovieVideoList.get(i).getKeyForTrailerOnYoutube());
 
-            mTrailersName.add(feedMovieVideoList.get(i).getmTrailerName());
+            mTrailersName.add(feedMovieVideoList.get(i).getTrailerName());
 
-            mTrailerSize.add(feedMovieVideoList.get(i).getmTrailerSize());
+            mTrailerSize.add(feedMovieVideoList.get(i).getTrailerSize());
 
-            mTrailerType.add(feedMovieVideoList.get(i).getmTrailerType());
+            mTrailerType.add(feedMovieVideoList.get(i).getTrailerType());
         }
         return viewHolder;
     }
@@ -68,7 +65,7 @@ class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.TrailersAdapt
     @Override
     public void onBindViewHolder(final TrailersAdapterViewHolder holder, int position) {
 
-        String trailerthumnail = "http://img.youtube.com/vi/" + feedMovieVideoList.get(position).getmKeyForTrailerOnYoutube() + "/0.jpg";
+        String trailerthumnail = "http://img.youtube.com/vi/" + feedMovieVideoList.get(position).getKeyForTrailerOnYoutube() + "/0.jpg";
 
         Picasso.with(mContext)
                 .load(trailerthumnail)

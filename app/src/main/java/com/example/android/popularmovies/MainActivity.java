@@ -294,17 +294,23 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
                 feedsFavoriteList = new ArrayList<>();
 
-                mainActivity.setTitle(getString(R.string.favorite_movie_title));
-
                 List<String> FavoriteUrlList = getAllFavoriteMovieURL();
 
-                for (int i = 0; i < FavoriteUrlList.size(); i++) {
+                if (FavoriteUrlList != null && FavoriteUrlList.size() > 0) {
 
-                    makeMovieSearchQuery(FavoriteUrlList.get(i));
+                    for (int i = 0; i < FavoriteUrlList.size(); i++) {
+
+                        makeMovieSearchQuery(FavoriteUrlList.get(i));
+                    }
+
+                    mainActivity.setTitle(getString(R.string.favorite_movie_title));
+
+                    mMovieAdapter = new MovieAdapter(MainActivity.this, feedsFavoriteList, this);
+
+                    mRecycleView.setAdapter(mMovieAdapter);
+                } else {
+                    Toast.makeText(this, "This is no favorite movie in list", Toast.LENGTH_LONG).show();
                 }
-                mMovieAdapter = new MovieAdapter(MainActivity.this, feedsFavoriteList, this);
-
-                mRecycleView.setAdapter(mMovieAdapter);
 
                 return true;
             }
@@ -365,11 +371,11 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private ArrayList<String> getAllFavoriteMovieURL() {
         ArrayList<String> movieUrlList = new ArrayList<>();
-        Cursor cursor = getContentResolver().query(PopularMovieContract.PopularMovieEntry.CONTENT_URI, new String[]{PopularMovieContract.PopularMovieEntry.COLUMN_MovieURL}, null, null, null, null);
+        Cursor cursor = getContentResolver().query(PopularMovieContract.PopularMovieEntry.CONTENT_URI, new String[]{PopularMovieContract.PopularMovieEntry.COLUMN_MOVIE_URL}, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 movieUrlList.add(cursor.getString(cursor
-                        .getColumnIndex(PopularMovieContract.PopularMovieEntry.COLUMN_MovieURL)));
+                        .getColumnIndex(PopularMovieContract.PopularMovieEntry.COLUMN_MOVIE_URL)));
             } while (cursor.moveToNext());
         } else {
             return null;

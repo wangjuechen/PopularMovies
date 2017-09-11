@@ -47,11 +47,11 @@ public class ChildActivity extends AppCompatActivity {
 
     private static final String mURLDomain = "https://api.themoviedb.org/3/movie/";
 
-    private static final String mkey = BuildConfig.THE_MOVIE_DB_API_TOKEN;
+    private static final String mKey = BuildConfig.THE_MOVIE_DB_API_TOKEN;
 
     private List<FeedMovieVideo> feedMovieVideoList = new ArrayList<>();
 
-    private List<FeedUserReviews> feedUserReviewses = new ArrayList<>();
+    private List<FeedUserReviews> feedUserReviews = new ArrayList<>();
 
     private TrailersAdapter mTrailersAdapter;
 
@@ -67,7 +67,7 @@ public class ChildActivity extends AppCompatActivity {
 
     private String mMovieRuntime, mMovieTitle;
 
-    private int mMoiveIdInTMBD;
+    private int mMovieIdInTMBD;
 
     private CheckBox mFavoriteCheck;
 
@@ -112,13 +112,14 @@ public class ChildActivity extends AppCompatActivity {
 
         if (extrasForDetails != null) {
 
-            mMoiveIdInTMBD = extrasForDetails.getInt("id", 0);
+            mMovieIdInTMBD = extrasForDetails.getInt("id", 0);
 
-            if (hasObject(String.valueOf(mMoiveIdInTMBD))) {
+            if (hasObject(String.valueOf(mMovieIdInTMBD))) {
                 mFavoriteCheck.setChecked(true);
             }
 
             mMovieTitle = extrasForDetails.getString("title");
+
             binding.tvTitleChildActivity.setText(mMovieTitle);
 
             binding.tvReleaseDateChildActivity.setText(extrasForDetails.getString("releaseDate"));
@@ -132,27 +133,27 @@ public class ChildActivity extends AppCompatActivity {
                     .into(mThumbnailImage);
         }
 
-        String mMovieVedioURL = mURLDomain + String.valueOf(mMoiveIdInTMBD) +
-                "/videos?api_key=" + mkey + "&language=en-US";
-        //From movieId, got the movieVedioUrl
+        String mMovieVideoURL = mURLDomain + String.valueOf(mMovieIdInTMBD) +
+                "/videos?api_key=" + mKey + "&language=en-US";
+        //From movieId, got the movieVideoUrl
 
-        String mMovieRuntimeURL = mURLDomain + String.valueOf(mMoiveIdInTMBD) +
-                "?api_key=" + mkey;
+        String mMovieRuntimeURL = mURLDomain + String.valueOf(mMovieIdInTMBD) +
+                "?api_key=" + mKey;
         //From movieId, got the movieRuntimeUrl
 
-        String mUserReviewsURL = mURLDomain + String.valueOf(mMoiveIdInTMBD) +
-                "/reviews?api_key=" + mkey + "&language=en-US";
+        String mUserReviewsURL = mURLDomain + String.valueOf(mMovieIdInTMBD) +
+                "/reviews?api_key=" + mKey + "&language=en-US";
         //From movieId, got the movieReviewUrl
 
         mGetRuntime(mMovieRuntimeURL);
 
-        mGetYoutubeTrailers(mMovieVedioURL);
+        mGetYoutubeTrailers(mMovieVideoURL);
 
         mGetReviews(mUserReviewsURL);
 
         mTrailersAdapter = new TrailersAdapter(this, feedMovieVideoList);
 
-        mReviewsAdapter = new ReviewsAdapter(this, feedUserReviewses);
+        mReviewsAdapter = new ReviewsAdapter(this, feedUserReviews);
 
         mTrailerRecycleView.setAdapter(mTrailersAdapter);
 
@@ -168,8 +169,8 @@ public class ChildActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public boolean hasObject(String searchItem) {
 
-        String[] columns = {PopularMovieContract.PopularMovieEntry.COLUMN_MovieID};
-        String selection = PopularMovieContract.PopularMovieEntry.COLUMN_MovieID + " =?";
+        String[] columns = {PopularMovieContract.PopularMovieEntry.COLUMN_MOVIE_ID};
+        String selection = PopularMovieContract.PopularMovieEntry.COLUMN_MOVIE_ID + " =?";
         String[] selectionArgs = {searchItem};
 
         Cursor cursor = getContentResolver().query(PopularMovieContract.PopularMovieEntry.CONTENT_URI, columns, selection, selectionArgs, null, null);
@@ -182,37 +183,37 @@ public class ChildActivity extends AppCompatActivity {
 
         if (mFavoriteCheck.isChecked()) {
 
-            addFaroviteToSQLite();
+            addFavoriteToSQLite();
 
             long number = DatabaseUtils.queryNumEntries(db, TABLE_NAME);
 
-            Log.v("Test 1", "Text for add " + String.valueOf(mMoiveIdInTMBD) + "Size of Database: " + String.valueOf(number));
+            Log.v("Test 1", "Text for add " + String.valueOf(mMovieIdInTMBD) + "Size of Database: " + String.valueOf(number));
         } else if (!mFavoriteCheck.isChecked()) {
 
-            deleteFaroviteFromSQLite();
+            deleteFavoriteFromSQLite();
 
             long number = DatabaseUtils.queryNumEntries(db, TABLE_NAME);
 
-            Log.v("Test 1", "Text for add " + String.valueOf(mMoiveIdInTMBD) + "Size of Database: " + String.valueOf(number));
+            Log.v("Test 1", "Text for add " + String.valueOf(mMovieIdInTMBD) + "Size of Database: " + String.valueOf(number));
         }
     }
 
-    private void addFaroviteToSQLite() {
+    private void addFavoriteToSQLite() {
 
         ContentValues FavoriteMovie = new ContentValues();
 
-        FavoriteMovie.put(PopularMovieContract.PopularMovieEntry.COLUMN_MovieID, String.valueOf(mMoiveIdInTMBD));
+        FavoriteMovie.put(PopularMovieContract.PopularMovieEntry.COLUMN_MOVIE_ID, String.valueOf(mMovieIdInTMBD));
 
-        FavoriteMovie.put(PopularMovieContract.PopularMovieEntry.COLUMN_MovieURL, mURLDomain + String.valueOf(mMoiveIdInTMBD)
-                + "?api_key=" + mkey + "&language=en-US");
+        FavoriteMovie.put(PopularMovieContract.PopularMovieEntry.COLUMN_MOVIE_URL, mURLDomain + String.valueOf(mMovieIdInTMBD)
+                + "?api_key=" + mKey + "&language=en-US");
 
         getContentResolver().insert(PopularMovieContract.PopularMovieEntry.CONTENT_URI, FavoriteMovie);
 
     }
 
-    private void deleteFaroviteFromSQLite() {
-        String selection = PopularMovieContract.PopularMovieEntry.COLUMN_MovieID + " =?";
-        String[] selectionArgs = {String.valueOf(mMoiveIdInTMBD)};
+    private void deleteFavoriteFromSQLite() {
+        String selection = PopularMovieContract.PopularMovieEntry.COLUMN_MOVIE_ID + " =?";
+        String[] selectionArgs = {String.valueOf(mMovieIdInTMBD)};
         getContentResolver().delete(PopularMovieContract.PopularMovieEntry.CONTENT_URI, selection, selectionArgs);
 
     }
@@ -234,9 +235,9 @@ public class ChildActivity extends AppCompatActivity {
 
     private void mGetYoutubeTrailers(String Url) {
 
-        URL MovieVedioSearchUrl = NetworkUtils.buildUrl(Url);
+        URL MovieVideoSearchUrl = NetworkUtils.buildUrl(Url);
 
-        new FetchMovieTask().execute(MovieVedioSearchUrl);
+        new FetchMovieTask().execute(MovieVideoSearchUrl);
     }
 
     private class FetchMovieTask extends AsyncTask<URL, Void, String> {
@@ -274,7 +275,7 @@ public class ChildActivity extends AppCompatActivity {
 
                 parseUserReviews(movieResponse);
 
-                mReviewsAdapter.setMovieData(feedUserReviewses);
+                mReviewsAdapter.setMovieData(feedUserReviews);
             } else if (movieResponse.contains("site")) {
 
                 parseResultForYoutube(movieResponse);
@@ -307,13 +308,13 @@ public class ChildActivity extends AppCompatActivity {
 
                 FeedMovieVideo feedlist = new FeedMovieVideo();
 
-                feedlist.setmKeyForTrailerOnYoutube(post.optString(OWM_KEY));
+                feedlist.setKeyForTrailerOnYoutube(post.optString(OWM_KEY));
 
-                feedlist.setmTrailerName(post.optString(OWM_NAME));
+                feedlist.setTrailerName(post.optString(OWM_NAME));
 
-                feedlist.setmTrailerSize(post.optString(OWM_SIZE));
+                feedlist.setTrailerSize(post.optString(OWM_SIZE));
 
-                feedlist.setmTrailerType(post.optString(OWM_TYPE));
+                feedlist.setTrailerType(post.optString(OWM_TYPE));
 
                 feedMovieVideoList.add(feedlist);
 
@@ -350,17 +351,17 @@ public class ChildActivity extends AppCompatActivity {
             JSONObject response = new JSONObject(Url);
             JSONArray posts = response.optJSONArray(OWM_LIST);
 
-            feedUserReviewses = new ArrayList<>();
+            feedUserReviews = new ArrayList<>();
 
             for (int i = 0; i < posts.length(); i++) {
                 JSONObject post = posts.getJSONObject(i);
 
                 FeedUserReviews feedlist = new FeedUserReviews();
 
-                feedlist.setmUserNames(post.optString(OWM_USERNAME));
-                feedlist.setmReviewsContent(post.optString(OWM_CONTENT));
+                feedlist.setUserNames(post.optString(OWM_USERNAME));
+                feedlist.setReviewsContent(post.optString(OWM_CONTENT));
 
-                feedUserReviewses.add(feedlist);
+                feedUserReviews.add(feedlist);
 
             }
         } catch (Exception e) {

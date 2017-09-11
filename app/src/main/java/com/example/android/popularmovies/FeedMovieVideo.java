@@ -6,44 +6,44 @@ package com.example.android.popularmovies;
 
 public class FeedMovieVideo {
 
-    String mKeyForTrailerOnYoutube;
+    String KeyForTrailerOnYoutube;
 
-    String mTrailerName;
+    String TrailerName;
 
-    String mTrailerSize;
+    String TrailerSize;
 
-    String mTrailerType;
+    String TrailerType;
 
-    public String getmTrailerName() {
-        return mTrailerName;
+    public String getTrailerName() {
+        return TrailerName;
     }
 
-    public void setmTrailerName(String mTrailerName) {
-        this.mTrailerName = mTrailerName;
+    public void setTrailerName(String trailerName) {
+        this.TrailerName = trailerName;
     }
 
-    public String getmTrailerSize() {
-        return mTrailerSize;
+    public String getTrailerSize() {
+        return TrailerSize;
     }
 
-    public void setmTrailerSize(String mTrailerSize) {
-        this.mTrailerSize = mTrailerSize;
+    public void setTrailerSize(String trailerSize) {
+        this.TrailerSize = trailerSize;
     }
 
-    public String getmTrailerType() {
-        return mTrailerType;
+    public String getTrailerType() {
+        return TrailerType;
     }
 
-    public void setmTrailerType(String mTrailerType) {
-        this.mTrailerType = mTrailerType;
+    public void setTrailerType(String trailerType) {
+        this.TrailerType = trailerType;
     }
 
-    public String getmKeyForTrailerOnYoutube() {
-        return mKeyForTrailerOnYoutube;
+    public String getKeyForTrailerOnYoutube() {
+        return KeyForTrailerOnYoutube;
     }
 
-    public void setmKeyForTrailerOnYoutube(String mKeyForTrailerOnYoutube) {
-        this.mKeyForTrailerOnYoutube = mKeyForTrailerOnYoutube;
+    public void setKeyForTrailerOnYoutube(String keyForTrailerOnYoutube) {
+        this.KeyForTrailerOnYoutube = keyForTrailerOnYoutube;
     }
 
 }

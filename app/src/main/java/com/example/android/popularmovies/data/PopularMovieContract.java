@@ -17,20 +17,20 @@ public class PopularMovieContract  {
 
     public static final class PopularMovieEntry implements BaseColumns{
 
-        public static final String TABLE_NAME = "FavorateMovie";
+        public static final String TABLE_NAME = "FavoriteMovie";
 
         public static final String _ID = "_id";
 
-        public static final String COLUMN_MovieID = "MovieId";
+        public static final String COLUMN_MOVIE_ID = "MovieId";
 
-        public static final String COLUMN_MovieURL = "MovieUrl";
+        public static final String COLUMN_MOVIE_URL = "MovieUrl";
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
                 .appendPath(TABLE_NAME).build();
 
         public static final String CONTENT_DIR_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
-        // create cursor of base type item for single entry
+
         public static final String CONTENT_ITEM_TYPE =
                 ContentResolver.CURSOR_ITEM_BASE_TYPE +"/" + CONTENT_AUTHORITY + "/" + TABLE_NAME;
 

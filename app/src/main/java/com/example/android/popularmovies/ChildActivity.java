@@ -6,15 +6,16 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
-import android.databinding.DataBindingUtil;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -23,7 +24,6 @@ import android.widget.Toast;
 
 import com.example.android.popularmovies.data.PopularMovieContract;
 import com.example.android.popularmovies.data.PopularMovieDbHelper;
-import com.example.android.popularmovies.databinding.DetailedPageBinding;
 import com.example.android.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
@@ -33,6 +33,9 @@ import org.json.JSONObject;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.example.android.popularmovies.data.PopularMovieContract.PopularMovieEntry.TABLE_NAME;
 
@@ -57,19 +60,27 @@ public class ChildActivity extends AppCompatActivity {
 
     private ReviewsAdapter mReviewsAdapter;
 
-    private TextView mRuntimeText;
+    @BindView(R.id.tv_releaseDate_child_activity) TextView mReleaseDateText;
 
-    private ImageView mThumbnailImage;
+    @BindView(R.id.tv_voteReverage_child_activity) TextView mVoteAverage;
+
+    @BindView(R.id.tv_overview) TextView mOverViewText;
+
+    @BindView(R.id.iv_poster_child_activity) ImageView mThumbnailImage;
+
+    @BindView(R.id.tv_runtime_child_activity) TextView mRuntimeText;
+
+    @BindView(R.id.favorite_checkBox) CheckBox mFavoriteCheck;
+
+    @BindView(R.id.rv_trailsForYoutube) RecyclerView mTrailerRecycleView;
+
+    @BindView(R.id.rv_userReviews) RecyclerView mReviewsRecycleView;
 
     private Context mContext;
-
-    private RecyclerView mTrailerRecycleView, mReviewsRecycleView;
 
     private String mMovieRuntime, mMovieTitle;
 
     private int mMovieIdInTMBD;
-
-    private CheckBox mFavoriteCheck;
 
     private PopularMovieDbHelper mPopularMovieHelper;
 
@@ -81,16 +92,7 @@ public class ChildActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detailed_page);
-
-        DetailedPageBinding binding = DataBindingUtil.setContentView(this, R.layout.detailed_page);
-
-        mThumbnailImage = (ImageView) findViewById(R.id.iv_poster_child_astivity);
-        mRuntimeText = (TextView) findViewById(R.id.tv_runtime_child_activity);
-        mFavoriteCheck = (CheckBox) findViewById(R.id.favorite_checkBox);
-
-        mTrailerRecycleView = (RecyclerView) findViewById(R.id.rv_trailsForYoutube);
-
-        mReviewsRecycleView = (RecyclerView) findViewById(R.id.rv_userReviews);
+        ButterKnife.bind(this);
 
         LinearLayoutManager linearLayoutManagerForTrailer = new LinearLayoutManager(this);
 
@@ -120,13 +122,26 @@ public class ChildActivity extends AppCompatActivity {
 
             mMovieTitle = extrasForDetails.getString("title");
 
-            binding.tvTitleChildActivity.setText(mMovieTitle);
+            final ActionBar abar = getSupportActionBar();
 
-            binding.tvReleaseDateChildActivity.setText(extrasForDetails.getString("releaseDate"));
+            View viewActionBar = getLayoutInflater().inflate(R.layout.action_bar, null);
+            ActionBar.LayoutParams params = new ActionBar.LayoutParams(//Center the textview in the ActionBar !
+                    ActionBar.LayoutParams.WRAP_CONTENT,
+                    ActionBar.LayoutParams.MATCH_PARENT,
+                    Gravity.CENTER);
+            TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.toolBar_title);
+            textviewTitle.setText(mMovieTitle);
+            abar.setCustomView(viewActionBar, params);
+            abar.setDisplayShowCustomEnabled(true);
+            abar.setDisplayShowTitleEnabled(false);
+            abar.setDisplayHomeAsUpEnabled(true);
+            abar.setHomeButtonEnabled(true);
 
-            binding.tvOverview.setText(extrasForDetails.getString("overview"));
+            mReleaseDateText.setText(extrasForDetails.getString("releaseDate"));
 
-            binding.tvVoteReverageChildActivity.setText(getString(R.string.vote_count, extrasForDetails.getString("voteAverage")));
+            mOverViewText.setText(extrasForDetails.getString("overview"));
+
+            mVoteAverage.setText(getString(R.string.vote_count, extrasForDetails.getString("voteAverage")));
 
             Picasso.with(mContext).
                     load("http://image.tmdb.org/t/p/w185/" + extrasForDetails.getString("Thumbnail"))

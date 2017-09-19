@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
                     @Override
                     public void run() {
                         // Notify adapter with appropriate notify methods
-                        mMovieAdapter.notifyItemRangeInserted(curSize, ParsingPopMoviesJson? PopMoviesList.size() - 1 : TopRatedMoviesList.size() - 1);
+                        mMovieAdapter.notifyItemRangeInserted(curSize, ParsingPopMoviesJson ? PopMoviesList.size() - 1 : TopRatedMoviesList.size() - 1);
                     }
                 });
 
@@ -306,6 +306,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
             Intent startChildActivityIntent = new Intent(context, destinationActivity);
 
+
             String textTitle = PopMoviesList.get(clickedItemIndex).getTitle();
 
             String textReleaseDate = PopMoviesList.get(clickedItemIndex).getRelease_date();
@@ -317,6 +318,22 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
             String urlThumbnail = PopMoviesList.get(clickedItemIndex).getPoster_path();
 
             int numberMovieIDInTMDB = PopMoviesList.get(clickedItemIndex).getId();
+
+            if (mainActivity.getTitle().equals(getString(R.string.topRated_movie_title))) {
+
+                textTitle = TopRatedMoviesList.get(clickedItemIndex).getTitle();
+
+                textReleaseDate = TopRatedMoviesList.get(clickedItemIndex).getRelease_date();
+
+                textOverview = TopRatedMoviesList.get(clickedItemIndex).getOverview();
+
+                textVoteAverage = TopRatedMoviesList.get(clickedItemIndex).getVote_count();
+
+                urlThumbnail = TopRatedMoviesList.get(clickedItemIndex).getPoster_path();
+
+                numberMovieIDInTMDB = TopRatedMoviesList.get(clickedItemIndex).getId();
+
+            }
 
             Bundle extras = new Bundle();
 

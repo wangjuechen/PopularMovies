@@ -33,36 +33,21 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity implements ListItemClickListener {
     private String key = BuildConfig.THE_MOVIE_DB_API_TOKEN;
-
-    private EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener;
 
     private MainActivity mainActivity;
 
     private GridLayoutManager mLayoutManager;
 
-    private ProgressBar mLoadingIndicator;
+    @BindView(R.id.pb_loading_indicator)
+    ProgressBar mLoadingIndicator;
 
-    private RecyclerView mRecycleView;
-
-    private final String KEY_INSTANCE_STATE_RV_POSITION = "recycleViewKey";
-
-    private final String OWM_LIST = "results";
-
-    private final String OWM_TITLE = "original_title";
-
-    private final String OWM_OVERVIEW = "overview";
-
-    private final String OWM_RELEASEDATE = "release_date";
-
-    private final String OWM_VOTEAVERAGE = "vote_average";
-
-    private final String OWM_POSTERADRESS = "poster_path";
-
-    private final String OWM_POPULARITY = "popularity";
-
-    private final String OWM_MovieIDINTMDB = "id";
+    @BindView(R.id.rv_recycleview_PosterImage)
+    RecyclerView mRecycleView;
 
     private MovieAdapter mMovieAdapter;
 
@@ -74,9 +59,10 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
     private Toast mToast;
 
+    private final String KEY_INSTANCE_STATE_RV_POSITION = "recycleViewKey";
+
     private String MOVIE_POPULAR_URL =
             "http://api.themoviedb.org/3/movie/popular?api_key=" + key + "&language=en-US&page=";
-
 
     private String MOVIE_RATE_URL =
             "http://api.themoviedb.org/3/movie/top_rated?api_key=" + key + "&language=en-US&page=";
@@ -91,14 +77,11 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         mainActivity = this;
 
         SetMarginOfGridlayout setMarginOfGridlayout = new SetMarginOfGridlayout(0);
-
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
-
-        mRecycleView = (RecyclerView) findViewById(R.id.rv_recycleview_PosterImage);
 
         mLayoutManager = new GridLayoutManager(this, numberOfColumns());
 
@@ -110,7 +93,8 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
         selectList(savedInstanceState);
 
-        endlessRecyclerViewScrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
+        EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener
+                = new EndlessRecyclerViewScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
 
@@ -128,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
             }
         };
         mRecycleView.addOnScrollListener(endlessRecyclerViewScrollListener);
-
     }
 
 
@@ -424,6 +407,22 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
     }
 
     private void parseResult(String movieJsonStr) {
+
+        final String OWM_LIST = "results";
+
+        final String OWM_TITLE = "original_title";
+
+        final String OWM_OVERVIEW = "overview";
+
+        final String OWM_RELEASEDATE = "release_date";
+
+        final String OWM_VOTEAVERAGE = "vote_average";
+
+        final String OWM_POSTERADDRESS = "poster_path";
+
+        final String OWM_POPULARITY = "popularity";
+
+        final String OWM_MovieIDINTMDB = "id";
         try {
 
             JSONObject response = new JSONObject(movieJsonStr);
@@ -442,7 +441,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
                     JSONObject post = posts.optJSONObject(i);
 
-                    FeedItem item = new FeedItem(post.optString(OWM_TITLE), post.optString(OWM_POSTERADRESS), post.optString(OWM_OVERVIEW)
+                    FeedItem item = new FeedItem(post.optString(OWM_TITLE), post.optString(OWM_POSTERADDRESS), post.optString(OWM_OVERVIEW)
                             , post.optString(OWM_RELEASEDATE).substring(0, 4), post.optString(OWM_VOTEAVERAGE),
                             post.optString(OWM_POPULARITY), post.optInt(OWM_MovieIDINTMDB));
 
@@ -455,7 +454,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
             } else {
 
-                FeedItem item = new FeedItem(response.optString(OWM_TITLE), response.optString(OWM_POSTERADRESS),
+                FeedItem item = new FeedItem(response.optString(OWM_TITLE), response.optString(OWM_POSTERADDRESS),
                         response.optString(OWM_OVERVIEW), response.optString(OWM_RELEASEDATE).substring(0, 4)
                         , response.optString(OWM_VOTEAVERAGE), response.optString(OWM_POPULARITY), response.optInt(OWM_MovieIDINTMDB));
 

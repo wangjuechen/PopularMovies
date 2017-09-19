@@ -65,10 +65,10 @@ class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.TrailersAdapt
     @Override
     public void onBindViewHolder(final TrailersAdapterViewHolder holder, int position) {
 
-        String trailerthumnail = "http://img.youtube.com/vi/" + feedMovieVideoList.get(position).getKeyForTrailerOnYoutube() + "/0.jpg";
+        String trailerThumnail = "http://img.youtube.com/vi/" + feedMovieVideoList.get(position).getKeyForTrailerOnYoutube() + "/0.jpg";
 
         Picasso.with(mContext)
-                .load(trailerthumnail)
+                .load(trailerThumnail)
                 .placeholder(R.drawable.placeholder)
                 .into(holder.mtrailerThumnail);
 

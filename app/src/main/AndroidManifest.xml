@@ -25,7 +25,7 @@
         <activity
             android:name="com.example.android.popularmovies.ChildActivity"
             android:parentActivityName=".MainActivity"
-            android:label="@string/title_Childacvitivy">
+            android:label="@string/title_ChildActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />

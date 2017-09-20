@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.android.popularmovies.data.PopularMovieContract;
 import com.example.android.popularmovies.data.PopularMovieDbHelper;
+import com.example.android.popularmovies.utilities.FavoriteMovieUtils;
 import com.example.android.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
@@ -36,8 +37,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.example.android.popularmovies.data.PopularMovieContract.PopularMovieEntry.TABLE_NAME;
 
 /**
  * Created by JC on 12/03/17.
@@ -59,6 +58,8 @@ public class ChildActivity extends AppCompatActivity {
     private TrailersAdapter mTrailersAdapter;
 
     private ReviewsAdapter mReviewsAdapter;
+
+    private FavoriteMovieUtils mFavoriteMovieUtils = new FavoriteMovieUtils();
 
     @BindView(R.id.tv_releaseDate_child_activity) TextView mReleaseDateText;
 
@@ -116,7 +117,7 @@ public class ChildActivity extends AppCompatActivity {
 
             mMovieIdInTMBD = extrasForDetails.getInt("id", 0);
 
-            if (hasObject(String.valueOf(mMovieIdInTMBD))) {
+            if (mFavoriteMovieUtils.hasObject(this, String.valueOf(mMovieIdInTMBD))) {
                 mFavoriteCheck.setChecked(true);
             }
 
@@ -181,56 +182,11 @@ public class ChildActivity extends AppCompatActivity {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    public boolean hasObject(String searchItem) {
-
-        String[] columns = {PopularMovieContract.PopularMovieEntry.COLUMN_MOVIE_ID};
-        String selection = PopularMovieContract.PopularMovieEntry.COLUMN_MOVIE_ID + " =?";
-        String[] selectionArgs = {searchItem};
-
-        Cursor cursor = getContentResolver().query(PopularMovieContract.PopularMovieEntry.CONTENT_URI, columns, selection, selectionArgs, null, null);
-        boolean exists = (cursor.getCount() > 0);
-        cursor.close();
-        return exists;
-    }
-
     public void favoriteClick(View v) {
 
-        if (mFavoriteCheck.isChecked()) {
+        boolean checked = mFavoriteCheck.isChecked();
 
-            addFavoriteToSQLite();
-
-            long number = DatabaseUtils.queryNumEntries(db, TABLE_NAME);
-
-            Log.v("Test 1", "Text for add " + String.valueOf(mMovieIdInTMBD) + "Size of Database: " + String.valueOf(number));
-        } else if (!mFavoriteCheck.isChecked()) {
-
-            deleteFavoriteFromSQLite();
-
-            long number = DatabaseUtils.queryNumEntries(db, TABLE_NAME);
-
-            Log.v("Test 1", "Text for add " + String.valueOf(mMovieIdInTMBD) + "Size of Database: " + String.valueOf(number));
-        }
-    }
-
-    private void addFavoriteToSQLite() {
-
-        ContentValues FavoriteMovie = new ContentValues();
-
-        FavoriteMovie.put(PopularMovieContract.PopularMovieEntry.COLUMN_MOVIE_ID, String.valueOf(mMovieIdInTMBD));
-
-        FavoriteMovie.put(PopularMovieContract.PopularMovieEntry.COLUMN_MOVIE_URL, mURLDomain + String.valueOf(mMovieIdInTMBD)
-                + "?api_key=" + mKey + "&language=en-US");
-
-        getContentResolver().insert(PopularMovieContract.PopularMovieEntry.CONTENT_URI, FavoriteMovie);
-
-    }
-
-    private void deleteFavoriteFromSQLite() {
-        String selection = PopularMovieContract.PopularMovieEntry.COLUMN_MOVIE_ID + " =?";
-        String[] selectionArgs = {String.valueOf(mMovieIdInTMBD)};
-        getContentResolver().delete(PopularMovieContract.PopularMovieEntry.CONTENT_URI, selection, selectionArgs);
-
+        mFavoriteMovieUtils.favoriteCheck(this, mMovieIdInTMBD, checked);
     }
 
     private void mGetReviews(String Url) {

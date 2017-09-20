@@ -3,6 +3,7 @@ package com.example.android.popularmovies;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -35,6 +36,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.example.android.popularmovies.data.PopularMovieContract.PopularMovieEntry.TABLE_NAME;
 
 public class MainActivity extends AppCompatActivity implements ListItemClickListener {
     private String key = BuildConfig.THE_MOVIE_DB_API_TOKEN;
@@ -71,6 +74,18 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
     private static int MoviesInstanceStateFlag;
 
     private static boolean ParsingPopMoviesJson = true;
+
+    private String textTitle;
+
+    private String textReleaseDate;
+
+    private String textOverview;
+
+    private String textVoteAverage;
+
+    private String urlThumbnail;
+
+    private int numberMovieIDInTMDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -281,26 +296,26 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
     @Override
     public void onClick(int clickedItemIndex) {
+
+        Context context = MainActivity.this;
+
+        Class destinationActivity = ChildActivity.class;
+
+        Intent startChildActivityIntent = new Intent(context, destinationActivity);
+
         if (mainActivity.getTitle() != getString(R.string.favorite_movie_title)) {
 
-            Context context = MainActivity.this;
+            textTitle = PopMoviesList.get(clickedItemIndex).getTitle();
 
-            Class destinationActivity = ChildActivity.class;
+             textReleaseDate = PopMoviesList.get(clickedItemIndex).getRelease_date();
 
-            Intent startChildActivityIntent = new Intent(context, destinationActivity);
+             textOverview = PopMoviesList.get(clickedItemIndex).getOverview();
 
+             textVoteAverage = PopMoviesList.get(clickedItemIndex).getVote_count();
 
-            String textTitle = PopMoviesList.get(clickedItemIndex).getTitle();
+             urlThumbnail = PopMoviesList.get(clickedItemIndex).getPoster_path();
 
-            String textReleaseDate = PopMoviesList.get(clickedItemIndex).getRelease_date();
-
-            String textOverview = PopMoviesList.get(clickedItemIndex).getOverview();
-
-            String textVoteAverage = PopMoviesList.get(clickedItemIndex).getVote_count();
-
-            String urlThumbnail = PopMoviesList.get(clickedItemIndex).getPoster_path();
-
-            int numberMovieIDInTMDB = PopMoviesList.get(clickedItemIndex).getId();
+             numberMovieIDInTMDB = PopMoviesList.get(clickedItemIndex).getId();
 
             if (mainActivity.getTitle().equals(getString(R.string.topRated_movie_title))) {
 
@@ -315,55 +330,36 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
                 urlThumbnail = TopRatedMoviesList.get(clickedItemIndex).getPoster_path();
 
                 numberMovieIDInTMDB = TopRatedMoviesList.get(clickedItemIndex).getId();
-
             }
 
-            Bundle extras = new Bundle();
-
-            extras.putString("title", textTitle);
-            extras.putString("releaseDate", textReleaseDate);
-            extras.putString("overview", textOverview);
-            extras.putString("voteAverage", textVoteAverage);
-            extras.putString("Thumbnail", urlThumbnail);
-            extras.putInt("id", numberMovieIDInTMDB);
-
-            startChildActivityIntent.putExtras(extras);
-
-            startActivity(startChildActivityIntent);
         } else {
 
-            Context context = MainActivity.this;
+             textTitle = FavoriteMoviesList.get(clickedItemIndex).getTitle();
 
-            Class destinationActivity = ChildActivity.class;
+             textReleaseDate = FavoriteMoviesList.get(clickedItemIndex).getRelease_date();
 
-            Intent startChildActivityIntent = new Intent(context, destinationActivity);
+             textOverview = FavoriteMoviesList.get(clickedItemIndex).getOverview();
 
-            String textTitle = FavoriteMoviesList.get(clickedItemIndex).getTitle();
+             textVoteAverage = FavoriteMoviesList.get(clickedItemIndex).getVote_count();
 
-            String textReleaseDate = FavoriteMoviesList.get(clickedItemIndex).getRelease_date();
+             urlThumbnail = FavoriteMoviesList.get(clickedItemIndex).getPoster_path();
 
-            String textOverview = FavoriteMoviesList.get(clickedItemIndex).getOverview();
-
-            String textVoteAverage = FavoriteMoviesList.get(clickedItemIndex).getVote_count();
-
-            String urlThumbnail = FavoriteMoviesList.get(clickedItemIndex).getPoster_path();
-
-            int numberMovieIDInTMDB = FavoriteMoviesList.get(clickedItemIndex).getId();
-
-            Bundle extras = new Bundle();
-
-            extras.putString("title", textTitle);
-            extras.putString("releaseDate", textReleaseDate);
-            extras.putString("overview", textOverview);
-            extras.putString("voteAverage", textVoteAverage);
-            extras.putString("Thumbnail", urlThumbnail);
-            extras.putInt("id", numberMovieIDInTMDB);
-
-            startChildActivityIntent.putExtras(extras);
-
-            startActivity(startChildActivityIntent);
+             numberMovieIDInTMDB = FavoriteMoviesList.get(clickedItemIndex).getId();
 
         }
+
+        Bundle extras = new Bundle();
+
+        extras.putString("title", textTitle);
+        extras.putString("releaseDate", textReleaseDate);
+        extras.putString("overview", textOverview);
+        extras.putString("voteAverage", textVoteAverage);
+        extras.putString("Thumbnail", urlThumbnail);
+        extras.putInt("id", numberMovieIDInTMDB);
+
+        startChildActivityIntent.putExtras(extras);
+
+        startActivity(startChildActivityIntent);
     }
 
     @Override
@@ -393,7 +389,6 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
 
         super.onSaveInstanceState(outState);
     }
-
 
     private boolean internet_connection() {
 

@@ -3,7 +3,7 @@
     <color name="colorPrimary">#8061e4</color>
     <color name="colorPrimaryDark">#7654e2</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorTeal">#26a69a</color>
+    <color name="colorTeal">#21d277</color>
     <color name="color_text">@android:color/white</color>
     <color name="color_View">@android:color/darker_gray</color>
     <color name="color_detailPageText">#091c24</color>

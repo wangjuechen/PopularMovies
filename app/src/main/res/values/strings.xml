@@ -1,18 +1,23 @@
 <resources>
     <string name="app_name">Pop Movies</string>
-    <string name="sort_by_popular">By most popular</string>
-    <string name="sort_by_rate">By top rated</string>
     <string name="description">This is a poster_path of movie</string>
     <string name="vote_count">%1$s /10</string>
-    <string name="toolsText_title">Titanic</string>
-    <string name="sort_by_favorite">Favorites</string>
+
+
     <string name="title_trailers">Trailers</string>
     <string name="userReview_title">Reviews</string>
     <string name="Author">Author: </string>
     <string name="title_ChildActivity">Movie Details</string>
-    <string name="favorite_tip">Marked as Favorite</string>
+
     <string name="topRated_movie_title">Top Rated Movies</string>
     <string name="favorite_movie_title">Favorite Movies</string>
     <string name="runtime_text">mins</string>
+
     <string name="popular_movie_title">Pop Movies</string>
+
+    <string name="tab_Popular">Popular</string>
+    <string name="tab_Rate">Rate</string>
+    <string name="tab_Favorite">Favorites</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

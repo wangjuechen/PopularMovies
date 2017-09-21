@@ -9,6 +9,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -23,7 +24,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.android.popularmovies.data.PopularMovieContract;
-import com.example.android.popularmovies.utilities.FavoriteMovieUtils;
 import com.example.android.popularmovies.utilities.NetworkUtils;
 
 import org.json.JSONArray;
@@ -59,15 +59,13 @@ public class TabFragment extends Fragment implements MovieAdapter.ListItemClickL
 
     private final String KEY_INSTANCE_STATE_RV_POSITION = "recycleViewKey";
 
-    private int mSectionNumber;
-
     private String MOVIE_POPULAR_URL =
             "http://api.themoviedb.org/3/movie/popular?api_key=" + key + "&language=en-US&page=";
 
     private String MOVIE_RATE_URL =
             "http://api.themoviedb.org/3/movie/top_rated?api_key=" + key + "&language=en-US&page=";
 
-    private static int mParsingJSONFlag;
+    private static boolean ParsingPopMoviesJson = true;
 
     private Toast mToast;
 
@@ -83,14 +81,13 @@ public class TabFragment extends Fragment implements MovieAdapter.ListItemClickL
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
-        //TODO: cant load popular movies list, as section number plus twice at first launch and movies List is messy!!!!!!!even worse after clicking, need to be fixed
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        loadDataToArrayList();
     }
 
 
@@ -102,10 +99,6 @@ public class TabFragment extends Fragment implements MovieAdapter.ListItemClickL
 
         ButterKnife.bind(this, view);
 
-        loadDataToArrayList();
-
-        mSectionNumber = getArguments() != null ? getArguments().getInt(ARG_SECTION_NUMBER) : 1;
-
         SetMarginOfGridlayout setMarginOfGridlayout = new SetMarginOfGridlayout(0);
 
         mLayoutManager = new GridLayoutManager(getActivity(), numberOfColumns());
@@ -116,27 +109,21 @@ public class TabFragment extends Fragment implements MovieAdapter.ListItemClickL
 
         mRecycleView.setHasFixedSize(true);
 
-       switch (mSectionNumber) {
+        switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
             case 1: {
-                makeMovieSearchQuery(MOVIE_POPULAR_URL + String.valueOf(1));
-                mMovieAdapter = new MovieAdapter(getActivity(), PopMoviesList, mSectionNumber, this);
-
+                mMovieAdapter = new MovieAdapter(getActivity(), PopMoviesList, this);
                 break;
             }
             case 2: {
-                makeMovieSearchQuery(MOVIE_RATE_URL + String.valueOf(1));
-                mMovieAdapter = new MovieAdapter(getActivity(), TopRatedMoviesList, mSectionNumber, this);
-
+                mMovieAdapter = new MovieAdapter(getActivity(), TopRatedMoviesList, this);
                 break;
             }
             case 3: {
-                //mMovieAdapter.setMovieData(FavoriteMoviesList);
-                mMovieAdapter = new MovieAdapter(getActivity(), FavoriteMoviesList, mSectionNumber, this);
-
+                mMovieAdapter = new MovieAdapter(getActivity(), FavoriteMoviesList, this);
                 break;
             }
         }
-        mRecycleView.setAdapter(mMovieAdapter);
+            mRecycleView.setAdapter(mMovieAdapter);
 
 
         EndlessRecyclerViewScrollListener endlessRecyclerViewScrollListener
@@ -144,14 +131,14 @@ public class TabFragment extends Fragment implements MovieAdapter.ListItemClickL
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
 
-                makeMovieSearchQuery(mSectionNumber == 1 ? MOVIE_POPULAR_URL + String.valueOf(page) : MOVIE_RATE_URL + String.valueOf(page));
+                makeMovieSearchQuery(ParsingPopMoviesJson ? MOVIE_POPULAR_URL + String.valueOf(page) : MOVIE_RATE_URL + String.valueOf(page));
 
                 final int curSize = mMovieAdapter.getItemCount();
                 view.post(new Runnable() {
                     @Override
                     public void run() {
                         // Notify adapter with appropriate notify methods
-                        mMovieAdapter.notifyItemRangeInserted(curSize, mSectionNumber == 1 ? PopMoviesList.size() - 1 : TopRatedMoviesList.size() - 1);
+                        mMovieAdapter.notifyItemRangeInserted(curSize, ParsingPopMoviesJson ? PopMoviesList.size() - 1 : TopRatedMoviesList.size() - 1);
                     }
                 });
 
@@ -160,6 +147,21 @@ public class TabFragment extends Fragment implements MovieAdapter.ListItemClickL
         mRecycleView.addOnScrollListener(endlessRecyclerViewScrollListener);
 
         return view;
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(KEY_INSTANCE_STATE_RV_POSITION);
+            mRecycleView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(KEY_INSTANCE_STATE_RV_POSITION, mRecycleView.getLayoutManager().onSaveInstanceState());
     }
 
     @Override
@@ -181,7 +183,7 @@ public class TabFragment extends Fragment implements MovieAdapter.ListItemClickL
 
         Intent startChildActivityIntent = new Intent(getContext(), destinationActivity);
 
-        if (mSectionNumber == 1) {
+        if (getArguments().getInt(ARG_SECTION_NUMBER) == 1) {
 
             textTitle = PopMoviesList.get(clickedItemIndex).getTitle();
 
@@ -195,19 +197,21 @@ public class TabFragment extends Fragment implements MovieAdapter.ListItemClickL
 
             numberMovieIDInTMDB = PopMoviesList.get(clickedItemIndex).getId();
 
-        } else if (mSectionNumber == 2) {
+            if (getArguments().getInt(ARG_SECTION_NUMBER) == 2) {
 
-            textTitle = TopRatedMoviesList.get(clickedItemIndex).getTitle();
+                textTitle = TopRatedMoviesList.get(clickedItemIndex).getTitle();
 
-            textReleaseDate = TopRatedMoviesList.get(clickedItemIndex).getRelease_date();
+                textReleaseDate = TopRatedMoviesList.get(clickedItemIndex).getRelease_date();
 
-            textOverview = TopRatedMoviesList.get(clickedItemIndex).getOverview();
+                textOverview = TopRatedMoviesList.get(clickedItemIndex).getOverview();
 
-            textVoteAverage = TopRatedMoviesList.get(clickedItemIndex).getVote_count();
+                textVoteAverage = TopRatedMoviesList.get(clickedItemIndex).getVote_count();
 
-            urlThumbnail = TopRatedMoviesList.get(clickedItemIndex).getPoster_path();
+                urlThumbnail = TopRatedMoviesList.get(clickedItemIndex).getPoster_path();
 
-            numberMovieIDInTMDB = TopRatedMoviesList.get(clickedItemIndex).getId();
+                numberMovieIDInTMDB = TopRatedMoviesList.get(clickedItemIndex).getId();
+            }
+
         } else {
 
             textTitle = FavoriteMoviesList.get(clickedItemIndex).getTitle();
@@ -265,23 +269,25 @@ public class TabFragment extends Fragment implements MovieAdapter.ListItemClickL
 
         @Override
         protected void onPostExecute(String movieResponse) {
+
             //mLoadingIndicator.setVisibility(View.INVISIBLE);
-            switch (mSectionNumber) {
-                case 1:
-                    parsePopularResult(movieResponse);
-                    mMovieAdapter.setMovieData(PopMoviesList);
-                    break;
-                case 2:
-                    parseTopRatedResult(movieResponse);
-                    mMovieAdapter.setMovieData(TopRatedMoviesList);
-                    break;
-                case 3:
-                    parseFavoriteResult(movieResponse);
-                    mMovieAdapter.setMovieData(FavoriteMoviesList);
-                    break;
+
+            parseResult(movieResponse);
+
+            if (getArguments().getInt(ARG_SECTION_NUMBER) == 1) {
+
+                mMovieAdapter.setMovieData(PopMoviesList);
             }
 
+            if (getArguments().getInt(ARG_SECTION_NUMBER) == 2) {
 
+                mMovieAdapter.setMovieData(TopRatedMoviesList);
+            }
+
+            if (getArguments().getInt(ARG_SECTION_NUMBER) == 3) {
+
+                mMovieAdapter.setMovieData(FavoriteMoviesList);
+            }
         }
     }
 
@@ -317,151 +323,15 @@ public class TabFragment extends Fragment implements MovieAdapter.ListItemClickL
 
     }
 
-    private void makeMovieSearchQuery(String Url) {
+    private boolean internet_connection() {
 
-        if (Url.contains("popular")) {
-            mParsingJSONFlag = 1;
-        } else if (Url.contains("top_rated")) {
-            mParsingJSONFlag = 2;
-        } else {
-            mParsingJSONFlag = 3;
-        }
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        URL MovieSearchUrl = NetworkUtils.buildUrl(Url);
-
-        new FetchMovieTask().execute(MovieSearchUrl);
-
-    }
-
-
-    private void parsePopularResult(String movieJsonStr) {
-
-        final String OWM_LIST = "results";
-
-        final String OWM_TITLE = "original_title";
-
-        final String OWM_OVERVIEW = "overview";
-
-        final String OWM_RELEASEDATE = "release_date";
-
-        final String OWM_VOTEAVERAGE = "vote_average";
-
-        final String OWM_POSTERADDRESS = "poster_path";
-
-        final String OWM_POPULARITY = "popularity";
-
-        final String OWM_MovieIDINTMDB = "id";
-
-        try {
-
-            JSONObject response = new JSONObject(movieJsonStr);
-
-            JSONArray posts = null;
-
-            posts = response.optJSONArray(OWM_LIST);
-
-            PopMoviesList = new ArrayList<>();
-
-            for (int i = 0; i < posts.length(); i++) {
-
-                JSONObject post = posts.optJSONObject(i);
-
-                FeedItem item = new FeedItem(post.optString(OWM_TITLE), post.optString(OWM_POSTERADDRESS), post.optString(OWM_OVERVIEW)
-                        , post.optString(OWM_RELEASEDATE).substring(0, 4), post.optString(OWM_VOTEAVERAGE),
-                        post.optString(OWM_POPULARITY), post.optInt(OWM_MovieIDINTMDB));
-
-
-                PopMoviesList.add(item);
-
-            }
-
-        } catch (Exception e) {
-            mToast = Toast.makeText(getActivity(), "This is error in parse popularMovies Json", Toast.LENGTH_LONG);
-            Log.v("Error:", "" + e.getMessage());
-            mToast.show();
-        }
-    }
-
-    private void parseTopRatedResult(String movieJsonStr) {
-
-        final String OWM_LIST = "results";
-
-        final String OWM_TITLE = "original_title";
-
-        final String OWM_OVERVIEW = "overview";
-
-        final String OWM_RELEASEDATE = "release_date";
-
-        final String OWM_VOTEAVERAGE = "vote_average";
-
-        final String OWM_POSTERADDRESS = "poster_path";
-
-        final String OWM_POPULARITY = "popularity";
-
-        final String OWM_MovieIDINTMDB = "id";
-        try {
-
-            JSONObject response = new JSONObject(movieJsonStr);
-
-            JSONArray posts = null;
-
-            posts = response.optJSONArray(OWM_LIST);
-
-            TopRatedMoviesList = new ArrayList<>();
-
-
-                for (int i = 0; i < posts.length(); i++) {
-
-                    JSONObject post = posts.optJSONObject(i);
-
-                    FeedItem item = new FeedItem(post.optString(OWM_TITLE), post.optString(OWM_POSTERADDRESS), post.optString(OWM_OVERVIEW)
-                            , post.optString(OWM_RELEASEDATE).substring(0, 4), post.optString(OWM_VOTEAVERAGE),
-                            post.optString(OWM_POPULARITY), post.optInt(OWM_MovieIDINTMDB));
-
-                    TopRatedMoviesList.add(item);
-
-                }
-
-        } catch (Exception e) {
-            mToast = Toast.makeText(getActivity(), "This is error in parse topRated movies Json", Toast.LENGTH_LONG);
-            Log.v("Error:", "" + e.getMessage());
-            mToast.show();
-        }
-    }
-
-    private void parseFavoriteResult(String movieJsonStr) {
-
-        final String OWM_TITLE = "original_title";
-
-        final String OWM_OVERVIEW = "overview";
-
-        final String OWM_RELEASEDATE = "release_date";
-
-        final String OWM_VOTEAVERAGE = "vote_average";
-
-        final String OWM_POSTERADDRESS = "poster_path";
-
-        final String OWM_POPULARITY = "popularity";
-
-        final String OWM_MovieIDINTMDB = "id";
-
-        try {
-
-            JSONObject response = new JSONObject(movieJsonStr);
-
-            FavoriteMoviesList = new ArrayList<>();
-
-            FeedItem item = new FeedItem(response.optString(OWM_TITLE), response.optString(OWM_POSTERADDRESS),
-                    response.optString(OWM_OVERVIEW), response.optString(OWM_RELEASEDATE).substring(0, 4)
-                    , response.optString(OWM_VOTEAVERAGE), response.optString(OWM_POPULARITY), response.optInt(OWM_MovieIDINTMDB));
-
-            FavoriteMoviesList.add(item);
-
-        } catch (Exception e) {
-            mToast = Toast.makeText(getActivity(), "This is error in parse favoriteMovies Json", Toast.LENGTH_LONG);
-            Log.v("Error:", "" + e.toString());
-            mToast.show();
-        }
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+        return isConnected;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -493,16 +363,74 @@ public class TabFragment extends Fragment implements MovieAdapter.ListItemClickL
 
     }
 
+    public void makeMovieSearchQuery(String Url) {
 
-    private boolean internet_connection() {
+        if (Url.contains("top_rated")) {
+            ParsingPopMoviesJson = false;
+        }
+        URL MovieSearchUrl = NetworkUtils.buildUrl(Url);
 
-        ConnectivityManager cm =
-                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        new FetchMovieTask().execute(MovieSearchUrl);
 
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
-        return isConnected;
+    }
+
+
+    private void parseResult(String movieJsonStr) {
+
+        final String OWM_LIST = "results";
+
+        final String OWM_TITLE = "original_title";
+
+        final String OWM_OVERVIEW = "overview";
+
+        final String OWM_RELEASEDATE = "release_date";
+
+        final String OWM_VOTEAVERAGE = "vote_average";
+
+        final String OWM_POSTERADDRESS = "poster_path";
+
+        final String OWM_POPULARITY = "popularity";
+
+        final String OWM_MovieIDINTMDB = "id";
+        try {
+
+            JSONObject response = new JSONObject(movieJsonStr);
+
+            JSONArray posts;
+
+            posts = response.optJSONArray(OWM_LIST);
+
+            if (posts != null) {
+
+                for (int i = 0; i < posts.length(); i++) {
+
+                    JSONObject post = posts.optJSONObject(i);
+
+                    FeedItem item = new FeedItem(post.optString(OWM_TITLE), post.optString(OWM_POSTERADDRESS), post.optString(OWM_OVERVIEW)
+                            , post.optString(OWM_RELEASEDATE).substring(0, 4), post.optString(OWM_VOTEAVERAGE),
+                            post.optString(OWM_POPULARITY), post.optInt(OWM_MovieIDINTMDB));
+
+                    if (ParsingPopMoviesJson) {
+                        PopMoviesList.add(item);
+                    } else {
+                        TopRatedMoviesList.add(item);
+                    }
+                }
+
+            } else {
+
+                FeedItem item = new FeedItem(response.optString(OWM_TITLE), response.optString(OWM_POSTERADDRESS),
+                        response.optString(OWM_OVERVIEW), response.optString(OWM_RELEASEDATE).substring(0, 4)
+                        , response.optString(OWM_VOTEAVERAGE), response.optString(OWM_POPULARITY), response.optInt(OWM_MovieIDINTMDB));
+
+                FavoriteMoviesList.add(item);
+
+            }
+        } catch (Exception e) {
+            mToast = Toast.makeText(getActivity(), "This is error in parseJson", Toast.LENGTH_LONG);
+            Log.v("Error:", "" + e.getMessage());
+            mToast.show();
+        }
     }
 
 }

@@ -31,19 +31,17 @@ import java.util.ArrayList;
 import butterknife.BindView;
 
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
+class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
     private ArrayList<FeedItem> feedItemList = new ArrayList<>();
     private final Context mContext;
     private final ListItemClickListener mOnClickListener;
     private FavoriteMovieUtils mFavoriteMovieUtils = new FavoriteMovieUtils();
     private Cursor mCursor;
-    private int number;
 
 
-    protected  MovieAdapter(Context context, ArrayList<FeedItem> feedItemList, int number, ListItemClickListener listener) {
+    MovieAdapter(Context context, ArrayList<FeedItem> feedItemList, ListItemClickListener listener) {
         this.mContext = context;
         this.feedItemList = feedItemList;
-        this.number = number;
         mOnClickListener = listener;
 
     }
@@ -76,7 +74,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         final String imageUrl = "http://image.tmdb.org/t/p/w185/" +
                 feedItem.getPoster_path();
 
-        movieAdapterViewHolder.mMovieNameTextView.setText(String.valueOf(number));
+        movieAdapterViewHolder.mMovieNameTextView.setText(feedItem.getTitle());
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

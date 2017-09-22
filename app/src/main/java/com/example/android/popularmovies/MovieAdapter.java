@@ -72,7 +72,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
 
         final FeedItem feedItem = feedItemList.get(position);
 
-        final String imageUrl = "http://image.tmdb.org/t/p/w185/" +
+        final String imageUrl = "http://image.tmdb.org/t/p/w500/" +
                 feedItem.getPosterPath();
 
         movieAdapterViewHolder.mMovieNameTextView.setText(feedItem.getTitle());
@@ -85,6 +85,15 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
 
             }
         }
+
+        movieAdapterViewHolder.mFavoriteCheckButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean checked =  movieAdapterViewHolder.mFavoriteCheckButton.isChecked();
+
+                mFavoriteMovieUtils.favoriteCheck(mContext, feedItemList.get(position).getId(), checked);
+            }
+        });
 
         if (!TextUtils.isEmpty(feedItem.getPosterPath())) {
 
@@ -153,10 +162,10 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
         void onClick(int clickedItemIndex);
     }
 
-    public void setMovieData(List<FeedItem> feedItems) {
+    /*public void setMovieData(List<FeedItem> feedItems) {
         this.feedItemList = feedItems;
         notifyDataSetChanged();
-    }
+    }*/
 }
 
 

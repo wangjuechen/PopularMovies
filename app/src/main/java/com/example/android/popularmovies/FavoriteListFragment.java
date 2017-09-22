@@ -49,11 +49,7 @@ public class FavoriteListFragment extends Fragment implements MovieAdapter.ListI
     @BindView(R.id.pb_loading_indicator)
     ProgressBar mLoadingIndicator;
 
-    private String key = BuildConfig.THE_MOVIE_DB_API_TOKEN;
-
     private GridLayoutManager mLayoutManager;
-
-    private MainActivity mMainActivity;
 
     private Gson mGson;
 
@@ -69,7 +65,6 @@ public class FavoriteListFragment extends Fragment implements MovieAdapter.ListI
 
     private Toast mToast;
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
 
     public FavoriteListFragment() {
 
@@ -77,10 +72,6 @@ public class FavoriteListFragment extends Fragment implements MovieAdapter.ListI
 
     public FavoriteListFragment newInstance() {
         FavoriteListFragment fragment = new FavoriteListFragment();
-        // Bundle args = new Bundle();
-        //args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        //fragment.setArguments(args);
-        //loadDataToArrayList();
         return fragment;
     }
 
@@ -114,7 +105,6 @@ public class FavoriteListFragment extends Fragment implements MovieAdapter.ListI
 
         }
 
-        //mMovieAdapter = new MovieAdapter(MainActivity.getmContext(), FavoriteMoviesList, this);
         super.onCreate(savedInstanceState);
 
     }

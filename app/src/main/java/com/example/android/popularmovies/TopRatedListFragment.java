@@ -50,14 +50,11 @@ public class TopRatedListFragment extends Fragment implements MovieAdapter.ListI
 
     private GridLayoutManager mLayoutManager;
 
-    private MainActivity mMainActivity;
-
     private Gson mGson;
 
     private RequestQueue mRequestQueue;
 
     private JSONResultList ResultList = new JSONResultList();
-
 
     private List<FeedItem> TopRatedMoviesList = new ArrayList<>();
 
@@ -97,7 +94,7 @@ public class TopRatedListFragment extends Fragment implements MovieAdapter.ListI
 
         }
 
-        //mMovieAdapter = new MovieAdapter(MainActivity.getmContext(), TopRatedMoviesList, this);
+
         super.onCreate(savedInstanceState);
 
     }
@@ -251,21 +248,6 @@ public class TopRatedListFragment extends Fragment implements MovieAdapter.ListI
         boolean isConnected = activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting();
         return isConnected;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    private ArrayList<String> getAllFavoriteMovieURL() {
-        ArrayList<String> movieUrlList = new ArrayList<>();
-        Cursor cursor = MainActivity.getmContext().getContentResolver().query(PopularMovieContract.PopularMovieEntry.CONTENT_URI, new String[]{PopularMovieContract.PopularMovieEntry.COLUMN_MOVIE_URL}, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            do {
-                movieUrlList.add(cursor.getString(cursor
-                        .getColumnIndex(PopularMovieContract.PopularMovieEntry.COLUMN_MOVIE_URL)));
-            } while (cursor.moveToNext());
-        } else {
-            return null;
-        }
-        return movieUrlList;
     }
 
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pop Movies</string>
+    <string name="app_name">POPCORN MOVIES</string>
     <string name="description">This is a poster_path of movie</string>
     <string name="vote_count">%1$s /10</string>
 
@@ -9,11 +9,7 @@
     <string name="Author">Author: </string>
     <string name="title_ChildActivity">Movie Details</string>
 
-    <string name="topRated_movie_title">Top Rated Movies</string>
-    <string name="favorite_movie_title">Favorite Movies</string>
     <string name="runtime_text">mins</string>
-
-    <string name="popular_movie_title">Pop Movies</string>
 
     <string name="tab_Popular">Popular</string>
     <string name="tab_Rate">Rate</string>

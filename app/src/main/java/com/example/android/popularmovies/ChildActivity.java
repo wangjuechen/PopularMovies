@@ -138,11 +138,11 @@ public class ChildActivity extends AppCompatActivity {
             abar.setDisplayHomeAsUpEnabled(true);
             abar.setHomeButtonEnabled(true);
 
-            mReleaseDateText.setText(extrasForDetails.getString("releaseDate"));
+            mReleaseDateText.setText(extrasForDetails.getString("releaseDate").substring(0,4));
 
             mOverViewText.setText(extrasForDetails.getString("overview"));
 
-            mVoteAverage.setText(getString(R.string.vote_count, String.valueOf(extrasForDetails.getInt("voteAverage"))));
+            mVoteAverage.setText(getString(R.string.vote_count, String.valueOf(extrasForDetails.getDouble("voteAverage"))));
 
             Picasso.with(mContext).
                     load("http://image.tmdb.org/t/p/w185/" + extrasForDetails.getString("Thumbnail"))

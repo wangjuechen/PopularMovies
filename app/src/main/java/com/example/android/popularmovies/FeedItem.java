@@ -3,66 +3,180 @@ package com.example.android.popularmovies;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 /**
  * Created by JC on 11/03/17.
  * This class is for configure data list
  */
 
 public class FeedItem implements Parcelable {
-    private String title;
-    private String poster_path;
-    private String overview;
-    private String release_date;
-    private String vote_count;
-    private String popularity;
-    private int id;
 
-    public FeedItem(String title, String poster_path, String overview, String release_date, String vote_count, String popularity, int id) {
-        this.title = title;
-        this.poster_path = poster_path;
-        this.overview = overview;
-        this.release_date = release_date;
-        this.vote_count = vote_count;
-        this.popularity = popularity;
-        this.id = id;
+        @SerializedName("vote_count")
+        @Expose
+        private Integer voteCount;
+        @SerializedName("id")
+        @Expose
+        private Integer id;
+        @SerializedName("video")
+        @Expose
+        private Boolean video;
+        @SerializedName("vote_average")
+        @Expose
+        private Double voteAverage;
+        @SerializedName("title")
+        @Expose
+        private String title;
+        @SerializedName("popularity")
+        @Expose
+        private Double popularity;
+        @SerializedName("poster_path")
+        @Expose
+        private String posterPath;
+        @SerializedName("original_language")
+        @Expose
+        private String originalLanguage;
+        @SerializedName("original_title")
+        @Expose
+        private String originalTitle;
+        @SerializedName("genre_ids")
+        @Expose
+        private List<Integer> genreIds = null;
+        @SerializedName("backdrop_path")
+        @Expose
+        private String backdropPath;
+        @SerializedName("adult")
+        @Expose
+        private Boolean adult;
+        @SerializedName("overview")
+        @Expose
+        private String overview;
+        @SerializedName("release_date")
+        @Expose
+        private String releaseDate;
 
-    }
+        public Integer getVoteCount() {
+            return voteCount;
+        }
 
-    String getVote_count() {
-        return vote_count;
-    }
+        public void setVoteCount(Integer voteCount) {
+            this.voteCount = voteCount;
+        }
 
-    String getRelease_date() {
-        return release_date;
-    }
+        public Integer getId() {
+            return id;
+        }
 
-    String getOverview() {
-        return overview;
-    }
+        public void setId(Integer id) {
+            this.id = id;
+        }
 
-    int getId() {
-        return id;
-    }
+        public Boolean getVideo() {
+            return video;
+        }
 
-    void setId(int id) {
-        this.id = id;
-    }
+        public void setVideo(Boolean video) {
+            this.video = video;
+        }
 
-    String getTitle() {
-        return title;
-    }
+        public Double getVoteAverage() {
+            return voteAverage;
+        }
 
-    String getPoster_path() {
-        return poster_path;
-    }
+        public void setVoteAverage(Double voteAverage) {
+            this.voteAverage = voteAverage;
+        }
 
-    private FeedItem(Parcel in) {
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public Double getPopularity() {
+            return popularity;
+        }
+
+        public void setPopularity(Double popularity) {
+            this.popularity = popularity;
+        }
+
+        public String getPosterPath() {
+            return posterPath;
+        }
+
+        public void setPosterPath(String posterPath) {
+            this.posterPath = posterPath;
+        }
+
+        public String getOriginalLanguage() {
+            return originalLanguage;
+        }
+
+        public void setOriginalLanguage(String originalLanguage) {
+            this.originalLanguage = originalLanguage;
+        }
+
+        public String getOriginalTitle() {
+            return originalTitle;
+        }
+
+        public void setOriginalTitle(String originalTitle) {
+            this.originalTitle = originalTitle;
+        }
+
+        public List<Integer> getGenreIds() {
+            return genreIds;
+        }
+
+        public void setGenreIds(List<Integer> genreIds) {
+            this.genreIds = genreIds;
+        }
+
+        public String getBackdropPath() {
+            return backdropPath;
+        }
+
+        public void setBackdropPath(String backdropPath) {
+            this.backdropPath = backdropPath;
+        }
+
+        public Boolean getAdult() {
+            return adult;
+        }
+
+        public void setAdult(Boolean adult) {
+            this.adult = adult;
+        }
+
+        public String getOverview() {
+            return overview;
+        }
+
+        public void setOverview(String overview) {
+            this.overview = overview;
+        }
+
+        public String getReleaseDate() {
+            return releaseDate;
+        }
+
+        public void setReleaseDate(String releaseDate) {
+            this.releaseDate = releaseDate;
+        }
+
+    public FeedItem(Parcel in) {
         title = in.readString();
-        poster_path = in.readString();
+        posterPath = in.readString();
         overview = in.readString();
-        release_date = in.readString();
-        vote_count = in.readString();
-        popularity = in.readString();
+        releaseDate = in.readString();
+        voteAverage = in.readDouble();
+        popularity = in.readDouble();
         id = in.readInt();
     }
 
@@ -74,11 +188,11 @@ public class FeedItem implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
-        dest.writeString(poster_path);
+        dest.writeString(posterPath);
         dest.writeString(overview);
-        dest.writeString(release_date);
-        dest.writeString(vote_count);
-        dest.writeString(popularity);
+        dest.writeString(releaseDate);
+        dest.writeDouble(voteAverage);
+        dest.writeDouble(popularity);
         dest.writeInt(id);
     }
 

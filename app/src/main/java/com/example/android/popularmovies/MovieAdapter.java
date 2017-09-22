@@ -27,19 +27,20 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
 
 class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
-    private ArrayList<FeedItem> feedItemList = new ArrayList<>();
+    private List<FeedItem> feedItemList = new ArrayList<>();
     private final Context mContext;
     private final ListItemClickListener mOnClickListener;
     private FavoriteMovieUtils mFavoriteMovieUtils = new FavoriteMovieUtils();
     private Cursor mCursor;
 
 
-    MovieAdapter(Context context, ArrayList<FeedItem> feedItemList, ListItemClickListener listener) {
+    MovieAdapter(Context context, List<FeedItem> feedItemList, ListItemClickListener listener) {
         this.mContext = context;
         this.feedItemList = feedItemList;
         mOnClickListener = listener;
@@ -72,7 +73,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
         final FeedItem feedItem = feedItemList.get(position);
 
         final String imageUrl = "http://image.tmdb.org/t/p/w185/" +
-                feedItem.getPoster_path();
+                feedItem.getPosterPath();
 
         movieAdapterViewHolder.mMovieNameTextView.setText(feedItem.getTitle());
 
@@ -85,7 +86,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
             }
         }
 
-        if (!TextUtils.isEmpty(feedItem.getPoster_path())) {
+        if (!TextUtils.isEmpty(feedItem.getPosterPath())) {
 
             Picasso.with(mContext)
                     .load(imageUrl)
@@ -152,7 +153,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
         void onClick(int clickedItemIndex);
     }
 
-    public void setMovieData(ArrayList<FeedItem> feedItems) {
+    public void setMovieData(List<FeedItem> feedItems) {
         this.feedItemList = feedItems;
         notifyDataSetChanged();
     }

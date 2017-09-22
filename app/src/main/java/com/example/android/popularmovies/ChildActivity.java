@@ -142,7 +142,7 @@ public class ChildActivity extends AppCompatActivity {
 
             mOverViewText.setText(extrasForDetails.getString("overview"));
 
-            mVoteAverage.setText(getString(R.string.vote_count, extrasForDetails.getString("voteAverage")));
+            mVoteAverage.setText(getString(R.string.vote_count, String.valueOf(extrasForDetails.getInt("voteAverage"))));
 
             Picasso.with(mContext).
                     load("http://image.tmdb.org/t/p/w185/" + extrasForDetails.getString("Thumbnail"))

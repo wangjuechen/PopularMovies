@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setElevation(0);
+
         ButterKnife.bind(this);
 
         View viewActionBar = getLayoutInflater().inflate(R.layout.action_bar, null);
@@ -184,11 +186,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }

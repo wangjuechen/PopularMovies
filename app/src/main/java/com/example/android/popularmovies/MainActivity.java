@@ -23,8 +23,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.SearchView;
 import android.widget.TextView;
+import android.support.v7.widget.SearchView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,9 +68,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Gravity.CENTER);
         abar.setCustomView(viewActionBar, params);abar.setDisplayShowCustomEnabled(true);
         abar.setDisplayShowTitleEnabled(false);
-        abar.setDisplayHomeAsUpEnabled(true);
-        abar.setHomeButtonEnabled(true);
+        abar.setDisplayHomeAsUpEnabled(false);
+        abar.setHomeButtonEnabled(false);
         TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.toolBar_title);
+
         textviewTitle.setText(getString(R.string.app_name));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

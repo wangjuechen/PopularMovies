@@ -7,6 +7,6 @@
     <color name="color_text">@android:color/white</color>
     <color name="color_View">@android:color/darker_gray</color>
     <color name="color_detailPageText">#091c24</color>
-    <color name="color_tabText">#e8e5f1</color>
+    <color name="color_tabText">#b5acd3</color>
 
 </resources>

@@ -24,6 +24,7 @@
                 style="@style/MyTabLayout"
                 app:tabMode="fixed"
                 app:tabGravity="fill"
+                app:tabTextColor="@color/color_tabText"
                 app:tabSelectedTextColor="@color/colorTeal"
                 android:layout_width="match_parent"
                 android:layout_height="40dp">

@@ -1,8 +1,7 @@
 <resources>
-    <string name="app_name">POPCORN MOVIES</string>
-    <string name="description">This is a poster_path of movie</string>
+    <string name="app_name">POP MOVIES</string>
+    <string name="description">This is a poster of movie</string>
     <string name="vote_count">%1$s /10</string>
-
 
     <string name="title_trailers">Trailers</string>
     <string name="userReview_title">Reviews</string>
@@ -15,5 +14,11 @@
     <string name="tab_Rate">Rate</string>
     <string name="tab_Favorite">Favorites</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
     <string name="action_settings">Settings</string>
+    <string name="action_search">Search Movies</string>
+
+    <string name="search_hint">Search movies by name</string>
 </resources>

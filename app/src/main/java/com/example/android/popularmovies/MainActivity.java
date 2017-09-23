@@ -23,8 +23,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.support.v7.widget.SearchView;
+
+import java.lang.reflect.Field;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -165,6 +168,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 (SearchView) menu.findItem(R.id.search_button).getActionView();
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
+
+        final int textViewID = searchView.getContext().getResources().getIdentifier("android:id/search_src_text",null, null);
+        final AutoCompleteTextView searchTextView = (AutoCompleteTextView) searchView.findViewById(textViewID);
+        try {
+            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+            mCursorDrawableRes.setAccessible(true);
+            mCursorDrawableRes.set(searchTextView, 0); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
+        } catch (Exception e) {}
 
         return true;
     }

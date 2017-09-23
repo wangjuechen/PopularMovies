@@ -9,8 +9,13 @@
         <item name="android:textColor">@color/color_detailPageText</item>
     </style>
 
+
     <style name="MyTabLayout" parent="Base.Widget.Design.TabLayout">
         <item name="tabTextAppearance">@style/MyTabTextAppearance</item>
+    </style>
+
+    <style name="ToolbarStyle" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorAccent">@android:color/white</item>
     </style>
 
     <style name="MyTabTextAppearance" parent="TextAppearance.AppCompat.Button">

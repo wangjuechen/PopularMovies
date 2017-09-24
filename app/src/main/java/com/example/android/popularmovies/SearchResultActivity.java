@@ -8,15 +8,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SearchResultActivity extends AppCompatActivity implements SearchResultFragment.OnFragmentInteractionListener{
-
-    @BindView(R.id.tv_searchResultTitle)
-    TextView mSearchTitle;
+/*public class SearchResultActivity extends AppCompatActivity implements SearchResultFragment.OnFragmentInteractionListener{
 
     private String query;
 
@@ -26,7 +20,7 @@ public class SearchResultActivity extends AppCompatActivity implements SearchRes
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_search);
+        //setContentView(R.layout.activity_search);
 
         ButterKnife.bind(this);
 
@@ -38,7 +32,7 @@ public class SearchResultActivity extends AppCompatActivity implements SearchRes
 
         ResultFragment.setArguments(bundle);
 
-        getSupportFragmentManager().beginTransaction().add(R.id.searchResult_fragment_container, ResultFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, ResultFragment).commit();
     }
 
     private void handleIntent(Intent intent){
@@ -47,13 +41,11 @@ public class SearchResultActivity extends AppCompatActivity implements SearchRes
 
             query = intent.getStringExtra(SearchManager.QUERY);
 
-            mSearchTitle.setText(getString(R.string.searchResult_title, query));
-
         }
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-            mSearchTitle.setText(getString(R.string.searchNoResult, query));
+
     }
-}
+}*/

@@ -12,6 +12,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -74,6 +75,9 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
 
     @BindView(R.id.rv_searchResult)
     RecyclerView mRecycleView;
+
+    @BindView(R.id.tv_searchResultTitle)
+    TextView mSearchTitle;
 
     // TODO: Rename and change types of parameters
     private String mQueryMovieTitle;
@@ -139,6 +143,8 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
 
         SetMarginOfGridlayout setMarginOfGridlayout = new SetMarginOfGridlayout(0);
 
+        mSearchTitle.setText(getString(R.string.searchResult_title,mQueryMovieTitle));
+
         mLayoutManager = new GridLayoutManager(getActivity(), numberOfColumns());
 
         mRecycleView.setLayoutManager(mLayoutManager);
@@ -186,6 +192,8 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
 
                 mMovieAdapter = new MovieAdapter(MainActivity.getmContext(), ResultMoviesList, SearchResultFragment.this);
 
+                mRecycleView.setNestedScrollingEnabled(false);
+
                 mRecycleView.setAdapter(mMovieAdapter);
             } else {
 
@@ -199,7 +207,7 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
     private final Response.ErrorListener onPostsError = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            onButtonPressed(null);
+            mSearchTitle.setText(getString(R.string.searchNoResult, mQueryMovieTitle));
         }
     };
 

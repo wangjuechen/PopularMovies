@@ -2,6 +2,8 @@ package com.example.android.popularmovies;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -32,7 +34,7 @@ import java.lang.reflect.Field;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, SearchResultFragment.OnFragmentInteractionListener {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -43,11 +45,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static Context mContext;
 
+    private String query;
+
     private PopularListFragment mPopularListFragment = new PopularListFragment();
 
     private TopRatedListFragment mTopRatedListFragment = new TopRatedListFragment();
 
     private FavoriteListFragment mFavoriteListFragment = new FavoriteListFragment();
+
+    private SearchResultFragment mSearchResultFragment  = new SearchResultFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +123,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
 
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -165,6 +176,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                Bundle bundle = new Bundle();
+
+                bundle.putString(SearchResultFragment.ARG_QUERY_PARAM, query);
+
+                mSearchResultFragment.setArguments(bundle);
+
+                tabLayout.setVisibility(View.INVISIBLE);
+                //TODO: try to put search layout into old layout, rather than a new activity
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, mSearchResultFragment).commit();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
         final int textViewID = searchView.getContext().getResources().getIdentifier("android:id/search_src_text",null, null);
         final AutoCompleteTextView searchTextView = (AutoCompleteTextView) searchView.findViewById(textViewID);
         try {
@@ -194,8 +229,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    @Override
+    public boolean onSearchRequested() {
+
+        handleIntent(getIntent());
+
+        return super.onSearchRequested();
+    }
+
     public static Context getmContext() {
         return MainActivity.mContext;
+    }
+
+    private void handleIntent(Intent intent){
+
+        if(Intent.ACTION_SEARCH.equals(intent.getAction())){
+
+            query = intent.getStringExtra(SearchManager.QUERY);
+
+        }
     }
 
 }

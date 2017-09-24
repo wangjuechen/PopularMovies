@@ -1,4 +1,4 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.utilities;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,7 @@ import android.view.View;
  * This class is to set margin of gridlayout of RecycleView
  */
 
- class SetMarginOfGridlayout extends RecyclerView.ItemDecoration{
+ public class SetMarginOfGridlayout extends RecyclerView.ItemDecoration{
 
     private final int space;
 

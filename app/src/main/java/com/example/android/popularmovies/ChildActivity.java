@@ -1,10 +1,7 @@
 package com.example.android.popularmovies;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -22,7 +19,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.popularmovies.data.PopularMovieContract;
+import com.example.android.popularmovies.Adapters.ReviewsAdapter;
+import com.example.android.popularmovies.Adapters.TrailersAdapter;
+import com.example.android.popularmovies.DataList.FeedMovieVideo;
+import com.example.android.popularmovies.DataList.FeedUserReviews;
 import com.example.android.popularmovies.data.PopularMovieDbHelper;
 import com.example.android.popularmovies.utilities.FavoriteMovieUtils;
 import com.example.android.popularmovies.utilities.NetworkUtils;

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -28,12 +27,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.android.popularmovies.Adapters.MovieAdapter;
+import com.example.android.popularmovies.DataList.FeedItem;
 import com.example.android.popularmovies.data.PopularMovieContract;
-import com.example.android.popularmovies.utilities.NetworkUtils;
+import com.example.android.popularmovies.utilities.SetMarginOfGridlayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +64,6 @@ public class FavoriteListFragment extends Fragment implements MovieAdapter.ListI
     private final String KEY_INSTANCE_STATE_RV_POSITION = "recycleViewKey";
 
     private Toast mToast;
-
 
     public FavoriteListFragment() {
 

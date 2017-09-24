@@ -1,4 +1,4 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.Adapters;
 
 /**
  * Created by JC on 2017/3/9.
@@ -20,6 +20,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.popularmovies.DataList.FeedItem;
+import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.utilities.FavoriteMovieUtils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
@@ -29,10 +31,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 
-
-class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
     private List<FeedItem> feedItemList = new ArrayList<>();
     private final Context mContext;
     private final ListItemClickListener mOnClickListener;
@@ -40,7 +40,7 @@ class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHol
     private Cursor mCursor;
 
 
-    MovieAdapter(Context context, List<FeedItem> feedItemList, ListItemClickListener listener) {
+    public MovieAdapter(Context context, List<FeedItem> feedItemList, ListItemClickListener listener) {
         this.mContext = context;
         this.feedItemList = feedItemList;
         mOnClickListener = listener;

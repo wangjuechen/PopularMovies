@@ -1,4 +1,4 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.android.popularmovies.DataList.FeedMovieVideo;
+import com.example.android.popularmovies.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ import java.util.List;
  * Created by JC on 25/03/17.
  */
 
-class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.TrailersAdapterViewHolder> {
+public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.TrailersAdapterViewHolder> {
 
     private List<FeedMovieVideo> feedMovieVideoList = new ArrayList<>();
     private final Context mContext;
@@ -30,7 +32,7 @@ class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.TrailersAdapt
     private List<String> mTrailerType = new ArrayList<>();
 
 
-    TrailersAdapter(Context context, List<FeedMovieVideo> feedMovieVideoList) {
+    public TrailersAdapter(Context context, List<FeedMovieVideo> feedMovieVideoList) {
         this.mContext = context;
         this.feedMovieVideoList = feedMovieVideoList;
 

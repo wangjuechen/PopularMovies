@@ -17,11 +17,19 @@
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
+
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value="com.example.android.popularmovies.SearchResultActivity" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
+
         </activity>
         <activity
             android:name=".ChildActivity"
@@ -31,10 +39,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
 
+
+        </activity>
+
+        <activity
+            android:name=".SearchResultActivity">
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
         </activity>
+
 
         <provider
             android:name=".data.PopularMovieProvider"

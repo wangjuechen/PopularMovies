@@ -26,4 +26,11 @@
     <string name="action_search">Search Movies</string>
 
     <string name="search_hint">Name</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="searchResult_title">Movies title related to \" %1$s \"</string>
+
+    <string name="searchNoResult">No result related to \" %1$s \"</string>
 </resources>

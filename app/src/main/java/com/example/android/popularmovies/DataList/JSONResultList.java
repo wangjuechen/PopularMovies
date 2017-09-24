@@ -1,6 +1,7 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.DataList;
 
 
+import com.example.android.popularmovies.DataList.FeedItem;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

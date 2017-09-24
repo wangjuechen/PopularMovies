@@ -1,4 +1,4 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.DataList;
 
 /**
  * Created by JC on 25/03/17.

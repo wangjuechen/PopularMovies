@@ -186,7 +186,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 mSearchResultFragment.setArguments(bundle);
 
-                tabLayout.setVisibility(View.INVISIBLE);
                 //TODO: try to put search layout into old layout, rather than a new activity
 
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, mSearchResultFragment).commit();

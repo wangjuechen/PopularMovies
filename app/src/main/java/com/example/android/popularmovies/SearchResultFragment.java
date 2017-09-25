@@ -97,7 +97,7 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
      * @return A new instance of fragment SearchResultFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SearchResultFragment newInstance(String param1) {
+    public  SearchResultFragment newInstance(String param1) {
         SearchResultFragment fragment = new SearchResultFragment();
         Bundle args = new Bundle();
         args.putString(ARG_QUERY_PARAM, param1);

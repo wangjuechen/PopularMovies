@@ -16,11 +16,12 @@
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
 
-            <meta-data
+           <!-- <meta-data
                 android:name="android.app.default_searchable"
-                android:value="com.example.android.popularmovies.SearchResultActivity" />
+                android:value="com.example.android.popularmovies.SearchResultActivity" />-->
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />

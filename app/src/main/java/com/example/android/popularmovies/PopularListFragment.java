@@ -236,7 +236,6 @@ public class PopularListFragment extends Fragment implements MovieAdapter.ListIt
                 PopMoviesList.addAll(ResultList.getResults());
             }
 
-
         }
     };
 

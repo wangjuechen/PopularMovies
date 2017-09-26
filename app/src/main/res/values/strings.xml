@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">POP MOVIES</string>
-    <string name="description">This is a poster of movie</string>
+    <string name="description">poster of movie</string>
+    <string name="splash_TMDblogo_description">Powered by TMDb</string>
     <string name="vote_count">%1$s /10</string>
 
     <string name="title_trailers">Trailers</string>

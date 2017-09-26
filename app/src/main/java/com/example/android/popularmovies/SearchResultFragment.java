@@ -31,8 +31,6 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.transform.Result;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -45,7 +43,7 @@ import butterknife.ButterKnife;
  * Use the {@link SearchResultFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchResultFragment extends Fragment implements MovieAdapter.ListItemClickListener{
+public class SearchResultFragment extends Fragment implements MovieAdapter.ListItemClickListener {
 
     private String key = BuildConfig.THE_MOVIE_DB_API_TOKEN;
 
@@ -97,7 +95,7 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
      * @return A new instance of fragment SearchResultFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public  SearchResultFragment newInstance(String param1) {
+    public static SearchResultFragment newInstance(String param1) {
         SearchResultFragment fragment = new SearchResultFragment();
         Bundle args = new Bundle();
         args.putString(ARG_QUERY_PARAM, param1);
@@ -139,11 +137,9 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
 
         View view = inflater.inflate(R.layout.fragment_search_result, container, false);
 
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
         SetMarginOfGridlayout setMarginOfGridlayout = new SetMarginOfGridlayout(0);
-
-        mSearchTitle.setText(getString(R.string.searchResult_title,mQueryMovieTitle));
 
         mLayoutManager = new GridLayoutManager(getActivity(), numberOfColumns());
 
@@ -153,6 +149,10 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
 
         mRecycleView.setHasFixedSize(true);
         // Inflate the layout for this fragment
+
+       /* if (ResultMoviesList != null && ResultMoviesList.size() > 0) {
+            mSearchTitle.setText(getString(R.string.searchResult_title, mQueryMovieTitle));
+        }*/
         return view;
     }
 
@@ -184,22 +184,25 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
         @Override
         public void onResponse(String response) {
 
+            ResultMoviesList = new ArrayList<>();
+
             ResultList = mGson.fromJson(response, JSONResultList.class);
+
+            ResultMoviesList = ResultList.getResults();
 
             if (ResultMoviesList == null || ResultMoviesList.size() == 0) {
 
-                ResultMoviesList = ResultList.getResults();
+                mSearchTitle.setText(getString(R.string.searchNoResult, mQueryMovieTitle));
+            } else {
+
+                mSearchTitle.setText(getString(R.string.searchResult_title, mQueryMovieTitle));
 
                 mMovieAdapter = new MovieAdapter(MainActivity.getmContext(), ResultMoviesList, SearchResultFragment.this);
 
                 mRecycleView.setNestedScrollingEnabled(false);
 
                 mRecycleView.setAdapter(mMovieAdapter);
-            } else {
-
-                ResultMoviesList.addAll(ResultList.getResults());
             }
-
 
         }
     };

@@ -42,33 +42,73 @@
                     android:textSize="@dimen/releasedate_text_size"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_runtime_child_activity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/iv_runtime_child_activity"
+                    android:src="@drawable/ic_length_icon"
+                    android:layout_gravity="center"
                     android:layout_alignLeft="@id/tv_releaseDate_child_activity"
                     android:layout_below="@id/tv_releaseDate_child_activity"
                     android:layout_marginTop="12dp"
-                    android:textSize="@dimen/length_text_size" />
+                    />
+
+                <TextView
+                    android:id="@+id/tv_runtime_child_activity"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/iv_runtime_child_activity"
+                    android:layout_alignTop="@+id/iv_runtime_child_activity"
+                    android:layout_alignBottom="@+id/iv_runtime_child_activity"
+                    android:layout_marginLeft="@dimen/nav_header_vertical_spacing"
+                    android:textSize="@dimen/length_text_size"
+                    />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_rate_icon"
+                    android:layout_gravity="center"
+                    android:id="@+id/iv_voteReverage_child_activity"
+                    android:layout_alignLeft="@id/iv_runtime_child_activity"
+                    android:layout_below="@+id/iv_runtime_child_activity"
+                    android:layout_marginTop="12dp"/>
 
                 <TextView
                     android:id="@+id/tv_voteReverage_child_activity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/tv_runtime_child_activity"
-                    android:layout_below="@+id/tv_runtime_child_activity"
-                    android:layout_marginTop="12dp"
-                    android:textSize="@dimen/vote_text_size" />
+                    android:layout_alignBottom="@+id/iv_voteReverage_child_activity"
+                    android:layout_alignTop="@+id/iv_voteReverage_child_activity"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/nav_header_vertical_spacing"
+                    android:layout_toRightOf="@id/iv_voteReverage_child_activity"
+                    android:textSize="@dimen/vote_text_size"
+                    tools:text="ererererererererer" />
 
                 <CheckBox
                     android:id="@+id/favorite_checkBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/tv_voteReverage_child_activity"
-                    android:layout_below="@+id/tv_voteReverage_child_activity"
+                    android:layout_alignLeft="@id/iv_voteReverage_child_activity"
+                    android:layout_below="@+id/iv_voteReverage_child_activity"
                     android:layout_marginTop="12dp"
                     android:button="@drawable/favorite"
                     android:onClick="favoriteClick" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_favorite"
+                    android:layout_gravity="center"
+                    android:text="@string/favotite_text"
+                    android:textSize="@dimen/vote_text_size"
+                    android:layout_toRightOf="@+id/favorite_checkBox"
+                    android:layout_alignBottom="@+id/favorite_checkBox"
+                    android:layout_alignTop="@+id/favorite_checkBox"
+                    android:layout_marginLeft="@dimen/nav_header_vertical_spacing"/>
+
 
             </RelativeLayout>
 

@@ -10,6 +10,7 @@
     <string name="title_ChildActivity">Movie Details</string>
 
     <string name="runtime_text">mins</string>
+    <string name="favotite_text">Favorite</string>
 
     <string name="tab_Popular">Popular</string>
     <string name="tab_Rate">Rate</string>

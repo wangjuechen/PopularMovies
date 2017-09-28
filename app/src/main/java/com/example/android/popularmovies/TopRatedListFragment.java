@@ -42,14 +42,16 @@ import butterknife.ButterKnife;
 public class TopRatedListFragment extends Fragment implements MovieAdapter.ListItemClickListener {
 
     @BindView(R.id.rv_recycleview_PosterImage)
-    RecyclerView mRecycleView;
+     RecyclerView mRecycleView;
 
     @BindView(R.id.pb_loading_indicator)
     ProgressBar mLoadingIndicator;
 
-    private String key = BuildConfig.THE_MOVIE_DB_API_TOKEN;
+    private final String key = BuildConfig.THE_MOVIE_DB_API_TOKEN;
 
     private GridLayoutManager mLayoutManager;
+
+    private MainActivity mMainActivity;
 
     private Gson mGson;
 
@@ -63,7 +65,7 @@ public class TopRatedListFragment extends Fragment implements MovieAdapter.ListI
 
     private final String KEY_INSTANCE_STATE_RV_POSITION = "recycleViewKey";
 
-    private String MOVIE_RATE_URL =
+    private final String MOVIE_RATE_URL =
             "http://api.themoviedb.org/3/movie/top_rated?api_key=" + key + "&language=en-US&page=";
 
 
@@ -240,7 +242,7 @@ public class TopRatedListFragment extends Fragment implements MovieAdapter.ListI
         }
     };
 
-    private static boolean internet_connection() {
+    private  boolean internet_connection() {
 
         ConnectivityManager cm =
                 (ConnectivityManager) MainActivity.getmContext().getSystemService(Context.CONNECTIVITY_SERVICE);

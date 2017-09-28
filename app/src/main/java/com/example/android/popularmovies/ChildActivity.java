@@ -45,7 +45,7 @@ import butterknife.ButterKnife;
 
 public class ChildActivity extends AppCompatActivity {
 
-    public Toast mToast;
+    private Toast mToast;
 
     private static final String mURLDomain = "https://api.themoviedb.org/3/movie/";
 
@@ -59,23 +59,23 @@ public class ChildActivity extends AppCompatActivity {
 
     private ReviewsAdapter mReviewsAdapter;
 
-    private FavoriteMovieUtils mFavoriteMovieUtils = new FavoriteMovieUtils();
+    private final FavoriteMovieUtils mFavoriteMovieUtils = new FavoriteMovieUtils();
 
-    @BindView(R.id.tv_releaseDate_child_activity) TextView mReleaseDateText;
+    @BindView(R.id.tv_releaseDate_child_activity)  TextView mReleaseDateText;
 
-    @BindView(R.id.tv_voteReverage_child_activity) TextView mVoteAverage;
+    @BindView(R.id.tv_voteReverage_child_activity)  TextView mVoteAverage;
 
-    @BindView(R.id.tv_overview) TextView mOverViewText;
+    @BindView(R.id.tv_overview)  TextView mOverViewText;
 
-    @BindView(R.id.iv_poster_child_activity) ImageView mThumbnailImage;
+    @BindView(R.id.iv_poster_child_activity)  ImageView mThumbnailImage;
 
-    @BindView(R.id.tv_runtime_child_activity) TextView mRuntimeText;
+    @BindView(R.id.tv_runtime_child_activity)  TextView mRuntimeText;
 
-    @BindView(R.id.favorite_checkBox) CheckBox mFavoriteCheck;
+    @BindView(R.id.favorite_checkBox)  CheckBox mFavoriteCheck;
 
-    @BindView(R.id.rv_trailsForYoutube) RecyclerView mTrailerRecycleView;
+    @BindView(R.id.rv_trailsForYoutube)  RecyclerView mTrailerRecycleView;
 
-    @BindView(R.id.rv_userReviews) RecyclerView mReviewsRecycleView;
+    @BindView(R.id.rv_userReviews)  RecyclerView mReviewsRecycleView;
 
     private Context mContext;
 
@@ -130,8 +130,8 @@ public class ChildActivity extends AppCompatActivity {
                     ActionBar.LayoutParams.WRAP_CONTENT,
                     ActionBar.LayoutParams.MATCH_PARENT,
                     Gravity.CENTER);
-            TextView textviewTitle = (TextView) viewActionBar.findViewById(R.id.toolBar_title);
-            textviewTitle.setText(mMovieTitle);
+            TextView textViewTitle =  viewActionBar.findViewById(R.id.toolBar_title);
+            textViewTitle.setText(mMovieTitle);
             abar.setCustomView(viewActionBar, params);
             abar.setDisplayShowCustomEnabled(true);
             abar.setDisplayShowTitleEnabled(false);
@@ -214,11 +214,6 @@ public class ChildActivity extends AppCompatActivity {
     private class FetchMovieTask extends AsyncTask<URL, Void, String> {
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
         protected String doInBackground(URL... params) {
             URL searchUrl = params[0];
 
@@ -245,7 +240,9 @@ public class ChildActivity extends AppCompatActivity {
 
                 int RuntimeMin = Integer.parseInt(mMovieRuntime) - RuntimeHour * 60 ;
 
-                mRuntimeText.setText(String.valueOf(RuntimeHour) +  getString(R.string.space) + (RuntimeHour == 1? "hour": "hours") +  getString(R.string.space) + RuntimeMin +  getString(R.string.space) + getString(R.string.runtime_text));
+                mRuntimeText.setText(String.valueOf(RuntimeHour) +  getString(R.string.space) +
+                        (RuntimeHour == 1? getString(R.string.hour) : getString(R.string.hours)) +
+                        getString(R.string.space) + RuntimeMin +  getString(R.string.space) + getString(R.string.runtime_text));
 
             } else if (movieResponse.contains("author")) {
 
@@ -261,7 +258,7 @@ public class ChildActivity extends AppCompatActivity {
         }
     }
 
-    public void parseResultForYoutube(String Url) {
+    private void parseResultForYoutube(String Url) {
         final String OWM_LIST = "results";
 
         final String OWM_KEY = "key";

@@ -54,7 +54,8 @@
 
         <provider
             android:name=".data.PopularMovieProvider"
-            android:authorities="com.example.android.popularmovies.app" />
+            android:authorities="com.example.android.popularmovies.app"
+            android:exported="false" />
 
     </application>
 

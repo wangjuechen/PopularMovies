@@ -3,12 +3,9 @@ package com.example.android.popularmovies;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.inputmethodservice.Keyboard;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -24,7 +21,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,9 +28,7 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
 import java.lang.reflect.Field;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -44,29 +38,27 @@ public class MainActivity extends AppCompatActivity
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    public ViewPager mViewPager;
+    private ViewPager mViewPager;
 
     private FrameLayout mFrameLayout;
 
     @BindView(R.id.tabs)
-    public TabLayout tabLayout;
+     TabLayout tabLayout;
 
     private static Context mContext;
 
-    private String query;
+    private final PopularListFragment mPopularListFragment = new PopularListFragment();
 
-    private PopularListFragment mPopularListFragment = new PopularListFragment();
+    private final TopRatedListFragment mTopRatedListFragment = new TopRatedListFragment();
 
-    private TopRatedListFragment mTopRatedListFragment = new TopRatedListFragment();
-
-    private FavoriteListFragment mFavoriteListFragment = new FavoriteListFragment();
+    private final FavoriteListFragment mFavoriteListFragment = new FavoriteListFragment();
 
     private SearchResultFragment mSearchResultFragment = new SearchResultFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity.mContext = getApplicationContext();
+        mContext = getApplicationContext();
         setContentView(R.layout.nav_drawer);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -251,14 +243,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @Override
     public void onBackPressed() {
 
@@ -272,7 +256,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public static Context getmContext() {
-        return MainActivity.mContext;
+        return mContext;
     }
 
 

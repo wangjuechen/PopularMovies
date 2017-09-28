@@ -42,18 +42,20 @@ import butterknife.ButterKnife;
 public class PopularListFragment extends Fragment implements MovieAdapter.ListItemClickListener {
 
     @BindView(R.id.rv_recycleview_PosterImage)
-    RecyclerView mRecycleView;
+     RecyclerView mRecycleView;
 
     @BindView(R.id.pb_loading_indicator)
-    ProgressBar mLoadingIndicator;
+     ProgressBar mLoadingIndicator;
 
-    private String key = BuildConfig.THE_MOVIE_DB_API_TOKEN;
+    private final String key = BuildConfig.THE_MOVIE_DB_API_TOKEN;
 
     private GridLayoutManager mLayoutManager;
 
     private boolean fragmentLoaded;
 
     private Gson mGson;
+
+    private MainActivity mMainActivity;
 
     private RequestQueue mRequestQueue;
 
@@ -65,7 +67,7 @@ public class PopularListFragment extends Fragment implements MovieAdapter.ListIt
 
     private final String KEY_INSTANCE_STATE_RV_POSITION = "recycleViewKey";
 
-    private String MOVIE_POPULAR_URL =
+    private final String MOVIE_POPULAR_URL =
             "http://api.themoviedb.org/3/movie/popular?api_key=" + key + "&language=en-US&page=";
 
     private Toast mToast;
@@ -228,7 +230,7 @@ public class PopularListFragment extends Fragment implements MovieAdapter.ListIt
 
                 PopMoviesList = ResultList.getResults();
 
-                mMovieAdapter = new MovieAdapter(MainActivity.getmContext(), PopMoviesList, PopularListFragment.this);
+                mMovieAdapter = new MovieAdapter(mMainActivity.getmContext(), PopMoviesList, PopularListFragment.this);
 
                 mRecycleView.setAdapter(mMovieAdapter);
             } else {
@@ -242,12 +244,12 @@ public class PopularListFragment extends Fragment implements MovieAdapter.ListIt
     private final Response.ErrorListener onPostsError = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            mToast = Toast.makeText(MainActivity.getmContext(), "There is error in popular movies Json", Toast.LENGTH_LONG);
+            mToast = Toast.makeText(mMainActivity.getmContext(), "There is error in popular movies Json", Toast.LENGTH_LONG);
             mToast.show();
         }
     };
 
-    private static boolean internet_connection() {
+    private boolean internet_connection() {
 
         ConnectivityManager cm =
                 (ConnectivityManager) MainActivity.getmContext().getSystemService(Context.CONNECTIVITY_SERVICE);

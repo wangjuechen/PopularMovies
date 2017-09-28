@@ -25,8 +25,7 @@
                     android:id="@+id/iv_poster_child_activity"
                     android:layout_width="140dp"
                     android:layout_height="200dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginStart="24dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"
                     android:contentDescription="@string/description" />
 
@@ -34,21 +33,18 @@
                     android:id="@+id/tv_releaseDate_child_activity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="28dp"
                     android:layout_marginStart="28dp"
                     android:layout_marginTop="20dp"
                     android:layout_toEndOf="@id/iv_poster_child_activity"
-                    android:layout_toRightOf="@+id/iv_poster_child_activity"
                     android:textSize="@dimen/releasedate_text_size"
                     android:textStyle="bold" />
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:id="@+id/iv_runtime_child_activity"
                     android:src="@drawable/ic_length_icon"
                     android:layout_gravity="center"
-                    android:layout_alignLeft="@id/tv_releaseDate_child_activity"
                     android:layout_alignStart="@id/tv_releaseDate_child_activity"
                     android:layout_below="@id/tv_releaseDate_child_activity"
                     android:layout_marginTop="12dp"
@@ -59,21 +55,18 @@
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/iv_runtime_child_activity"
                     android:layout_toEndOf="@id/iv_runtime_child_activity"
                     android:layout_alignBottom="@+id/iv_runtime_child_activity"
-                    android:layout_marginLeft="@dimen/nav_header_vertical_spacing"
                     android:layout_marginStart="@dimen/nav_header_vertical_spacing"
                     android:textSize="@dimen/length_text_size"
                     />
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:src="@drawable/ic_rate_icon"
                     android:layout_gravity="center"
                     android:id="@+id/iv_voteReverage_child_activity"
-                    android:layout_alignLeft="@id/iv_runtime_child_activity"
                     android:layout_alignStart="@id/iv_runtime_child_activity"
                     android:layout_below="@+id/iv_runtime_child_activity"
                     android:layout_marginTop="12dp"/>
@@ -83,17 +76,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/iv_voteReverage_child_activity"
-                    android:layout_marginLeft="@dimen/nav_header_vertical_spacing"
                     android:layout_marginStart="@dimen/nav_header_vertical_spacing"
-                    android:layout_toRightOf="@id/iv_voteReverage_child_activity"
                     android:layout_toEndOf="@id/iv_voteReverage_child_activity"
                     android:textSize="@dimen/vote_text_size" />
 
                 <CheckBox
                     android:id="@+id/favorite_checkBox"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignLeft="@id/iv_voteReverage_child_activity"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:layout_alignStart="@id/iv_voteReverage_child_activity"
                     android:layout_below="@+id/iv_voteReverage_child_activity"
                     android:layout_marginTop="12dp"
@@ -108,10 +98,8 @@
                     android:layout_gravity="center"
                     android:text="@string/favotite_text"
                     android:textSize="@dimen/vote_text_size"
-                    android:layout_toRightOf="@+id/favorite_checkBox"
                     android:layout_toEndOf="@+id/favorite_checkBox"
                     android:layout_alignBottom="@+id/favorite_checkBox"
-                    android:layout_marginLeft="@dimen/nav_header_vertical_spacing"
                     android:layout_marginStart="@dimen/nav_header_vertical_spacing"/>
 
 
@@ -148,7 +136,6 @@
                     android:id="@+id/title_trailers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_marginTop="15dp"
                     android:text="@string/title_trailers"
@@ -165,7 +152,6 @@
                 android:id="@+id/review_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="15dp"
                 android:text="@string/userReview_title"

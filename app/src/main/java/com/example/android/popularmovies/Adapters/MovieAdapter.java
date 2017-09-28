@@ -8,7 +8,6 @@ package com.example.android.popularmovies.Adapters;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.database.Cursor;
-import android.os.Build;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -37,7 +36,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     private List<FeedItem> feedItemList = new ArrayList<>();
     private final Context mContext;
     private final ListItemClickListener mOnClickListener;
-    private FavoriteMovieUtils mFavoriteMovieUtils = new FavoriteMovieUtils();
+    private final FavoriteMovieUtils mFavoriteMovieUtils = new FavoriteMovieUtils();
     private Cursor mCursor;
 
 
@@ -88,13 +87,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         movieAdapterViewHolder.mMovieNameTextView.setText(feedItem.getTitle());
 
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            if (mFavoriteMovieUtils.hasObject(this.mContext, String.valueOf(feedItem.getId()))) {
+        if (mFavoriteMovieUtils.hasObject(this.mContext, String.valueOf(feedItem.getId()))) {
 
-                movieAdapterViewHolder.mFavoriteCheckButton.setChecked(true);
+            movieAdapterViewHolder.mFavoriteCheckButton.setChecked(true);
 
-            }
         }
+
 
         movieAdapterViewHolder.mFavoriteCheckButton.setOnClickListener(new OnClickListener() {
             @Override

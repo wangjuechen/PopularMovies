@@ -46,9 +46,9 @@ import butterknife.ButterKnife;
  */
 public class SearchResultFragment extends Fragment implements MovieAdapter.ListItemClickListener {
 
-    private String key = BuildConfig.THE_MOVIE_DB_API_TOKEN;
+    private final String key = BuildConfig.THE_MOVIE_DB_API_TOKEN;
 
-    public static final String ARG_QUERY_PARAM = "search_movie_title";
+    private static final String ARG_QUERY_PARAM = "search_movie_title";
 
     final private String QUERY_URL = "https://api.themoviedb.org/3/search/movie?api_key=" + key + "&language=en-US&query=";
 
@@ -57,6 +57,8 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
     private GridLayoutManager mLayoutManager;
 
     private boolean fragmentLoaded;
+
+    private MainActivity mMainActivity;
 
     private Gson mGson;
 
@@ -73,10 +75,10 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
     private MovieAdapter mMovieAdapter;
 
     @BindView(R.id.rv_searchResult)
-    RecyclerView mRecycleView;
+     RecyclerView mRecycleView;
 
     @BindView(R.id.tv_searchResultTitle)
-    TextView mSearchTitle;
+     TextView mSearchTitle;
 
     // TODO: Rename and change types of parameters
     private String mQueryMovieTitle;
@@ -117,7 +119,7 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
         }
 
         if (internet_connection()) {
-            mRequestQueue = Volley.newRequestQueue(MainActivity.getmContext());
+            mRequestQueue = Volley.newRequestQueue(mMainActivity.getmContext());
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.setDateFormat("M/d/yy hh:mm a");
             mGson = gsonBuilder.create();
@@ -275,7 +277,7 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
         void onFragmentInteraction(Uri uri);
     }
 
-    private static boolean internet_connection() {
+    private  boolean internet_connection() {
 
         ConnectivityManager cm =
                 (ConnectivityManager) MainActivity.getmContext().getSystemService(Context.CONNECTIVITY_SERVICE);

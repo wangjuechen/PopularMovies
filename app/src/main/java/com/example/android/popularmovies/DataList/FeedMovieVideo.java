@@ -6,13 +6,13 @@ package com.example.android.popularmovies.DataList;
 
 public class FeedMovieVideo {
 
-    String KeyForTrailerOnYoutube;
+    private String KeyForTrailerOnYoutube;
 
-    String TrailerName;
+    private String TrailerName;
 
-    String TrailerSize;
+    private String TrailerSize;
 
-    String TrailerType;
+    private String TrailerType;
 
     public String getTrailerName() {
         return TrailerName;

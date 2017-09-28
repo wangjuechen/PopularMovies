@@ -26,10 +26,10 @@ public class TrailersAdapter extends RecyclerView.Adapter<TrailersAdapter.Traile
 
     private List<FeedMovieVideo> feedMovieVideoList = new ArrayList<>();
     private final Context mContext;
-    private List<String> mTrailersYoutubeUrl = new ArrayList<>();
-    private List<String> mTrailersName = new ArrayList<>();
-    private List<String> mTrailerSize = new ArrayList<>();
-    private List<String> mTrailerType = new ArrayList<>();
+    private final List<String> mTrailersYoutubeUrl = new ArrayList<>();
+    private final List<String> mTrailersName = new ArrayList<>();
+    private final List<String> mTrailerSize = new ArrayList<>();
+    private final List<String> mTrailerType = new ArrayList<>();
 
 
     public TrailersAdapter(Context context, List<FeedMovieVideo> feedMovieVideoList) {

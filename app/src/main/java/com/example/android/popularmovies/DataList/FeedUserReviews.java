@@ -6,9 +6,9 @@ package com.example.android.popularmovies.DataList;
 
 public class FeedUserReviews {
 
-    String UserNames;
+    private String UserNames;
 
-    String ReviewsContent;
+    private String ReviewsContent;
 
     public String getUserNames() {
         return UserNames;

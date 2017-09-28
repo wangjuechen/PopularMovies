@@ -48,8 +48,8 @@ public class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ReviewsA
 
         FeedUserReviews feedItem = feedUserReviewsesList.get(position);
 
-        holder.mTextView.setText(mContext.getString(R.string.Author) + "  " + feedItem.getUserNames() +
-                "\n\n" + feedItem.getReviewsContent());
+        holder.mTextView.setText(mContext.getString(R.string.Author) + mContext.getString(R.string.space) + feedItem.getUserNames() +
+                mContext.getString(R.string.newLine) + feedItem.getReviewsContent());
     }
 
     @Override

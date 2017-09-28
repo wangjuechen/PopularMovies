@@ -35,9 +35,13 @@
     <string name="searchNoResult">No result related to \" %1$s \"</string>
 
     <string name="space">&#160;</string>
+    <string name="newLine">\n\n</string>
+    <string name="hour">hour</string>
+    <string name="hours">hours</string>
+
 
     <string name="about_title">Third-party Library License</string>
-    <string name="thank_content">Several fantastic open-source library have really helped get Pop Movies to where it is today.
+    <string name="thank_content">Several fantastic open-source libraries have really helped get Pop Movies to where it is today.
     A few require that I include their license agreements within this product. A big thanks to those smart people behind the fantastic programs listed.
     </string>
 

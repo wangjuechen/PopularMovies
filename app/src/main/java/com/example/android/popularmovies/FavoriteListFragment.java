@@ -44,20 +44,22 @@ import butterknife.ButterKnife;
 public class FavoriteListFragment extends Fragment implements MovieAdapter.ListItemClickListener {
 
     @BindView(R.id.rv_recycleview_PosterImage)
-    RecyclerView mRecycleView;
+     RecyclerView mRecycleView;
 
     @BindView(R.id.pb_loading_indicator)
-    ProgressBar mLoadingIndicator;
+     ProgressBar mLoadingIndicator;
 
     private GridLayoutManager mLayoutManager;
 
     private Gson mGson;
 
+    private MainActivity mMainactivity;
+
     private RequestQueue mRequestQueue;
 
     private FeedItem feeditem;
 
-    private List<FeedItem> FavoriteMoviesList = new ArrayList<>();
+    private final List<FeedItem> FavoriteMoviesList = new ArrayList<>();
 
     private MovieAdapter mMovieAdapter;
 
@@ -78,16 +80,16 @@ public class FavoriteListFragment extends Fragment implements MovieAdapter.ListI
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
         if (internet_connection()) {
-            mRequestQueue = Volley.newRequestQueue(MainActivity.getmContext());
+            mRequestQueue = Volley.newRequestQueue(mMainactivity.getmContext());
             GsonBuilder gsonBuilder = new GsonBuilder();
             gsonBuilder.setDateFormat("M/d/yy hh:mm a");
             mGson = gsonBuilder.create();
 
             List<String> FavoriteUrlList = null;
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                FavoriteUrlList = getAllFavoriteMovieURL();
-            }
+
+            FavoriteUrlList = getAllFavoriteMovieURL();
+
 
             if (FavoriteUrlList != null && FavoriteUrlList.size() > 0) {
 
@@ -215,7 +217,7 @@ public class FavoriteListFragment extends Fragment implements MovieAdapter.ListI
         }
     };
 
-    private static boolean internet_connection() {
+    private boolean internet_connection() {
 
         ConnectivityManager cm =
                 (ConnectivityManager) MainActivity.getmContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -238,6 +240,7 @@ public class FavoriteListFragment extends Fragment implements MovieAdapter.ListI
         } else {
             return null;
         }
+        cursor.close();
         return movieUrlList;
     }
 

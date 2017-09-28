@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">POP MOVIES</string>
+    <string name="app_name">Pop Movies</string>
     <string name="description">poster of movie</string>
     <string name="splash_TMDblogo_description">Powered by TMDb</string>
     <string name="vote_count">%1$s /10</string>
@@ -19,20 +19,85 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
-    <string name="action_aboutMenu">About</string>
-    <string name="action_rate">Rate</string>
-    <string name="action_linkToTMDb">TMDb</string>
-
+    <string name="action_settingMenu">Setting</string>
+    <string name="action_rate">About Pop Movies</string>
+    <string name="action_linkToTMDb">Go to TMDb</string>
+    <string name="splash_poweredBy">Powered By</string>
 
     <string name="action_search">Search Movies</string>
 
     <string name="search_hint">Name</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="coming_soon">Log in feature coming soon</string>
 
     <string name="searchResult_title">Movies title related to \" %1$s \"</string>
 
     <string name="searchNoResult">No result related to \" %1$s \"</string>
+
+    <string name="space">&#160;</string>
+
+    <string name="about_title">Third-party Library License</string>
+    <string name="thank_content">Several fantastic open-source library have really helped get Pop Movies to where it is today.
+    A few require that I include their license agreements within this product. A big thanks to those smart people behind the fantastic programs listed.
+    </string>
+
+    <string name="ButterKnife_list">Butter Knife</string>
+    <string name="ButterKnife_license">Copyright 2013 Jake Wharton
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</string>
+
+    <string name="Gson_list">Gson</string>
+    <string name="Gson_license">Copyright 2008 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</string>
+
+    <string name="Picasso_list">Picasso</string>
+    <string name="Picasso_license">Copyright 2013 Square, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</string>
+
+    <string name="Volley_list">Volley</string>
+    <string name="Volley_license">Copyright 2008 Google Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.</string>
 </resources>

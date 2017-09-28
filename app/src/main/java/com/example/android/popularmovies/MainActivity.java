@@ -120,12 +120,12 @@ public class MainActivity extends AppCompatActivity
 
         int id = item.getItemId();
 
-        if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.rate_link) {
-
-        } else if (id == R.id.nav_about) {
-
+        if (id == R.id.nav_about) {
+            Intent intent = new Intent(this, AboutActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.TMDb_link) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.themoviedb.org"));
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -189,8 +189,6 @@ public class MainActivity extends AppCompatActivity
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
-
 
                 mSearchResultFragment = SearchResultFragment.newInstance(query);
 
@@ -277,13 +275,5 @@ public class MainActivity extends AppCompatActivity
         return MainActivity.mContext;
     }
 
-    private void handleIntent(Intent intent) {
-
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-
-            query = intent.getStringExtra(SearchManager.QUERY);
-
-        }
-    }
 
 }

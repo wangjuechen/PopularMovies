@@ -6,6 +6,7 @@ package com.example.android.popularmovies.Adapters;
  */
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Build;
 import android.support.v7.widget.GridLayoutManager;
@@ -58,7 +59,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         View view = LayoutInflater.from(parent.getContext()).inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
 
         GridLayoutManager.LayoutParams lp = (GridLayoutManager.LayoutParams) view.getLayoutParams();
-        lp.height = parent.getMeasuredHeight() / 2;
+
+        if (parent.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT && !parent.getResources().getBoolean(R.bool.isTablet)) {
+            lp.height = parent.getMeasuredHeight() / 2;
+        }
+
+        if (parent.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE && !parent.getResources().getBoolean(R.bool.isTablet)) {
+            lp.height = parent.getMeasuredHeight();
+        }
+
+
         view.setLayoutParams(lp);
 
         MovieAdapterViewHolder viewHolder = new MovieAdapterViewHolder(view);
@@ -79,7 +89,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            if(mFavoriteMovieUtils.hasObject(this.mContext,String.valueOf(feedItem.getId()))){
+            if (mFavoriteMovieUtils.hasObject(this.mContext, String.valueOf(feedItem.getId()))) {
 
                 movieAdapterViewHolder.mFavoriteCheckButton.setChecked(true);
 
@@ -89,7 +99,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         movieAdapterViewHolder.mFavoriteCheckButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean checked =  movieAdapterViewHolder.mFavoriteCheckButton.isChecked();
+                boolean checked = movieAdapterViewHolder.mFavoriteCheckButton.isChecked();
 
                 mFavoriteMovieUtils.favoriteCheck(mContext, feedItemList.get(position).getId(), checked);
             }

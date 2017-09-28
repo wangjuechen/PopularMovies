@@ -241,7 +241,12 @@ public class ChildActivity extends AppCompatActivity {
 
                 parseResultForRuntime(movieResponse);
 
-                mRuntimeText.setText(mMovieRuntime + " " + getString(R.string.runtime_text));
+                int RuntimeHour = Integer.parseInt(mMovieRuntime) / 60;
+
+                int RuntimeMin = Integer.parseInt(mMovieRuntime) - RuntimeHour * 60 ;
+
+                mRuntimeText.setText(String.valueOf(RuntimeHour) +  getString(R.string.space) + (RuntimeHour == 1? "hour": "hours") +  getString(R.string.space) + RuntimeMin +  getString(R.string.space) + getString(R.string.runtime_text));
+
             } else if (movieResponse.contains("author")) {
 
                 parseUserReviews(movieResponse);

@@ -1,6 +1,7 @@
 package com.example.android.popularmovies;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -216,7 +217,46 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
 
     @Override
     public void onClick(int clickedItemIndex) {
+        String textTitle;
 
+        String textReleaseDate;
+
+        String textOverview;
+
+        Double textVoteAverage;
+
+        String urlThumbnail;
+
+        int numberMovieIDInTMDB;
+
+        Class destinationActivity = ChildActivity.class;
+
+        Intent startChildActivityIntent = new Intent(getContext(), destinationActivity);
+
+        textTitle = ResultMoviesList.get(clickedItemIndex).getTitle();
+
+        textReleaseDate = ResultMoviesList.get(clickedItemIndex).getReleaseDate();
+
+        textOverview = ResultMoviesList.get(clickedItemIndex).getOverview();
+
+        textVoteAverage = ResultMoviesList.get(clickedItemIndex).getVoteAverage();
+
+        urlThumbnail = ResultMoviesList.get(clickedItemIndex).getPosterPath();
+
+        numberMovieIDInTMDB = ResultMoviesList.get(clickedItemIndex).getId();
+
+        Bundle extras = new Bundle();
+
+        extras.putString("title", textTitle);
+        extras.putString("releaseDate", textReleaseDate);
+        extras.putString("overview", textOverview);
+        extras.putDouble("voteAverage", textVoteAverage);
+        extras.putString("Thumbnail", urlThumbnail);
+        extras.putInt("id", numberMovieIDInTMDB);
+
+        startChildActivityIntent.putExtras(extras);
+
+        startActivity(startChildActivityIntent);
     }
 
 

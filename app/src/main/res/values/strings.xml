@@ -21,7 +21,7 @@
 
     <string name="action_settingMenu">Setting</string>
     <string name="action_rate">About Pop Movies</string>
-    <string name="action_linkToTMDb">Go to TMDb</string>
+    <string name="action_linkToTMDb">Link to TMDb</string>
     <string name="splash_poweredBy">Powered By</string>
 
     <string name="action_search">Search Movies</string>
@@ -36,11 +36,13 @@
 
     <string name="space">&#160;</string>
     <string name="newLine">\n\n</string>
-    <string name="hour">hour</string>
-    <string name="hours">hours</string>
+    <string name="hour">hr</string>
+    <string name="hours">hrs</string>
 
 
-    <string name="about_title">Third-party Library License</string>
+    <string name="about_title">Attribution</string>
+    <string name="about_content">This product uses the TMDb API but is not endorsed or certified by TMDb.</string>
+    <string name="library_title">Third-party Library License</string>
     <string name="thank_content">Several fantastic open-source libraries have really helped get Pop Movies to where it is today.
     A few require that I include their license agreements within this product. A big thanks to those smart people behind the fantastic programs listed.
     </string>

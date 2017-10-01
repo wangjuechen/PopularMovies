@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, AboutActivity.class);
             startActivity(intent);
         } else if (id == R.id.TMDb_link) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.themoviedb.org"));
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.themoviedb.org/"));
             startActivity(intent);
         }
 
@@ -189,7 +189,6 @@ public class MainActivity extends AppCompatActivity
                 getSupportFragmentManager().beginTransaction().
                         replace(R.id.search_page_container, mSearchResultFragment).
                         commit();
-                //TODO: here need to be fix,
 
                 mFrameLayout.setVisibility(View.VISIBLE);
 

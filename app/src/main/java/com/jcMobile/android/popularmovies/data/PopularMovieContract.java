@@ -11,7 +11,7 @@ import android.provider.BaseColumns;
 
 public class PopularMovieContract  {
 
-    public static final String CONTENT_AUTHORITY = "com.example.android.popularmovies.app";
+    public static final String CONTENT_AUTHORITY = "com.jcMobile.android.popularmovies.app";
 
     private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 

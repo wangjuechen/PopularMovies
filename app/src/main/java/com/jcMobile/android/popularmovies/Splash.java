@@ -34,4 +34,10 @@ public class Splash extends Activity {
         time.start();
 
     }
+
+    protected void onPause() {
+        super.onPause();
+        finish();
+
+    }
 }

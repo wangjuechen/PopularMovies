@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.android.popularmovies">
+    package="com.jcMobile.android.popularmovies">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".Splash"
+            android:name="com.jcMobile.android.popularmovies.Splash"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,7 @@
 
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.jcMobile.android.popularmovies.MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
@@ -39,22 +39,22 @@
 
 
         <activity
-            android:name=".ChildActivity"
+            android:name="com.jcMobile.android.popularmovies.ChildActivity"
             android:label="@string/title_ChildActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName="com.jcMobile.android.popularmovies.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value="com.jcMobile.android.popularmovies.MainActivity" />
         </activity>
 
         <activity
-            android:name=".AboutActivity"
+            android:name="com.jcMobile.android.popularmovies.AboutActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName="com.jcMobile.android.popularmovies.MainActivity"/>
 
         <provider
-            android:name=".data.PopularMovieProvider"
-            android:authorities="com.example.android.popularmovies.app"
+            android:name="com.jcMobile.android.popularmovies.data.PopularMovieProvider"
+            android:authorities="com.jcMobile.android.popularmovies.app"
             android:exported="false" />
 
     </application>

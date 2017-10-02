@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/mainActivity_constraintlayout"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.android.popularmovies.MainActivity"
+    tools:context=".MainActivity"
     tools:showIn="@layout/app_bar_main">
 
     <RelativeLayout
         android:id="@+id/rv_relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context="com.example.android.popularmovies.MainActivity">
+        tools:context=".MainActivity">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar"

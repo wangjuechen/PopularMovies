@@ -77,8 +77,6 @@ public class TopRatedListFragment extends Fragment implements MovieAdapter.ListI
             "http://api.themoviedb.org/3/movie/top_rated?api_key=" + key + "&language=en-US&page=";
 
 
-    private Toast mToast;
-
 
     public TopRatedListFragment() {
 

@@ -84,10 +84,6 @@ public class PopularListFragment extends Fragment implements MovieAdapter.ListIt
 
     public PopularListFragment newInstance() {
         PopularListFragment fragment = new PopularListFragment();
-        //Bundle args = new Bundle();
-        //args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        //fragment.setArguments(args);
-        //loadDataToArrayList();
         return fragment;
     }
 

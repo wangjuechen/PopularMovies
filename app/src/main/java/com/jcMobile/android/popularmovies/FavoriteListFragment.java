@@ -73,8 +73,6 @@ public class FavoriteListFragment extends Fragment implements MovieAdapter.ListI
 
     private final String KEY_INSTANCE_STATE_RV_POSITION = "recycleViewKey";
 
-    private Toast mToast;
-
     public FavoriteListFragment() {
 
     }

@@ -7,6 +7,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -32,6 +34,8 @@ import com.jcMobile.android.popularmovies.utilities.SetMarginOfGridlayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +56,8 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
     @BindView(com.jcMobile.android.popularmovies.R.id.researchresult_linearlayout)
     CoordinatorLayout mLayout;
 
+    private final String KEY_INSTANCE_STATE_RV_POSITION = "recycleViewKey";
+
     private final String key = BuildConfig.THE_MOVIE_DB_API_TOKEN;
 
     private static final String ARG_QUERY_PARAM = "search_movie_title";
@@ -69,10 +75,6 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
     private Gson mGson;
 
     private RequestQueue mRequestQueue;
-
-    private FeedItem feedItem;
-
-    private Toast mToast;
 
     private JSONResultList ResultList;
 
@@ -120,7 +122,7 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
 
             mQueryMovieTitle = getArguments().getString(ARG_QUERY_PARAM);
 
-            mFullQueryUrl = QUERY_URL + mQueryMovieTitle;
+            mFullQueryUrl = QUERY_URL + Uri.encode(mQueryMovieTitle);
 
         }
 
@@ -145,6 +147,21 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
     }
 
     @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(KEY_INSTANCE_STATE_RV_POSITION);
+            mRecycleView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(KEY_INSTANCE_STATE_RV_POSITION, mRecycleView.getLayoutManager().onSaveInstanceState());
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -163,19 +180,8 @@ public class SearchResultFragment extends Fragment implements MovieAdapter.ListI
         if(snakeBarAppear) showSnakeBar();
 
         mRecycleView.setHasFixedSize(true);
-        // Inflate the layout for this fragment
 
-       /* if (ResultMoviesList != null && ResultMoviesList.size() > 0) {
-            mSearchTitle.setText(getString(R.string.searchResult_title, mQueryMovieTitle));
-        }*/
         return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override

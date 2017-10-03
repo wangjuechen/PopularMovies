@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
 
     private ViewPager mViewPager;
 
-    private FrameLayout mFrameLayout;
+    private FrameLayout mSearchFragmentContainer;
 
     @BindView(com.jcMobile.android.popularmovies.R.id.tabs)
      TabLayout tabLayout;
@@ -57,7 +57,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         mContext = getApplicationContext();
         setContentView(com.jcMobile.android.popularmovies.R.layout.nav_drawer);
 
@@ -98,13 +100,25 @@ public class MainActivity extends AppCompatActivity
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mFrameLayout = (FrameLayout) findViewById(com.jcMobile.android.popularmovies.R.id.search_page_container);
+        mSearchFragmentContainer = (FrameLayout) findViewById(com.jcMobile.android.popularmovies.R.id.search_page_container);
         mViewPager = (ViewPager) findViewById(com.jcMobile.android.popularmovies.R.id.container);
+
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     @Override
@@ -190,7 +204,7 @@ public class MainActivity extends AppCompatActivity
                         replace(com.jcMobile.android.popularmovies.R.id.search_page_container, mSearchResultFragment).
                         commit();
 
-                mFrameLayout.setVisibility(View.VISIBLE);
+                mSearchFragmentContainer.setVisibility(View.VISIBLE);
 
                 return true;
             }
@@ -219,9 +233,9 @@ public class MainActivity extends AppCompatActivity
 
                 tabLayout.setVisibility(View.VISIBLE);
 
-                mViewPager.setVisibility(View.VISIBLE);//This works, the location of recyclerView is saved before shifting to search page
+                mViewPager.setVisibility(View.VISIBLE);
 
-                mFrameLayout.setVisibility(View.INVISIBLE);
+                mSearchFragmentContainer.setVisibility(View.INVISIBLE);
 
                 return true;
             }

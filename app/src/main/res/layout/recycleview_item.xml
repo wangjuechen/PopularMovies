@@ -12,16 +12,14 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="@dimen/activity_horizontal_margin"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginBottom="32dp"
         android:background="@android:color/white"
         android:elevation="16dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/description"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/favorite_checkBoxInMainPage"
+        app:layout_constraintEnd_toEndOf="@id/favorite_checkBoxInMainPage"
+        app:layout_constraintStart_toStartOf="@id/tv_movieNameInMainPage"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -34,9 +32,9 @@
         android:singleLine="true"
         android:maxLines="1"
         android:textSize="@dimen/overview_text_size"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/favorite_checkBoxInMainPage"
-        app:layout_constraintStart_toStartOf="@+id/iv_Poster"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_Poster"
         tools:text="Civil War 1234567890abcdefghijklmnopq" />
 
@@ -49,8 +47,8 @@
         android:layout_marginTop="6dp"
         android:button="@drawable/favorite"
         android:onClick="favoriteClick"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/iv_Poster"
-        app:layout_constraintTop_toBottomOf="@+id/iv_Poster" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

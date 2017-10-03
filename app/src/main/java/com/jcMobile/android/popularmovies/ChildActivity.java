@@ -14,6 +14,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ import com.jcMobile.android.popularmovies.DataList.FeedUserReviews;
 import com.jcMobile.android.popularmovies.data.PopularMovieDbHelper;
 import com.jcMobile.android.popularmovies.utilities.FavoriteMovieUtils;
 import com.jcMobile.android.popularmovies.utilities.NetworkUtils;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -95,6 +98,8 @@ public class ChildActivity extends AppCompatActivity {
         setContentView(com.jcMobile.android.popularmovies.R.layout.detailed_page);
         ButterKnife.bind(this);
 
+        postponeEnterTransition();
+
         LinearLayoutManager linearLayoutManagerForTrailer = new LinearLayoutManager(this);
 
         LinearLayoutManager linearLayoutManagerForReview = new LinearLayoutManager(this);
@@ -144,9 +149,29 @@ public class ChildActivity extends AppCompatActivity {
 
             mVoteAverage.setText(getString(com.jcMobile.android.popularmovies.R.string.vote_count, String.valueOf(extrasForDetails.getDouble("voteAverage"))));
 
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                String imageTransitionName = extrasForDetails.getString("transitionName");
+                mThumbnailImage.setTransitionName(imageTransitionName);
+            }
+
+            //supportPostponeEnterTransition();
+
             Picasso.with(mContext).
-                    load("http://image.tmdb.org/t/p/w185/" + extrasForDetails.getString("Thumbnail"))
-                    .into(mThumbnailImage);
+                    load("http://image.tmdb.org/t/p/w500/" + extrasForDetails.getString("Thumbnail"))
+                    .noFade()
+                    .into(mThumbnailImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            scheduleStartPostponedTransition(mThumbnailImage);
+                        }
+
+                        @Override
+                        public void onError() {
+                            supportStartPostponedEnterTransition();
+                        }
+                    });
+
+
         }
 
         String mMovieVideoURL = mURLDomain + String.valueOf(mMovieIdInTMBD) +
@@ -180,6 +205,18 @@ public class ChildActivity extends AppCompatActivity {
         db = mPopularMovieHelper.getWritableDatabase();
 
 
+    }
+
+    private void scheduleStartPostponedTransition(final View sharedElement) {
+        sharedElement.getViewTreeObserver().addOnPreDrawListener(
+                new ViewTreeObserver.OnPreDrawListener() {
+                    @Override
+                    public boolean onPreDraw() {
+                        sharedElement.getViewTreeObserver().removeOnPreDrawListener(this);
+                        startPostponedEnterTransition();
+                        return true;
+                    }
+                });
     }
 
     public void favoriteClick(View v) {

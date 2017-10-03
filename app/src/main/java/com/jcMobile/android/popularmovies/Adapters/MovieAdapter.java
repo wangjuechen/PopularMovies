@@ -8,6 +8,7 @@ package com.jcMobile.android.popularmovies.Adapters;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -137,6 +138,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
                     });
 
         }
+
+        //ViewCompat.setTransitionName(movieAdapterViewHolder.mImageView, feedItem.getTitle());
     }
 
     @Override
@@ -146,7 +149,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder {
 
-        final ImageView mImageView;
+        public final ImageView mImageView;
         final TextView mMovieNameTextView;
         final CheckBox mFavoriteCheckButton;
 
@@ -160,14 +163,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
                 @Override
                 public void onClick(View v) {
                     int clickedPosition = getAdapterPosition();
-                    mOnClickListener.onClick(clickedPosition);
+                    mOnClickListener.onClick(clickedPosition, mImageView);
                 }
             });
         }
     }
 
     public interface ListItemClickListener {
-        void onClick(int clickedItemIndex);
+        void onClick(int clickedItemIndex, ImageView sharedImageView);
     }
 
     /*public void setMovieData(List<FeedItem> feedItems) {

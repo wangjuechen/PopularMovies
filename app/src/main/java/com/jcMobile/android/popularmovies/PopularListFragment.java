@@ -1,6 +1,7 @@
 package com.jcMobile.android.popularmovies;
 
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,13 +12,17 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.android.volley.Request;
@@ -183,7 +188,7 @@ public class PopularListFragment extends Fragment implements MovieAdapter.ListIt
     }
 
     @Override
-    public void onClick(int clickedItemIndex) {
+    public void onClick(int clickedItemIndex, ImageView sharedImageView) {
 
         String textTitle;
 
@@ -222,10 +227,19 @@ public class PopularListFragment extends Fragment implements MovieAdapter.ListIt
         extras.putDouble("voteAverage", textVoteAverage);
         extras.putString("Thumbnail", urlThumbnail);
         extras.putInt("id", numberMovieIDInTMDB);
+        extras.putString("transitionName", ViewCompat.getTransitionName(sharedImageView));
+
+        String transitionName = getString(R.string.transition_name);
 
         startChildActivityIntent.putExtras(extras);
 
-        startActivity(startChildActivityIntent);
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
+                sharedImageView,   // Starting view
+                transitionName    // The String
+        );
+        //Start the Intent
+        ActivityCompat.startActivity(getActivity(), startChildActivityIntent, options.toBundle());
+
     }
 
 
